@@ -866,8 +866,8 @@
 
         // --- German labels ---
         var ROLE_LABELS = {
-            issuer: 'Aussteller', recipient: 'Empfänger',
-            witness: 'Zeugen', other: 'Sonstige'
+            issuer: 'Aussteller*innen', recipient: 'Empfänger*innen',
+            witness: 'Zeug*innen', other: 'Sonstige'
         };
         var ROLE_ORDER = ['issuer', 'recipient', 'witness', 'other'];
 
@@ -893,6 +893,10 @@
         };
         var BAR_COLOR = '#2e5a88';
         var BAR_COLOR_DIM = '#d0ccc6';
+
+        // Gender colors (muted academic palette)
+        var SEX_COLORS = { m: '#5a7fa0', f: '#b8696e' };
+        var SEX_LABELS = { m: 'Männer', f: 'Frauen' };
 
         // Collection accent colors (cycle)
         var COLL_COLORS = ['#2e5a88', '#7b4d8e', '#3a7a5c', '#b85c2f', '#2e7a88', '#6b6040'];
@@ -1178,7 +1182,7 @@
             container.innerHTML = '';
 
             var rawRoles = state.selectedCollection
-                ? _getCollectionRoles()
+                ? _getCollectionField('fnRoles')
                 : data.fnRoles;
             // Merge non-standard roles into "other"
             var roles = { issuer: 0, recipient: 0, witness: 0, other: 0 };
@@ -1240,7 +1244,7 @@
                 var block = document.createElement('div');
                 block.className = 'stats-role-block';
                 block.innerHTML =
-                    '<span class="stats-role-dot" style="background:' + ROLE_COLORS[role] + '"></span>' +
+                    '<span class="stats-dot" style="background:' + ROLE_COLORS[role] + '"></span>' +
                     '<span class="stats-role-name">' + ROLE_LABELS[role] + '</span>' +
                     '<span class="stats-role-value">' + fmt(count) + '</span>' +
                     '<span class="stats-role-pct">' + pct + '%</span>';
@@ -1248,9 +1252,84 @@
             });
         }
 
-        function _getCollectionRoles() {
+        function _getCollectionField(field) {
             var coll = data.collections.find(function(c) { return c.path === state.selectedCollection; });
-            return (coll && coll.fnRoles) ? coll.fnRoles : {};
+            return (coll && coll[field]) ? coll[field] : {};
+        }
+
+        function _createGenderSeg(track, sex, count, pct, roleLabel) {
+            var seg = document.createElement('div');
+            seg.className = 'stats-gender-bar-seg stats-gender-' + sex;
+            seg.style.width = pct.toFixed(1) + '%';
+            seg.setAttribute('data-tip', '1');
+            seg.addEventListener('mouseenter', function(e) {
+                showTooltip('<strong>' + roleLabel + ' — ' + SEX_LABELS[sex] + '</strong>: ' +
+                    fmt(count) + ' (' + pct.toFixed(1) + '%)', e.clientX, e.clientY);
+            });
+            seg.addEventListener('mousemove', function(e) { showTooltip(tooltip.innerHTML, e.clientX, e.clientY); });
+            seg.addEventListener('mouseleave', hideTooltip);
+            track.appendChild(seg);
+        }
+
+        var _genderLegendRendered = false;
+
+        function renderRoleGender() {
+            var container = document.getElementById('role-gender-chart');
+            if (!container) return;
+            container.innerHTML = '';
+
+            var rawSex = state.selectedCollection
+                ? _getCollectionField('fnRolesSex')
+                : data.fnRolesSex;
+            if (!rawSex) return;
+
+            ROLE_ORDER.forEach(function(role) {
+                var sexCounts = rawSex[role] || {};
+                var mCount = sexCounts.m || 0;
+                var fCount = sexCounts.f || 0;
+                var total = mCount + fCount;
+                if (total === 0) return;
+
+                var row = document.createElement('div');
+                row.className = 'stats-gender-row';
+
+                var label = document.createElement('span');
+                label.className = 'stats-gender-label';
+                label.textContent = ROLE_LABELS[role];
+                row.appendChild(label);
+
+                var track = document.createElement('div');
+                track.className = 'stats-gender-bar-track';
+                var fPct = fCount / total * 100;
+                var mPct = mCount / total * 100;
+                _createGenderSeg(track, 'f', fCount, fPct, ROLE_LABELS[role]);
+                _createGenderSeg(track, 'm', mCount, mPct, ROLE_LABELS[role]);
+                row.appendChild(track);
+
+                var counts = document.createElement('span');
+                counts.className = 'stats-gender-counts';
+                counts.innerHTML =
+                    '<span class="stats-gender-f">' + fmt(fCount) + ' \u2640</span> \u00b7 ' +
+                    '<span class="stats-gender-m">' + fmt(mCount) + ' \u2642</span>';
+                row.appendChild(counts);
+
+                container.appendChild(row);
+            });
+
+            // Static legend: render once
+            if (!_genderLegendRendered) {
+                var legendEl = document.getElementById('gender-legend');
+                if (legendEl) {
+                    legendEl.innerHTML =
+                        '<span class="stats-gender-legend-item">' +
+                            '<span class="stats-dot stats-gender-f-bg"></span>' + SEX_LABELS.f +
+                        '</span>' +
+                        '<span class="stats-gender-legend-item">' +
+                            '<span class="stats-dot stats-gender-m-bg"></span>' + SEX_LABELS.m +
+                        '</span>';
+                    _genderLegendRendered = true;
+                }
+            }
         }
 
 
@@ -1471,35 +1550,40 @@
 
         function renderRankings() {
             _renderRankingList(
-                'ranking-persons', 'ranking-persons-title',
-                'Top 10 Personen', ENTITY_COLORS.persons
+                'ranking-women', 'ranking-women-title',
+                'Top 10 Frauen', 'women', SEX_COLORS.f
+            );
+            _renderRankingList(
+                'ranking-men', 'ranking-men-title',
+                'Top 10 Männer', 'men', SEX_COLORS.m
             );
             _renderRankingList(
                 'ranking-orgs', 'ranking-orgs-title',
-                'Top 10 Organisationen', ENTITY_COLORS.orgs
+                'Top 10 Organisationen', 'orgs', ENTITY_COLORS.orgs
             );
         }
 
-        function _renderRankingList(containerId, titleId, defaultTitle, color) {
+        function _renderRankingList(containerId, titleId, defaultTitle, dataKey, color) {
             var container = document.getElementById(containerId);
             var titleEl = document.getElementById(titleId);
             if (!container) return;
             container.innerHTML = '';
 
-            var isPersons = containerId === 'ranking-persons';
             var items, title;
+            var labelMap = { women: 'Frauen', men: 'Männer', orgs: 'Organisationen' };
 
             if (state.selectedCollection) {
                 var ct = data.perCollectionTop[state.selectedCollection];
-                items = ct ? (isPersons ? ct.persons : ct.orgs) : [];
+                items = ct ? (ct[dataKey] || []) : [];
                 var collLabel = '';
                 data.collections.forEach(function(c) {
                     if (c.path === state.selectedCollection) collLabel = c.label;
                 });
-                title = 'Top 10 ' + (isPersons ? 'Personen' : 'Organisationen') +
+                title = 'Top 10 ' + (labelMap[dataKey] || dataKey) +
                     (collLabel ? ' — ' + collLabel : '');
             } else {
-                items = isPersons ? data.topPersons : data.topOrgs;
+                var topMap = { women: data.topWomen, men: data.topMen, orgs: data.topOrgs };
+                items = topMap[dataKey] || [];
                 title = defaultTitle;
             }
 
@@ -1548,6 +1632,7 @@
             renderTimeline();
             renderCollections();
             renderRoles();
+            renderRoleGender();
             renderRankings();
         }
 
@@ -1557,6 +1642,7 @@
         renderTimeline();
         renderCollections();
         renderRoles();
+        renderRoleGender();
         renderAnnotation();
         renderCoverage();
         renderRankings();

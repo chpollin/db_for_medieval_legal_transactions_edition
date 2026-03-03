@@ -2178,6 +2178,14 @@ tr[role="button"] { cursor: pointer; }
     color: var(--color-text-light);
 }
 
+.stats-kpi-sub {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    margin-top: 0.15rem;
+}
+
 /* Active collection filter bar */
 .stats-active-filter {
     display: flex;
@@ -2294,6 +2302,72 @@ tr[role="button"] { cursor: pointer; }
     gap: var(--space-xl);
 }
 
+.stats-three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+}
+
+/* Gender sub-heading spacing (after role metrics) */
+#section-roles .stats-role-metrics + h3 {
+    margin-top: var(--space-xl);
+}
+
+/* Gender-disaggregated role chart */
+.stats-gender-row {
+    display: grid;
+    grid-template-columns: 9rem 1fr 7rem;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.stats-gender-bar-track {
+    height: 1.25rem;
+    background: var(--color-bg-warm);
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+}
+
+.stats-gender-bar-seg {
+    height: 100%;
+    min-width: 2px;
+    transition: width var(--transition-normal);
+}
+
+.stats-gender-legend {
+    display: flex;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.stats-gender-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+/* Shared dot indicator (roles + gender legends) */
+.stats-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Gender color classes: bar segments use background, text uses color */
+.stats-gender-bar-seg.stats-gender-f { background: #b8696e; }
+.stats-gender-bar-seg.stats-gender-m { background: #5a7fa0; }
+span.stats-gender-f { color: #b8696e; }
+span.stats-gender-m { color: #5a7fa0; }
+.stats-gender-f-bg  { background: #b8696e; }
+.stats-gender-m-bg  { background: #5a7fa0; }
+
 /* Collection cards grid */
 .stats-collection-grid {
     display: grid;
@@ -2397,12 +2471,7 @@ tr[role="button"] { cursor: pointer; }
     font-size: var(--text-sm);
 }
 
-.stats-role-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
+/* .stats-role-dot: reuses shared .stats-dot (see gender section) */
 
 .stats-role-name {
     color: var(--color-text);
@@ -2659,6 +2728,8 @@ tr[role="button"] { cursor: pointer; }
 @media (max-width: 768px) {
     .stats-kpi-row { grid-template-columns: repeat(2, 1fr); }
     .stats-two-col { grid-template-columns: 1fr; }
+    .stats-three-col { grid-template-columns: 1fr; }
+    .stats-gender-row { grid-template-columns: 6rem 1fr 5rem; }
     .stats-collection-grid { grid-template-columns: 1fr; }
     .stats-coverage-rings { flex-direction: column; align-items: center; gap: var(--space-lg); }
     .stats-role-metrics { flex-direction: column; gap: var(--space-sm); }
