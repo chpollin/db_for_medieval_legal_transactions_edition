@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL-Export — Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="../index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="../persons.html">Personen</a>
+                        <a href="../organisations.html">Organisationen</a>
+                        <a href="../places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="../edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="../statistics.html">Statistik</a>
+                <a href="../vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="vault-detail-page">
+    <div class="vault-detail-header">
+        <nav class="vault-breadcrumb" aria-label="Breadcrumb">
+            <a href="../vault.html">Vault</a>
+            <span class="vault-breadcrumb-sep">/</span>
+            <span>SQL-Export</span>
+        </nav>
+        <h1>SQL-Export</h1>
+        <p class="vault-detail-meta">
+            <span class="vault-detail-file">export_specification.md</span>
+            <span class="vault-detail-lines">522 Zeilen</span>
+        </p>
+    </div>
+    
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#fk-dependency-graph">FK Dependency Graph</a></li>
+<li><a href="#csv-format">CSV Format</a></li>
+<li><a href="#column-specifications-per-table">Column Specifications per Table</a><ul>
+<li><a href="#1-filenames">1. filenames</a></li>
+<li><a href="#2-persons">2. persons</a></li>
+<li><a href="#3-organisations">3. organisations</a></li>
+<li><a href="#4-places">4. places</a></li>
+<li><a href="#5-events_in_sources">5. events_in_sources</a></li>
+<li><a href="#6-persons_in_events">6. persons_in_events</a></li>
+<li><a href="#7-orgs_in_events">7. orgs_in_events</a></li>
+<li><a href="#8-places_in_events">8. places_in_events</a></li>
+<li><a href="#9-persons_in_sources">9. persons_in_sources</a></li>
+<li><a href="#10-orgs_in_sources">10. orgs_in_sources</a></li>
+<li><a href="#11-places_in_sources">11. places_in_sources</a></li>
+<li><a href="#12-kin_relations_in_sources">12. kin_relations_in_sources</a></li>
+<li><a href="#13-occ_relations_in_sources">13. occ_relations_in_sources</a></li>
+<li><a href="#14-title_ref_relations_in_sources">14. title_ref_relations_in_sources</a></li>
+<li><a href="#15-rep_relations_in_sources">15. rep_relations_in_sources</a></li>
+<li><a href="#16-friend_relations_in_sources">16. friend_relations_in_sources</a></li>
+<li><a href="#17-buis_relations_in_sources">17. buis_relations_in_sources</a></li>
+<li><a href="#18-topo_relations_in_sources">18. topo_relations_in_sources</a></li>
+<li><a href="#19-tenant_relations_in_sources">19. tenant_relations_in_sources</a></li>
+<li><a href="#20-owner_relations_in_sources">20. owner_relations_in_sources</a></li>
+<li><a href="#21-transactionsgoods_in_events">21. transactionsgoods_in_events</a></li>
+</ul>
+</li>
+<li><a href="#data-quality-issues">Data Quality Issues</a><ul>
+<li><a href="#1-trailing-semicolon-in-personscsv">1. Trailing Semicolon in persons.csv</a></li>
+<li><a href="#2-addname_orig-addname_reg-column-swap-personscsv">2. addname_orig / addname_reg Column Swap (persons.csv)</a></li>
+<li><a href="#3-defective-csv-rows-semicolons-in-free-text">3. Defective CSV Rows (Semicolons in Free Text)</a></li>
+<li><a href="#4-kin_relations-utf-7-encoding-data_export-only">4. kin_relations UTF-7 Encoding (data_export only)</a></li>
+<li><a href="#5-empty-tables">5. Empty Tables</a></li>
+<li><a href="#6-always-empty-columns">6. Always-Empty Columns</a></li>
+<li><a href="#7-pipe-separated-multi-value-columns">7. Pipe-Separated Multi-Value Columns</a></li>
+<li><a href="#8-orphaned-foreign-keys">8. Orphaned Foreign Keys</a></li>
+</ul>
+</li>
+<li><a href="#curation-filter-historical-discontinued">Curation Filter (historical, discontinued)</a></li>
+<li><a href="#future-sql-import-notes">Future: SQL Import Notes</a></li>
+</ul>
+</div>
+
+    </nav>
+    
+    <div class="guidelines-body vault-body">
+        <h1 id="pipeline-output-specification">Pipeline Output Specification<a class="headerlink" href="#pipeline-output-specification" title="Permanent link">&para;</a></h1>
+<p>Complete specification of the 21 CSV tables produced by the Python pipeline (<code>pipeline/</code>).</p>
+<p>Updated: 2026-03-02</p>
+<hr />
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Table</th>
+<th>Columns</th>
+<th>Curated Rows</th>
+<th>Uncurated Rows</th>
+<th>Tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>filenames</td>
+<td>9</td>
+<td>2,711</td>
+<td>3,530</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>persons</td>
+<td>16 (+trailing <code>;</code>)</td>
+<td>15,561</td>
+<td>16,084</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>organisations</td>
+<td>11</td>
+<td>1,036</td>
+<td>1,078</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>places</td>
+<td>15</td>
+<td>2,532</td>
+<td>2,537</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>events_in_sources</td>
+<td>9</td>
+<td>4,940</td>
+<td>5,813</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>persons_in_events</td>
+<td>7</td>
+<td>18,228</td>
+<td>18,995</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>orgs_in_events</td>
+<td>7</td>
+<td>2,202</td>
+<td>2,533</td>
+<td>2</td>
+</tr>
+<tr>
+<td>8</td>
+<td>places_in_events</td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td>2</td>
+</tr>
+<tr>
+<td>9</td>
+<td>persons_in_sources</td>
+<td>12</td>
+<td>25,304</td>
+<td>28,259</td>
+<td>2</td>
+</tr>
+<tr>
+<td>10</td>
+<td>orgs_in_sources</td>
+<td>7</td>
+<td>7,359</td>
+<td>8,983</td>
+<td>2</td>
+</tr>
+<tr>
+<td>11</td>
+<td>places_in_sources</td>
+<td>6</td>
+<td>59</td>
+<td>63</td>
+<td>2</td>
+</tr>
+<tr>
+<td>12</td>
+<td>kin_relations_in_sources</td>
+<td>8</td>
+<td>5,910</td>
+<td>6,508</td>
+<td>3</td>
+</tr>
+<tr>
+<td>13</td>
+<td>occ_relations_in_sources</td>
+<td>8</td>
+<td>5,625</td>
+<td>6,876</td>
+<td>3</td>
+</tr>
+<tr>
+<td>14</td>
+<td>title_ref_relations_in_sources</td>
+<td>8</td>
+<td>0</td>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>15</td>
+<td>rep_relations_in_sources</td>
+<td>8</td>
+<td>419</td>
+<td>538</td>
+<td>3</td>
+</tr>
+<tr>
+<td>16</td>
+<td>friend_relations_in_sources</td>
+<td>8</td>
+<td>86</td>
+<td>87</td>
+<td>3</td>
+</tr>
+<tr>
+<td>17</td>
+<td>buis_relations_in_sources</td>
+<td>8</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>18</td>
+<td>topo_relations_in_sources</td>
+<td>8</td>
+<td>21</td>
+<td>21</td>
+<td>3</td>
+</tr>
+<tr>
+<td>19</td>
+<td>tenant_relations_in_sources</td>
+<td>8</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>20</td>
+<td>owner_relations_in_sources</td>
+<td>8</td>
+<td>24</td>
+<td>24</td>
+<td>3</td>
+</tr>
+<tr>
+<td>21</td>
+<td>transactionsgoods_in_events</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>3</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>92,029</strong></td>
+<td><strong>101,948</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>CSV filename → SQL table name: hyphens become underscores (<code>title-ref</code> → <code>title_ref</code>).</p>
+<p>Tier = import order to satisfy FK dependencies:
+- <strong>Tier 0:</strong> Master data, no FK dependencies
+- <strong>Tier 1:</strong> Depends on filenames
+- <strong>Tier 2:</strong> Depends on filenames + master data + events_in_sources
+- <strong>Tier 3:</strong> Depends on filenames + master data + events_in_sources</p>
+<hr />
+<h2 id="fk-dependency-graph">FK Dependency Graph<a class="headerlink" href="#fk-dependency-graph" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>filenames ──────────────────────────────────────────────────┐
+    │                                                       │
+    ├──&gt; events_in_sources.file_key ──────────────────┐     │
+    │        │                                        │     │
+    │        ├──&gt; persons_in_events.file_key           │     │
+    │        ├──&gt; orgs_in_events.file_key              │     │
+    │        ├──&gt; places_in_events.file_key            │     │
+    │        ├──&gt; transactionsgoods_in_events.file_key │     │
+    │        │                                        │     │
+    │        ├──&gt; kin_relations_in_sources.event_key   │     │
+    │        ├──&gt; occ_relations_in_sources.event_key   │     │
+    │        ├──&gt; title_ref_relations_in_sources.event_key   │
+    │        ├──&gt; rep_relations_in_sources.event_key   │     │
+    │        ├──&gt; friend_relations_in_sources.event_key│     │
+    │        ├──&gt; buis_relations_in_sources.event_key  │     │
+    │        ├──&gt; topo_relations_in_sources.event_key  │     │
+    │        ├──&gt; tenant_relations_in_sources.event_key│     │
+    │        └──&gt; owner_relations_in_sources.event_key │     │
+    │                                                  │     │
+    ├──&gt; persons_in_sources.file_key                   │     │
+    ├──&gt; orgs_in_sources.file_key                      │     │
+    ├──&gt; places_in_sources.file_key                    │     │
+    ├──&gt; kin_relations_in_sources.file_key             │     │
+    ├──&gt; occ_relations_in_sources.file_key             │     │
+    ├──&gt; title_ref_relations_in_sources.file_key       │     │
+    ├──&gt; rep_relations_in_sources.file_key             │     │
+    ├──&gt; friend_relations_in_sources.file_key          │     │
+    ├──&gt; buis_relations_in_sources.file_key            │     │
+    ├──&gt; topo_relations_in_sources.xml_key             │     │
+    ├──&gt; tenant_relations_in_sources.xml_key           │     │
+    └──&gt; owner_relations_in_sources.xml_key            │     │
+                                                       │     │
+persons ───&gt; persons_in_events.person_key              │     │
+         ──&gt; persons_in_sources.person_key             │     │
+         ──&gt; kin_relations_in_sources.person_key       │     │
+         ──&gt; occ_relations_in_sources.person_key       │     │
+         ──&gt; title_ref_relations_in_sources.person_key │     │
+         ──&gt; rep_relations_in_sources.person_key       │     │
+         ──&gt; friend_relations_in_sources.person_key    │     │
+         ──&gt; buis_relations_in_sources.person_key      │     │
+                                                       │     │
+organisations ──&gt; orgs_in_events.org_key               │     │
+              ──&gt; orgs_in_sources.org_key              │     │
+              ──&gt; organisations.org_key (self-ref)     │     │
+                                                       │     │
+places ──&gt; places_in_events.place_key                  │     │
+       ──&gt; places_in_sources.place_key                 │     │
+       ──&gt; organisations.place_key                     │     │
+       ──&gt; topo_relations_in_sources.place_key         │     │
+       ──&gt; tenant_relations_in_sources.place_key       │     │
+       ──&gt; owner_relations_in_sources.place_key        │     │
+       ──&gt; places.place_key (self-ref)                 │     │
+</code></pre></div>
+
+<p>Note: FK constraints should be <strong>commented out</strong> — there are known orphaned references (4,085 orphaned <code>ev__</code> refs, 9,215 never-referenced register IDs). The existing web frontend tolerates these; enforcing FKs would break the import.</p>
+<hr />
+<h2 id="csv-format">CSV Format<a class="headerlink" href="#csv-format" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Delimiter:</strong> Semicolon (<code>;</code>)</li>
+<li><strong>Line endings:</strong> CRLF (<code>\r\n</code>)</li>
+<li><strong>Encoding:</strong> UTF-8 (no BOM)</li>
+<li><strong>Quoting:</strong> None — semicolons in free text produce broken rows</li>
+<li><strong>Header:</strong> First line is column names</li>
+<li><strong>Trailing newline:</strong> Only <code>filenames.csv</code> has a trailing CRLF; all others do not</li>
+</ul>
+<hr />
+<h2 id="column-specifications-per-table">Column Specifications per Table<a class="headerlink" href="#column-specifications-per-table" title="Permanent link">&para;</a></h2>
+<p>VARCHAR lengths = empirical max rounded up to next 32/64/128/256/512 boundary.
+Max lengths measured from <strong>both</strong> curated and uncurated output (whichever is larger).</p>
+<h3 id="1-filenames">1. filenames<a class="headerlink" href="#1-filenames" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>PK</td>
+<td></td>
+<td><code>f__COLLECTION_STEM</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>file</td>
+<td>VARCHAR(64)</td>
+<td>35</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>URI-encoded filename (spaces → %20)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>collection</td>
+<td>VARCHAR(32)</td>
+<td>12</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Top-level directory</td>
+</tr>
+<tr>
+<td>4</td>
+<td>subcollection</td>
+<td>VARCHAR(32)</td>
+<td>22</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Second-level directory</td>
+</tr>
+<tr>
+<td>5</td>
+<td>authority</td>
+<td>VARCHAR(128)</td>
+<td>85</td>
+<td>128</td>
+<td></td>
+<td></td>
+<td>bibl[@type='url'], normalized</td>
+</tr>
+<tr>
+<td>6</td>
+<td>editor</td>
+<td>VARCHAR(32)</td>
+<td>5</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@resp attribute</td>
+</tr>
+<tr>
+<td>7</td>
+<td>status</td>
+<td>VARCHAR(32)</td>
+<td>11</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>"done" or "in progress"</td>
+</tr>
+<tr>
+<td>8</td>
+<td>projekt</td>
+<td>VARCHAR(64)</td>
+<td>47</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>label[@type='contentual-editing']</td>
+</tr>
+<tr>
+<td>9</td>
+<td>date</td>
+<td>VARCHAR(32)</td>
+<td>23</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Parsed date from metadata</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-persons">2. persons<a class="headerlink" href="#2-persons" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(128)</td>
+<td>70</td>
+<td>128</td>
+<td>PK</td>
+<td></td>
+<td><code>pe__</code> prefix</td>
+</tr>
+<tr>
+<td>2</td>
+<td>sex</td>
+<td>VARCHAR(32)</td>
+<td>1</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>m/f/empty</td>
+</tr>
+<tr>
+<td>3</td>
+<td>forename_reg</td>
+<td>VARCHAR(32)</td>
+<td>19</td>
+<td>32</td>
+<td></td>
+<td>yes</td>
+<td>Regularized forenames</td>
+</tr>
+<tr>
+<td>4</td>
+<td>forename_orig</td>
+<td>VARCHAR(32)</td>
+<td>27</td>
+<td>32</td>
+<td></td>
+<td>yes</td>
+<td>Original forename forms</td>
+</tr>
+<tr>
+<td>5</td>
+<td>surname_reg</td>
+<td>VARCHAR(64)</td>
+<td>54</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>Regularized surname</td>
+</tr>
+<tr>
+<td>6</td>
+<td>surname_reg_source</td>
+<td>VARCHAR(64)</td>
+<td>53</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>@source for surname</td>
+</tr>
+<tr>
+<td>7</td>
+<td>surname_orig</td>
+<td>VARCHAR(64)</td>
+<td>48</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>Original surname</td>
+</tr>
+<tr>
+<td>8</td>
+<td>addname_orig</td>
+<td>VARCHAR(128)</td>
+<td>95</td>
+<td>128</td>
+<td></td>
+<td></td>
+<td><strong>BUG: actually contains reg values</strong></td>
+</tr>
+<tr>
+<td>9</td>
+<td>addname_reg</td>
+<td>VARCHAR(64)</td>
+<td>56</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td><strong>BUG: actually contains orig values</strong></td>
+</tr>
+<tr>
+<td>10</td>
+<td>genname</td>
+<td>VARCHAR(32)</td>
+<td>11</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Generation name (I., II., etc.)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>authority</td>
+<td>VARCHAR(256)</td>
+<td>142</td>
+<td>256</td>
+<td></td>
+<td>yes</td>
+<td>URI IDs</td>
+</tr>
+<tr>
+<td>12</td>
+<td>note</td>
+<td>VARCHAR(256)</td>
+<td>221</td>
+<td>256</td>
+<td></td>
+<td>yes</td>
+<td>Free-text notes</td>
+</tr>
+<tr>
+<td>13</td>
+<td>dead_before</td>
+<td>VARCHAR(32)</td>
+<td>30</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@notAfter from death element</td>
+</tr>
+<tr>
+<td>14</td>
+<td>PAGEID_WienWiki</td>
+<td>VARCHAR(32)</td>
+<td>5</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Wien Wiki page ID</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Name_WienWiki</td>
+<td>VARCHAR(64)</td>
+<td>33</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>Wien Wiki name</td>
+</tr>
+<tr>
+<td>16</td>
+<td>editor</td>
+<td>VARCHAR(32)</td>
+<td>17</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@resp attribute</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Trailing semicolon:</strong> Every data row has 17 fields (16 columns + 1 empty). LOAD DATA needs <code>@dummy</code> for field 17.</p>
+<p><strong>addname_orig / addname_reg swap:</strong> Column headers are swapped relative to actual content. This is a preserved XSLT bug — <code>addname_orig</code> contains regularized values and vice versa. The existing frontend consumes them as-is; do not fix.</p>
+<h3 id="3-organisations">3. organisations<a class="headerlink" href="#3-organisations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(128)</td>
+<td>123</td>
+<td>128</td>
+<td>PK</td>
+<td></td>
+<td><code>org__</code> prefix</td>
+</tr>
+<tr>
+<td>2</td>
+<td>name_reg</td>
+<td>VARCHAR(256)</td>
+<td>132</td>
+<td>256</td>
+<td></td>
+<td></td>
+<td>Regularized name</td>
+</tr>
+<tr>
+<td>3</td>
+<td>name_reg_source</td>
+<td>VARCHAR(128)</td>
+<td>78</td>
+<td>128</td>
+<td></td>
+<td></td>
+<td>@source per element</td>
+</tr>
+<tr>
+<td>4</td>
+<td>name_orig</td>
+<td>VARCHAR(256)</td>
+<td>195</td>
+<td>256</td>
+<td></td>
+<td></td>
+<td>Original name</td>
+</tr>
+<tr>
+<td>5</td>
+<td>type</td>
+<td>VARCHAR(32)</td>
+<td>20</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@type attribute</td>
+</tr>
+<tr>
+<td>6</td>
+<td>observance</td>
+<td>VARCHAR(32)</td>
+<td>14</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>trait/desc content</td>
+</tr>
+<tr>
+<td>7</td>
+<td>authority</td>
+<td>VARCHAR(256)</td>
+<td>133</td>
+<td>256</td>
+<td></td>
+<td>yes</td>
+<td>idno elements</td>
+</tr>
+<tr>
+<td>8</td>
+<td>sub</td>
+<td>VARCHAR(32)</td>
+<td>3</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>"yes"/"no" — is sub-organisation</td>
+</tr>
+<tr>
+<td>9</td>
+<td>org_key</td>
+<td>VARCHAR(128)</td>
+<td>99</td>
+<td>128</td>
+<td>organisations.id</td>
+<td></td>
+<td>Parent org ID (self-ref)</td>
+</tr>
+<tr>
+<td>10</td>
+<td>place_key</td>
+<td>VARCHAR(64)</td>
+<td>58</td>
+<td>64</td>
+<td>places.id</td>
+<td></td>
+<td>addrLine/@corresp</td>
+</tr>
+<tr>
+<td>11</td>
+<td>editor</td>
+<td>VARCHAR(32)</td>
+<td>8</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@resp attribute</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-places">4. places<a class="headerlink" href="#4-places" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(64)</td>
+<td>54</td>
+<td>64</td>
+<td>PK</td>
+<td></td>
+<td><code>pl__</code> prefix</td>
+</tr>
+<tr>
+<td>2</td>
+<td>name_reg</td>
+<td>VARCHAR(512)</td>
+<td>357</td>
+<td>512</td>
+<td></td>
+<td></td>
+<td>Regularized name</td>
+</tr>
+<tr>
+<td>3</td>
+<td>name_reg_source</td>
+<td>VARCHAR(64)</td>
+<td>55</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>@source per element</td>
+</tr>
+<tr>
+<td>4</td>
+<td>name_orig</td>
+<td>VARCHAR(512)</td>
+<td>275</td>
+<td>512</td>
+<td></td>
+<td></td>
+<td>Original name</td>
+</tr>
+<tr>
+<td>5</td>
+<td>type</td>
+<td>VARCHAR(32)</td>
+<td>10</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@type attribute</td>
+</tr>
+<tr>
+<td>6</td>
+<td>lat</td>
+<td>VARCHAR(32)</td>
+<td>18</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Latitude from geo element</td>
+</tr>
+<tr>
+<td>7</td>
+<td>lng</td>
+<td>VARCHAR(32)</td>
+<td>18</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Longitude from geo element</td>
+</tr>
+<tr>
+<td>8</td>
+<td>rel_place_key</td>
+<td>VARCHAR(128)</td>
+<td>110</td>
+<td>128</td>
+<td></td>
+<td>yes</td>
+<td>Related place IDs</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Adresse_ak</td>
+<td>VARCHAR(64)</td>
+<td>46</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>Modern address</td>
+</tr>
+<tr>
+<td>10</td>
+<td>geonames</td>
+<td>VARCHAR(128)</td>
+<td>68</td>
+<td>128</td>
+<td></td>
+<td></td>
+<td>GeoNames URI</td>
+</tr>
+<tr>
+<td>11</td>
+<td>parzelle_idno</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Parcel ID — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>12</td>
+<td>authority</td>
+<td>VARCHAR(512)</td>
+<td>317</td>
+<td>512</td>
+<td></td>
+<td>yes</td>
+<td>Non-GeoNames idno</td>
+</tr>
+<tr>
+<td>13</td>
+<td>sub</td>
+<td>VARCHAR(32)</td>
+<td>3</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>"yes"/"no" — is sub-place</td>
+</tr>
+<tr>
+<td>14</td>
+<td>place_key</td>
+<td>VARCHAR(32)</td>
+<td>20</td>
+<td>32</td>
+<td>places.id</td>
+<td></td>
+<td>Parent place ID (self-ref)</td>
+</tr>
+<tr>
+<td>15</td>
+<td>editor</td>
+<td>VARCHAR(32)</td>
+<td>5</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@resp attribute</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-events_in_sources">5. events_in_sources<a class="headerlink" href="#5-events_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(128)</td>
+<td>84</td>
+<td>128</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_eventref_position</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>catchwords</td>
+<td>VARCHAR(512)</td>
+<td>325</td>
+<td>512</td>
+<td></td>
+<td>yes</td>
+<td>triggerstring[@n='disp'], <code>;</code> → <code>,</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>event_key</td>
+<td>VARCHAR(64)</td>
+<td>43</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>@ref from event (orphaned ev__ refs)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>date_not_before</td>
+<td>VARCHAR(32)</td>
+<td>11</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Conditional date split</td>
+</tr>
+<tr>
+<td>5</td>
+<td>date_not_after</td>
+<td>VARCHAR(32)</td>
+<td>11</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>Conditional date split</td>
+</tr>
+<tr>
+<td>6</td>
+<td>event_in</td>
+<td>VARCHAR(32)</td>
+<td>8</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>p/@rend or div[@type]</td>
+</tr>
+<tr>
+<td>7</td>
+<td>date_orig</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td><strong>Always empty</strong> in curated</td>
+</tr>
+<tr>
+<td>8</td>
+<td>text</td>
+<td>MEDIUMTEXT</td>
+<td>11,586</td>
+<td>—</td>
+<td></td>
+<td></td>
+<td>Full event text</td>
+</tr>
+<tr>
+<td>9</td>
+<td>file_key</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-persons_in_events">6. persons_in_events<a class="headerlink" href="#6-persons_in_events" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(64)</td>
+<td>55</td>
+<td>64</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_event_EPOS_person_PPOS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>event_key</td>
+<td>VARCHAR(64)</td>
+<td>65</td>
+<td>128</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>@ref from event</td>
+</tr>
+<tr>
+<td>3</td>
+<td>person_key</td>
+<td>VARCHAR(64)</td>
+<td>63</td>
+<td>64</td>
+<td>persons.id</td>
+<td></td>
+<td>@ref from person</td>
+</tr>
+<tr>
+<td>4</td>
+<td>event_role</td>
+<td>VARCHAR(32)</td>
+<td>9</td>
+<td>32</td>
+<td></td>
+<td>yes</td>
+<td>fn/@role</td>
+</tr>
+<tr>
+<td>5</td>
+<td>cert_to_person_key</td>
+<td>VARCHAR(32)</td>
+<td>7</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert attribute</td>
+</tr>
+<tr>
+<td>6</td>
+<td>event_catchword</td>
+<td>VARCHAR(256)</td>
+<td>218</td>
+<td>256</td>
+<td></td>
+<td>yes</td>
+<td>fn/triggerstring[@n='fn']</td>
+</tr>
+<tr>
+<td>7</td>
+<td>file_key</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<p>Note: <code>event_key</code> max 65 in curated (exceeds 64 boundary) — use VARCHAR(128).</p>
+<h3 id="7-orgs_in_events">7. orgs_in_events<a class="headerlink" href="#7-orgs_in_events" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(64)</td>
+<td>50</td>
+<td>64</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_event_org_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>event_key</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>@ref from event</td>
+</tr>
+<tr>
+<td>3</td>
+<td>org_key</td>
+<td>VARCHAR(128)</td>
+<td>123</td>
+<td>128</td>
+<td>organisations.id</td>
+<td></td>
+<td>@ref from org</td>
+</tr>
+<tr>
+<td>4</td>
+<td>event_role</td>
+<td>VARCHAR(32)</td>
+<td>17</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>fn/@role</td>
+</tr>
+<tr>
+<td>5</td>
+<td>cert</td>
+<td>VARCHAR(32)</td>
+<td>6</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert attribute</td>
+</tr>
+<tr>
+<td>6</td>
+<td>event_catchword</td>
+<td>VARCHAR(128)</td>
+<td>70</td>
+<td>128</td>
+<td></td>
+<td></td>
+<td>fn/triggerstring[@n='fn']</td>
+</tr>
+<tr>
+<td>7</td>
+<td>file_key</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="8-places_in_events">8. places_in_events<a class="headerlink" href="#8-places_in_events" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(32)</td>
+<td>31</td>
+<td>32</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_event_place_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>event_key</td>
+<td>VARCHAR(32)</td>
+<td>24</td>
+<td>32</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>@ref from event</td>
+</tr>
+<tr>
+<td>3</td>
+<td>place_key</td>
+<td>VARCHAR(64)</td>
+<td>46</td>
+<td>64</td>
+<td>places.id</td>
+<td></td>
+<td>@ref from place</td>
+</tr>
+<tr>
+<td>4</td>
+<td>event_role</td>
+<td>VARCHAR(32)</td>
+<td>17</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>fn/@role</td>
+</tr>
+<tr>
+<td>5</td>
+<td>event_catchword</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td><strong>Always empty</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>file_key</td>
+<td>VARCHAR(32)</td>
+<td>17</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-persons_in_sources">9. persons_in_sources<a class="headerlink" href="#9-persons_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(64)</td>
+<td>47</td>
+<td>64</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_person_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>person_key</td>
+<td>VARCHAR(64)</td>
+<td>63</td>
+<td>64</td>
+<td>persons.id</td>
+<td></td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>3</td>
+<td>kind_of_linking</td>
+<td>VARCHAR(32)</td>
+<td>7</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>"ref" or "corresp"</td>
+</tr>
+<tr>
+<td>4</td>
+<td>source_text</td>
+<td>TEXT</td>
+<td>495</td>
+<td>—</td>
+<td></td>
+<td></td>
+<td>Text content (excl tei:add)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>cert_to_person_key</td>
+<td>VARCHAR(32)</td>
+<td>7</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert attribute</td>
+</tr>
+<tr>
+<td>6</td>
+<td>source_titles</td>
+<td>VARCHAR(128)</td>
+<td>84</td>
+<td>128</td>
+<td></td>
+<td>yes</td>
+<td>roleName[@type='title']</td>
+</tr>
+<tr>
+<td>7</td>
+<td>cert_to_source_titles</td>
+<td>VARCHAR(32)</td>
+<td>7</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td><strong>BUG: mixed cert + text</strong></td>
+</tr>
+<tr>
+<td>8</td>
+<td>source_prof</td>
+<td>VARCHAR(256)</td>
+<td>184</td>
+<td>256</td>
+<td></td>
+<td>yes</td>
+<td>roleName[@type='prof']</td>
+</tr>
+<tr>
+<td>9</td>
+<td>cert_to_source_prof</td>
+<td>VARCHAR(32)</td>
+<td>15</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td><strong>BUG: mixed cert + text</strong></td>
+</tr>
+<tr>
+<td>10</td>
+<td>source_dead</td>
+<td>VARCHAR(32)</td>
+<td>29</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>roleName[@type='dead']</td>
+</tr>
+<tr>
+<td>11</td>
+<td>file_key</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+<tr>
+<td>12</td>
+<td>doubletten_helper</td>
+<td>VARCHAR(128)</td>
+<td>90</td>
+<td>128</td>
+<td></td>
+<td></td>
+<td>person_key + filekey (no separator)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-orgs_in_sources">10. orgs_in_sources<a class="headerlink" href="#10-orgs_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(64)</td>
+<td>44</td>
+<td>64</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_org_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>org_key</td>
+<td>VARCHAR(128)</td>
+<td>123</td>
+<td>128</td>
+<td>organisations.id</td>
+<td></td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>3</td>
+<td>kind_of_linking</td>
+<td>VARCHAR(32)</td>
+<td>7</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>"ref" or "corresp"</td>
+</tr>
+<tr>
+<td>4</td>
+<td>source_text</td>
+<td>TEXT</td>
+<td>633</td>
+<td>—</td>
+<td></td>
+<td></td>
+<td>Text content (excl tei:add)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>cert_to_org_key</td>
+<td>VARCHAR(32)</td>
+<td>7</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert attribute</td>
+</tr>
+<tr>
+<td>6</td>
+<td>file_key</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+<tr>
+<td>7</td>
+<td>doubletten_helper</td>
+<td>VARCHAR(256)</td>
+<td>142</td>
+<td>256</td>
+<td></td>
+<td></td>
+<td>org_key + filekey (no separator)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="11-places_in_sources">11. places_in_sources<a class="headerlink" href="#11-places_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(32)</td>
+<td>28</td>
+<td>32</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_place_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>place_key</td>
+<td>VARCHAR(64)</td>
+<td>46</td>
+<td>64</td>
+<td>places.id</td>
+<td></td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>3</td>
+<td>kind_of_linking</td>
+<td>VARCHAR(32)</td>
+<td>7</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>"ref" or "corresp"</td>
+</tr>
+<tr>
+<td>4</td>
+<td>source_text</td>
+<td>VARCHAR(128)</td>
+<td>122</td>
+<td>128</td>
+<td></td>
+<td></td>
+<td>Text content</td>
+</tr>
+<tr>
+<td>5</td>
+<td>file_key</td>
+<td>VARCHAR(32)</td>
+<td>19</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+<tr>
+<td>6</td>
+<td>doubletten_helper</td>
+<td>VARCHAR(64)</td>
+<td>57</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>place_key + filekey</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-kin_relations_in_sources">12. kin_relations_in_sources<a class="headerlink" href="#12-kin_relations_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(32)</td>
+<td>26</td>
+<td>32</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_kin_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>person_key</td>
+<td>VARCHAR(64)</td>
+<td>62</td>
+<td>64</td>
+<td>persons.id</td>
+<td></td>
+<td>Ancestor rs/@ref</td>
+</tr>
+<tr>
+<td>3</td>
+<td>kin</td>
+<td>VARCHAR(64)</td>
+<td>50</td>
+<td>64</td>
+<td></td>
+<td>yes</td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>4</td>
+<td>cert_to_related_key</td>
+<td>VARCHAR(32)</td>
+<td>4</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert</td>
+</tr>
+<tr>
+<td>5</td>
+<td>related_key</td>
+<td>VARCHAR(64)</td>
+<td>63</td>
+<td>64</td>
+<td></td>
+<td>yes</td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>6</td>
+<td>select_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@select — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(64)</td>
+<td>35</td>
+<td>64</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>file_key</td>
+<td>VARCHAR(32)</td>
+<td>20</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-occ_relations_in_sources">13. occ_relations_in_sources<a class="headerlink" href="#13-occ_relations_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(64)</td>
+<td>44</td>
+<td>64</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_occ_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>person_key</td>
+<td>VARCHAR(64)</td>
+<td>63</td>
+<td>64</td>
+<td>persons.id</td>
+<td></td>
+<td>Ancestor rs/@ref</td>
+</tr>
+<tr>
+<td>3</td>
+<td>occ</td>
+<td>VARCHAR(256)</td>
+<td>134</td>
+<td>256</td>
+<td></td>
+<td>yes</td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>4</td>
+<td>cert_to_related_key</td>
+<td>VARCHAR(32)</td>
+<td>7</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert</td>
+</tr>
+<tr>
+<td>5</td>
+<td>related_key</td>
+<td>VARCHAR(128)</td>
+<td>99</td>
+<td>128</td>
+<td></td>
+<td>yes</td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>6</td>
+<td>select_key</td>
+<td>VARCHAR(64)</td>
+<td>40</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>@select</td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>file_key</td>
+<td>VARCHAR(64)</td>
+<td>38</td>
+<td>64</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-title_ref_relations_in_sources">14. title_ref_relations_in_sources<a class="headerlink" href="#14-title_ref_relations_in_sources" title="Permanent link">&para;</a></h3>
+<p>CSV filename: <code>title-ref_relations_in_sources.csv</code></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(32)</td>
+<td>23</td>
+<td>32</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_title_ref_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>person_key</td>
+<td>VARCHAR(64)</td>
+<td>51</td>
+<td>64</td>
+<td>persons.id</td>
+<td></td>
+<td>Ancestor rs/@ref</td>
+</tr>
+<tr>
+<td>3</td>
+<td>title_ref</td>
+<td>VARCHAR(32)</td>
+<td>26</td>
+<td>32</td>
+<td></td>
+<td>yes</td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>4</td>
+<td>cert_to_related_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>related_key</td>
+<td>VARCHAR(32)</td>
+<td>30</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>6</td>
+<td>select_key</td>
+<td>VARCHAR(32)</td>
+<td>19</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@select</td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(32)</td>
+<td>18</td>
+<td>32</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>file_key</td>
+<td>VARCHAR(32)</td>
+<td>11</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<p>Note: 0 rows in curated export, 7 in uncurated. Table structure retained for completeness.</p>
+<h3 id="15-rep_relations_in_sources">15. rep_relations_in_sources<a class="headerlink" href="#15-rep_relations_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(32)</td>
+<td>25</td>
+<td>32</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_rep_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>person_key</td>
+<td>VARCHAR(64)</td>
+<td>55</td>
+<td>64</td>
+<td>persons.id</td>
+<td></td>
+<td>Ancestor rs/@ref</td>
+</tr>
+<tr>
+<td>3</td>
+<td>rep</td>
+<td>VARCHAR(64)</td>
+<td>52</td>
+<td>64</td>
+<td></td>
+<td>yes</td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>4</td>
+<td>cert_to_related_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>related_key</td>
+<td>VARCHAR(128)</td>
+<td>83</td>
+<td>128</td>
+<td></td>
+<td>yes</td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>6</td>
+<td>select_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@select — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(32)</td>
+<td>23</td>
+<td>32</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>file_key</td>
+<td>VARCHAR(32)</td>
+<td>19</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="16-friend_relations_in_sources">16. friend_relations_in_sources<a class="headerlink" href="#16-friend_relations_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(32)</td>
+<td>28</td>
+<td>32</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_friend_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>person_key</td>
+<td>VARCHAR(64)</td>
+<td>46</td>
+<td>64</td>
+<td>persons.id</td>
+<td></td>
+<td>Ancestor rs/@ref</td>
+</tr>
+<tr>
+<td>3</td>
+<td>friend</td>
+<td>VARCHAR(32)</td>
+<td>20</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>4</td>
+<td>cert_to_related_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>related_key</td>
+<td>VARCHAR(64)</td>
+<td>44</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>6</td>
+<td>select_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@select — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(32)</td>
+<td>23</td>
+<td>32</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>file_key</td>
+<td>VARCHAR(32)</td>
+<td>19</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="17-buis_relations_in_sources">17. buis_relations_in_sources<a class="headerlink" href="#17-buis_relations_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_buis_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>person_key</td>
+<td>VARCHAR(64)</td>
+<td>0</td>
+<td>64</td>
+<td>persons.id</td>
+<td></td>
+<td>Ancestor rs/@ref</td>
+</tr>
+<tr>
+<td>3</td>
+<td>buis</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>4</td>
+<td>cert_to_related_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert</td>
+</tr>
+<tr>
+<td>5</td>
+<td>related_key</td>
+<td>VARCHAR(64)</td>
+<td>0</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>@ref or @corresp</td>
+</tr>
+<tr>
+<td>6</td>
+<td>select_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@select</td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(64)</td>
+<td>0</td>
+<td>64</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>file_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<p>Note: 0 rows in both curated and uncurated. Table structure retained for completeness. Sizes based on analogous relation tables.</p>
+<h3 id="18-topo_relations_in_sources">18. topo_relations_in_sources<a class="headerlink" href="#18-topo_relations_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(128)</td>
+<td>111</td>
+<td>128</td>
+<td>PK</td>
+<td></td>
+<td><code>toprel__filekey_ancestorref_corresp</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>place_key</td>
+<td>VARCHAR(64)</td>
+<td>46</td>
+<td>64</td>
+<td>places.id</td>
+<td></td>
+<td>Place reference</td>
+</tr>
+<tr>
+<td>3</td>
+<td>cert_place_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>topo</td>
+<td>VARCHAR(32)</td>
+<td>29</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>5</td>
+<td>rel_key</td>
+<td>VARCHAR(64)</td>
+<td>45</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>@corresp or ancestor rs/@ref</td>
+</tr>
+<tr>
+<td>6</td>
+<td>cert_topo_relation_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(32)</td>
+<td>24</td>
+<td>32</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>xml_key</td>
+<td>VARCHAR(32)</td>
+<td>19</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td>File key (= file_key equivalent)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="19-tenant_relations_in_sources">19. tenant_relations_in_sources<a class="headerlink" href="#19-tenant_relations_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(128)</td>
+<td>0</td>
+<td>128</td>
+<td>PK</td>
+<td></td>
+<td>Same format as topo</td>
+</tr>
+<tr>
+<td>2</td>
+<td>place_key</td>
+<td>VARCHAR(64)</td>
+<td>0</td>
+<td>64</td>
+<td>places.id</td>
+<td></td>
+<td>Place reference</td>
+</tr>
+<tr>
+<td>3</td>
+<td>cert_place_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert</td>
+</tr>
+<tr>
+<td>4</td>
+<td>tenant</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>5</td>
+<td>rel_key</td>
+<td>VARCHAR(64)</td>
+<td>0</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>@corresp or ancestor rs/@ref</td>
+</tr>
+<tr>
+<td>6</td>
+<td>cert_topo_relation_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert</td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>xml_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td>File key</td>
+</tr>
+</tbody>
+</table>
+<p>Note: 0 rows in both curated and uncurated. Table structure retained for completeness.</p>
+<h3 id="20-owner_relations_in_sources">20. owner_relations_in_sources<a class="headerlink" href="#20-owner_relations_in_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(128)</td>
+<td>127</td>
+<td>128</td>
+<td>PK</td>
+<td></td>
+<td><code>toprel__owner__filekey_event_place_pers</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>place_key</td>
+<td>VARCHAR(64)</td>
+<td>46</td>
+<td>64</td>
+<td>places.id</td>
+<td></td>
+<td>Place reference</td>
+</tr>
+<tr>
+<td>3</td>
+<td>cert_place_key</td>
+<td>VARCHAR(32)</td>
+<td>0</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert — <strong>always empty</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>owner</td>
+<td>VARCHAR(128)</td>
+<td>72</td>
+<td>128</td>
+<td></td>
+<td></td>
+<td>roleName text</td>
+</tr>
+<tr>
+<td>5</td>
+<td>rel_key</td>
+<td>VARCHAR(64)</td>
+<td>41</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>Person/org ref</td>
+</tr>
+<tr>
+<td>6</td>
+<td>cert_topo_relation_key</td>
+<td>VARCHAR(32)</td>
+<td>24</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@cert</td>
+</tr>
+<tr>
+<td>7</td>
+<td>event_key</td>
+<td>VARCHAR(32)</td>
+<td>24</td>
+<td>32</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>Ancestor event @ref</td>
+</tr>
+<tr>
+<td>8</td>
+<td>xml_key</td>
+<td>VARCHAR(32)</td>
+<td>19</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td>File key</td>
+</tr>
+</tbody>
+</table>
+<h3 id="21-transactionsgoods_in_events">21. transactionsgoods_in_events<a class="headerlink" href="#21-transactionsgoods_in_events" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Column</th>
+<th>SQL Type</th>
+<th>Max Len</th>
+<th>Rounded</th>
+<th>FK Target</th>
+<th>Pipe-separated</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>id</td>
+<td>VARCHAR(64)</td>
+<td>32</td>
+<td>64</td>
+<td>PK</td>
+<td></td>
+<td><code>filekey_event_trans_POS</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>event_key</td>
+<td>VARCHAR(32)</td>
+<td>24</td>
+<td>32</td>
+<td>events_in_sources.event_key</td>
+<td></td>
+<td>@ref from event</td>
+</tr>
+<tr>
+<td>3</td>
+<td>transactiongood</td>
+<td>VARCHAR(32)</td>
+<td>18</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td>@role (transactiongood_I/II)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>source_catchword</td>
+<td>VARCHAR(64)</td>
+<td>63</td>
+<td>64</td>
+<td></td>
+<td></td>
+<td>Text content</td>
+</tr>
+<tr>
+<td>5</td>
+<td>file_key</td>
+<td>VARCHAR(32)</td>
+<td>18</td>
+<td>32</td>
+<td>filenames.id</td>
+<td></td>
+<td><code>f__</code> prefixed file ID</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="data-quality-issues">Data Quality Issues<a class="headerlink" href="#data-quality-issues" title="Permanent link">&para;</a></h2>
+<h3 id="1-trailing-semicolon-in-personscsv">1. Trailing Semicolon in persons.csv<a class="headerlink" href="#1-trailing-semicolon-in-personscsv" title="Permanent link">&para;</a></h3>
+<p>Every data row has 17 semicolon-delimited fields (16 columns + 1 trailing empty field). The header has only 16 fields. LOAD DATA must use <code>@dummy</code> to absorb the 17th empty field.</p>
+<p>Present in both curated and uncurated output. Produced by the pipeline itself.</p>
+<h3 id="2-addname_orig-addname_reg-column-swap-personscsv">2. addname_orig / addname_reg Column Swap (persons.csv)<a class="headerlink" href="#2-addname_orig-addname_reg-column-swap-personscsv" title="Permanent link">&para;</a></h3>
+<p>The column headers <code>addname_orig</code> and <code>addname_reg</code> are swapped relative to actual content: <code>addname_orig</code> contains regularized values, <code>addname_reg</code> contains original values. This is a preserved XSLT bug. The existing frontend consumes them as-is.</p>
+<h3 id="3-defective-csv-rows-semicolons-in-free-text">3. Defective CSV Rows (Semicolons in Free Text)<a class="headerlink" href="#3-defective-csv-rows-semicolons-in-free-text" title="Permanent link">&para;</a></h3>
+<p>The CSV writer uses no quoting. Semicolons in free text split fields incorrectly.</p>
+<p><strong>Uncurated (pipeline/output/) — 11 defective rows:</strong></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Line</th>
+<th>ID</th>
+<th>Extra Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>events_in_sources.csv</td>
+<td>4711</td>
+<td><code>f__QGW_3908_ev__QGW_II_III_3908_1</code></td>
+<td>12 (expected 9)</td>
+</tr>
+<tr>
+<td>events_in_sources.csv</td>
+<td>4812</td>
+<td><code>f__QGW_3968_ev__QGW_II_III_3968_1</code></td>
+<td>10 (expected 9)</td>
+</tr>
+<tr>
+<td>events_in_sources.csv</td>
+<td>4940</td>
+<td><code>f__QGW_4040a_ev__QGW_II_III_4040a_1</code></td>
+<td>10 (expected 9)</td>
+</tr>
+<tr>
+<td>events_in_sources.csv</td>
+<td>5114</td>
+<td><code>f__QGW_4133_ev__QGW_II_III_4133_1</code></td>
+<td>15 (expected 9)</td>
+</tr>
+<tr>
+<td>persons.csv</td>
+<td>903</td>
+<td><code>pe__barbara__QGW_II_III_4134</code></td>
+<td>18 (expected 17)</td>
+</tr>
+<tr>
+<td>persons.csv</td>
+<td>6504</td>
+<td><code>pe__elisabeth_facs_265_TextRegion_1659968875845_10</code></td>
+<td>18 (expected 17)</td>
+</tr>
+<tr>
+<td>persons.csv</td>
+<td>14510</td>
+<td><code>pe__heinrich_niderhofer_QGW_II_III_4100</code></td>
+<td>18 (expected 17)</td>
+</tr>
+<tr>
+<td>persons.csv</td>
+<td>15860</td>
+<td><code>pe__elisabeth_QGW_II_III_3776</code></td>
+<td>18 (expected 17)</td>
+</tr>
+<tr>
+<td>persons.csv</td>
+<td>15865</td>
+<td><code>pe__johann_slein_QGW_II_III_3794</code></td>
+<td>18 (expected 17)</td>
+</tr>
+<tr>
+<td>persons.csv</td>
+<td>15910</td>
+<td><code>pe__michael_widmer_QGW_II_III_3897</code></td>
+<td>18 (expected 17)</td>
+</tr>
+<tr>
+<td>persons.csv</td>
+<td>15969</td>
+<td><code>pe__alexander_tummer_QGW_II_III_4015</code></td>
+<td>18 (expected 17)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Curated (data_export/) — 1 defective row:</strong></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Line</th>
+<th>ID</th>
+<th>Extra Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>persons.csv</td>
+<td>6227</td>
+<td><code>pe__elisabeth_facs_265_TextRegion_1659968875845_1056</code></td>
+<td>18 (expected 17)</td>
+</tr>
+</tbody>
+</table>
+<p>The defective curated row has a semicolon in the <code>note</code> field: <code>"To. v. Johann Reicher; Gem. Michael Penting, mullner"</code>.</p>
+<p>All 4 defective events_in_sources rows are in uncurated-only files (QGW &gt; 1414) and do not appear in the curated export. 6 of 7 defective persons rows are also uncurated-only. LOAD DATA will silently skip or mangle these rows. Manual INSERT statements should be provided as fallback.</p>
+<h3 id="4-kin_relations-utf-7-encoding-data_export-only">4. kin_relations UTF-7 Encoding (data_export only)<a class="headerlink" href="#4-kin_relations-utf-7-encoding-data_export-only" title="Permanent link">&para;</a></h3>
+<p>The file <code>data_export/.../kin_relations_in_sources.csv</code> is encoded in UTF-7 (semicolons appear as <code>+ADs-</code>, underscores as <code>+AF8-</code>). This is a legacy XSLT output artifact. The Python pipeline output (<code>pipeline/output/kin_relations_in_sources.csv</code>) is normal UTF-8.</p>
+<p><strong>Recommendation:</strong> Always use the pipeline output (<code>pipeline/output/</code>) or a re-exported curated version. The data_export UTF-7 file cannot be imported with standard LOAD DATA.</p>
+<h3 id="5-empty-tables">5. Empty Tables<a class="headerlink" href="#5-empty-tables" title="Permanent link">&para;</a></h3>
+<p>Three tables have 0 data rows in the curated export:
+- <code>buis_relations_in_sources</code> — 0 rows in both curated and uncurated
+- <code>tenant_relations_in_sources</code> — 0 rows in both curated and uncurated
+- <code>title_ref_relations_in_sources</code> — 0 curated, 7 uncurated (filtered by QGW-1414 curation)</p>
+<p>These represent annotation types that were defined but not (yet) used in the sources. The table structures are retained for future use.</p>
+<h3 id="6-always-empty-columns">6. Always-Empty Columns<a class="headerlink" href="#6-always-empty-columns" title="Permanent link">&para;</a></h3>
+<p>The following columns have max_length = 0 across all rows:
+- <code>events_in_sources.date_orig</code>
+- <code>places.parzelle_idno</code>
+- <code>kin_relations_in_sources.select_key</code>
+- <code>friend_relations_in_sources.cert_to_related_key</code>, <code>select_key</code>
+- <code>rep_relations_in_sources.cert_to_related_key</code>, <code>select_key</code>
+- <code>topo_relations_in_sources.cert_place_key</code>, <code>cert_topo_relation_key</code>
+- <code>owner_relations_in_sources.cert_place_key</code>
+- <code>places_in_events.event_catchword</code></p>
+<p>All retained for structural consistency with the pipeline.</p>
+<h3 id="7-pipe-separated-multi-value-columns">7. Pipe-Separated Multi-Value Columns<a class="headerlink" href="#7-pipe-separated-multi-value-columns" title="Permanent link">&para;</a></h3>
+<p>Several columns contain pipe-separated (<code>" | "</code> or <code>"|"</code>) values for multi-valued fields. These are denormalized by design (the existing PHP frontend parses them as strings). Documented in the "Pipe-separated" column of each table specification above.</p>
+<h3 id="8-orphaned-foreign-keys">8. Orphaned Foreign Keys<a class="headerlink" href="#8-orphaned-foreign-keys" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>4,085 orphaned <code>ev__</code> references</strong> — eventList.xml was deleted; all event_key values are referentially orphaned. The event_key column is still meaningful as a grouping key, just not resolvable against a master table.</li>
+<li><strong>9,215 never-referenced register IDs</strong> — pe__: 6,342; pl__: 2,493; org__: 380. Master data entries that are not referenced in any source annotation.</li>
+</ul>
+<p>FK constraints must remain commented out to allow import.</p>
+<hr />
+<h2 id="curation-filter-historical-discontinued">Curation Filter (historical, discontinued)<a class="headerlink" href="#curation-filter-historical-discontinued" title="Permanent link">&para;</a></h2>
+<p>K6 resolved: no curation filter. All collections processed unconditionally. The legacy filter removed 819 files (QGW &gt; 1414) from <code>data_export/</code>.</p>
+<hr />
+<h2 id="future-sql-import-notes">Future: SQL Import Notes<a class="headerlink" href="#future-sql-import-notes" title="Permanent link">&para;</a></h2>
+<p>Should a SQL import be needed, the following index strategy is recommended:
+- <strong>PK:</strong> <code>id</code> on all tables
+- <strong>FK indexes:</strong> <code>file_key</code>/<code>xml_key</code>, <code>person_key</code>, <code>org_key</code>, <code>place_key</code>, <code>event_key</code> on all referencing tables
+- <strong>Query indexes:</strong> <code>date_not_before</code>/<code>date_not_after</code> (date range), <code>event_role</code> (role filter), <code>status</code> (done/in progress), <code>kind_of_linking</code> (ref/corresp)
+- <strong>FK constraints:</strong> Must remain commented out (4,085 orphaned ev__ refs, 9,215 unreferenced register IDs)</p>
+    </div>
+    <footer class="vault-detail-footer">
+        <p>Quelle: <code>knowledge/export_specification.md</code> · Gebaut: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Vault: SQL-Export</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/edition.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gutachten — Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="../index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="../persons.html">Personen</a>
+                        <a href="../organisations.html">Organisationen</a>
+                        <a href="../places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="../edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="../statistics.html">Statistik</a>
+                <a href="../vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="vault-detail-page">
+    <div class="vault-detail-header">
+        <nav class="vault-breadcrumb" aria-label="Breadcrumb">
+            <a href="../vault.html">Vault</a>
+            <span class="vault-breadcrumb-sep">/</span>
+            <span>Gutachten</span>
+        </nav>
+        <h1>Gutachten</h1>
+        <p class="vault-detail-meta">
+            <span class="vault-detail-file">gutachten.md</span>
+            <span class="vault-detail-lines">142 Zeilen</span>
+        </p>
+    </div>
+    
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#1-overall-assessment">1. Overall Assessment</a></li>
+<li><a href="#2-evaluation-vs-repo-findings">2. Evaluation vs. Repo Findings</a><ul>
+<li><a href="#evaluation-vs-repo-findings-summary">Evaluation vs. Repo Findings (Summary)</a></li>
+</ul>
+</li>
+<li><a href="#3-mapping-evaluation-recommendations-to-tier-model">3. Mapping Evaluation Recommendations to Tier Model</a><ul>
+<li><a href="#conditions-for-github-release">Conditions for GitHub Release</a></li>
+<li><a href="#conditions-for-web-application">Conditions for Web Application</a></li>
+<li><a href="#further-recommendations">Further Recommendations</a></li>
+</ul>
+</li>
+<li><a href="#4-triangulation">4. Triangulation</a></li>
+<li><a href="#5-documentation-quality">5. Documentation Quality</a></li>
+<li><a href="#6-delivery-status">6. Delivery Status</a></li>
+<li><a href="#appendix-evaluation-original-text-abridged">Appendix: Evaluation Original Text (Abridged)</a><ul>
+<li><a href="#key-decisions">Key Decisions</a></li>
+<li><a href="#conditions-for-github-release_1">Conditions for GitHub Release</a></li>
+<li><a href="#scholarly-reuse-potential-evaluation-assessment">Scholarly Reuse Potential (Evaluation Assessment)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+    </nav>
+    
+    <div class="guidelines-body vault-body">
+        <h1 id="external-evaluation-and-quality-assessment">External Evaluation and Quality Assessment<a class="headerlink" href="#external-evaluation-and-quality-assessment" title="Permanent link">&para;</a></h1>
+<p>The external evaluation (Chair of Digital Humanities, University of Graz, 29 Dec 2025) assesses the data resource and web application of the project "Stadt und Gemeinschaft" against RIDE catalogues, JODH guidelines, and other DH standards. The overall verdict is positive with conditions: release of the repository and web application is recommended, subject to specific requirements. The repo analysis confirms most findings, adds quantitative data, and identifies additional issues not covered by the evaluation.</p>
+<hr />
+<h2 id="1-overall-assessment">1. Overall Assessment<a class="headerlink" href="#1-overall-assessment" title="Permanent link">&para;</a></h2>
+<p>The scholarly substance is solid; the technical implementation is not. This is not unusual for a humanities research project -- the priority was on content, not software engineering. The consequence is a repository that works as long as the original editors maintain it, but cannot be handed over, published, or reused long-term without revision.</p>
+<p>The identified deficits are fixable and follow a clear pattern: missing standardisation (encoding, delimiter, documentation format), missing automation (tests, CI/CD, reproducible pipeline), and missing cleanup (ballast files, duplicates, security issue). None of these require a rebuild -- this is consolidation and modernisation work.</p>
+<hr />
+<h2 id="2-evaluation-vs-repo-findings">2. Evaluation vs. Repo Findings<a class="headerlink" href="#2-evaluation-vs-repo-findings" title="Permanent link">&para;</a></h2>
+<h3 id="evaluation-vs-repo-findings-summary">Evaluation vs. Repo Findings (Summary)<a class="headerlink" href="#evaluation-vs-repo-findings-summary" title="Permanent link">&para;</a></h3>
+<p>All 13 confirmed findings have been addressed: licence (Phase A), CRediT roles (Phase A), quality controls (395 tests, CI/CD via GitHub Actions), DTD replaced by RelaxNG (Phase B), newpersonList deleted, XSLT replaced by Python (Phase D+E), README corrected. Scholarly substance confirmed: factoid model, annotation quality, source-proximate approach.</p>
+<p>4 evaluation findings quantified by repo analysis: 326 DOCTYPEs (fixed B.2), 3,530 files + 7,102 normalisation entries (exact counts). 7 additional findings discovered: credentials (fixed A), UTF-7 encoding, empty tables, place underrepresentation, Saxon JAR (resolved D+E), ballast files (deleted), duplicates (fixed A).</p>
+<p>9 web frontend findings from evaluation: time filter, autocomplete, REST API, persistent IDs, PHP versions, URI errors, ODD, XPointer (fixed), triggerstring docs. XPointer conformance now done (48,421 attributes, Session 24).</p>
+<hr />
+<h2 id="3-mapping-evaluation-recommendations-to-tier-model">3. Mapping Evaluation Recommendations to Tier Model<a class="headerlink" href="#3-mapping-evaluation-recommendations-to-tier-model" title="Permanent link">&para;</a></h2>
+<h3 id="conditions-for-github-release">Conditions for GitHub Release<a class="headerlink" href="#conditions-for-github-release" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Condition (short-term)</th>
+<th>Tier</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Clear licensing</td>
+<td>1</td>
+<td><strong>DONE</strong> (Phase A): CC-BY-4.0</td>
+</tr>
+<tr>
+<td>2. Add ODD file</td>
+<td>1</td>
+<td><strong>DONE</strong> (Phase B.1): RelaxNG schema, ODD-vs-RelaxNG documented</td>
+</tr>
+<tr>
+<td>3. Fix validation errors</td>
+<td>1</td>
+<td><strong>DONE</strong> (Phase B.2): 326 DOCTYPEs added, 0 errors</td>
+</tr>
+<tr>
+<td>4. Adapt <code>@ref</code>/<code>@corresp</code> to XPointer</td>
+<td>1</td>
+<td><strong>DONE</strong> (Session 24): 48,421 attributes, <code>strip_hash()</code></td>
+</tr>
+<tr>
+<td>5. Explain individualisation procedure</td>
+<td>1</td>
+<td><strong>DONE</strong> (Phase C): edition guidelines Section 4</td>
+</tr>
+<tr>
+<td>6. Consolidate encoding guidelines</td>
+<td>1</td>
+<td><strong>DONE</strong> (Phase C): edition guidelines Sections 2-5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>All 6 short-term conditions fulfilled.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Condition (medium-term)</th>
+<th>Tier</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fix further errors</td>
+<td>2</td>
+<td><strong>DONE</strong> (Phase A+B.3): typos, orphans, duplicates, 187 annotation issues classified</td>
+</tr>
+<tr>
+<td>Document transformation scripts</td>
+<td>2</td>
+<td><strong>DONE</strong> (Phase D+E): Python pipeline with inline docs, 313 pipeline tests</td>
+</tr>
+<tr>
+<td>Develop QA measures</td>
+<td>2</td>
+<td><strong>DONE</strong> (Phase F): 395 tests (313 pipeline + 82 edition), CI/CD via <code>.github/workflows/test.yml</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Condition (long-term)</th>
+<th>Tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RDF conversion</td>
+<td>3</td>
+</tr>
+<tr>
+<td>CIDOC-CRM projection</td>
+<td>3</td>
+</tr>
+<tr>
+<td>BeNASch migration</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="conditions-for-web-application">Conditions for Web Application<a class="headerlink" href="#conditions-for-web-application" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Tier</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Document ER model formally</td>
+<td>1</td>
+<td>Moderate (add cardinalities)</td>
+</tr>
+<tr>
+<td>2. Clarify factoid presentation</td>
+<td>2</td>
+<td>Conceptual (design decision)</td>
+</tr>
+<tr>
+<td>3. Implement time filter</td>
+<td>2</td>
+<td>Moderate (feature)</td>
+</tr>
+<tr>
+<td>4. Enable hit list download</td>
+<td>2</td>
+<td>Low (feature)</td>
+</tr>
+<tr>
+<td>5. Replace data download with repo reference</td>
+<td>2</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<h3 id="further-recommendations">Further Recommendations<a class="headerlink" href="#further-recommendations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Recommendation</th>
+<th>Tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Involve DH expertise</td>
+<td>All -- this is DHCraft's role</td>
+</tr>
+<tr>
+<td>Automatic annotation (NLP/AI)</td>
+<td>3 (Promptotyping)</td>
+</tr>
+<tr>
+<td>HTR for further source collections</td>
+<td>3 (long-term, Gewerbuch_D as candidate)</td>
+</tr>
+<tr>
+<td>Systematic GND/Wikidata matching</td>
+<td>3 (LOD package)</td>
+</tr>
+<tr>
+<td>SPARQL endpoint</td>
+<td>3 (demanding, maintenance overhead)</td>
+</tr>
+<tr>
+<td>Persistent URIs (w3id)</td>
+<td>2--3 (infrastructure)</td>
+</tr>
+<tr>
+<td>Docker container</td>
+<td>2 (debatable -- no best practice per evaluation)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-triangulation">4. Triangulation<a class="headerlink" href="#4-triangulation" title="Permanent link">&para;</a></h2>
+<p>Three independent sources converge on the same picture:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Evaluation</th>
+<th>DHCraft Repo Analysis</th>
+<th>Project Overview</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scholarly substance</td>
+<td>"Highly relevant", "remarkable"</td>
+<td>15,560 persons, 4,939 events -- solid</td>
+<td>"Ambitious"</td>
+</tr>
+<tr>
+<td>Technical quality</td>
+<td>"Complex but functional", deficits named</td>
+<td>XSLT outdated, no tests, no reproducibility</td>
+<td>"Modernisation needed"</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>"Sporadic"</td>
+<td>8 READMEs, heterogeneous, more than expected</td>
+<td>"Consolidation needed"</td>
+</tr>
+<tr>
+<td>Publication readiness</td>
+<td>"Yes, with conditions"</td>
+<td>Security issue, licence, ODD missing</td>
+<td>Tier 1</td>
+</tr>
+<tr>
+<td>Reuse potential</td>
+<td>"Prosopographically highly relevant"</td>
+<td>Pipeline extensible for new sources, NLP training material</td>
+<td>Tier 3</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-documentation-quality">5. Documentation Quality<a class="headerlink" href="#5-documentation-quality" title="Permanent link">&para;</a></h2>
+<p>8 READMEs across repo (root, analysis_3, sources, shell, normalisation_lists, data_export, indices, edition). All updated during Phases A and C. One remaining issue: shell/README.md copy-paste errors (legacy, unchanged).</p>
+<p>All 7 checkpoints from the Project Overview are fully answered. All documentation gaps closed except: shell/README copy-paste errors (legacy). Git history cleanup out of scope (original project's responsibility).</p>
+<p>Risks resolved: credentials removed (Phase A), newpersonList deleted, XSLT replaced by Python (395 tests), place annotation clarified (K5), 181 MB ballast deleted.</p>
+<hr />
+<h2 id="6-delivery-status">6. Delivery Status<a class="headerlink" href="#6-delivery-status" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Tier 1</strong> (6 short-term conditions): <strong>All fulfilled.</strong> Licence, schema, validation, XPointer, individualisation, encoding guidelines.</li>
+<li><strong>Tier 2</strong> (medium-term): <strong>All delivered.</strong> Pipeline replacement (21/21 transformers, 395 tests), schema validation (RelaxNG), data cleanup (Phase A+B.3), digital edition (3,041 pages + 19,699 register pages), CI/CD (Phase F).</li>
+<li><strong>Tier 3</strong> (long-term): Out of current scope. Framework defined: RDF, CIDOC-CRM, BeNASch, NLP/AI, GND/Wikidata.</li>
+</ul>
+<hr />
+<h2 id="appendix-evaluation-original-text-abridged">Appendix: Evaluation Original Text (Abridged)<a class="headerlink" href="#appendix-evaluation-original-text-abridged" title="Permanent link">&para;</a></h2>
+<p>Evaluator: Chair of Digital Humanities, University of Graz. Date: 29 Dec 2025. Subject: Data resource and web application of the project "Stadt und Gemeinschaft". Basis: Git repo (commit 99ce004e45, Nov 2025), web application code (Nextcloud), web application (Dec 2025), project context sketch.</p>
+<h3 id="key-decisions">Key Decisions<a class="headerlink" href="#key-decisions" title="Permanent link">&para;</a></h3>
+<p>Question 1 -- Release GitHub repository: Yes, with conditions. XML annotations can be made public in their current state in the short term. No dependency on the interface.</p>
+<p>Question 2 -- Release web application: Yes, with conditions. The use of the data for the specific project context is on good track with the web interface under development.</p>
+<h3 id="conditions-for-github-release_1">Conditions for GitHub Release<a class="headerlink" href="#conditions-for-github-release_1" title="Permanent link">&para;</a></h3>
+<p>Short-term (prerequisite for publication):
+1. Clear data licensing (e.g. licence document)
+2. Add ODD file (element definitions + annotation description from DB_presentation as introductory text)
+3. Fix validation errors in the data
+4. Adapt <code>@ref</code> and <code>@corresp</code> to XPointer rules
+5. Explain individualisation procedure in the indices
+6. Consolidate encoding guidelines from various files in the ODD (e.g. resolution of editor abbreviations from <code>/normalisation_lists/editors/Name_of_editors.csv</code>)</p>
+<p>Medium-term:
+- Plan resources for fixing further errors mentioned above
+- Document transformation scripts in more detail
+- Develop quality assurance measures for further data collection</p>
+<p>Long-term:
+- Convert and publish relational data in RDF
+- Project onto CIDOC-CRM-compatible schema
+- Migrate annotations to BeNASch schema</p>
+<h3 id="scholarly-reuse-potential-evaluation-assessment">Scholarly Reuse Potential (Evaluation Assessment)<a class="headerlink" href="#scholarly-reuse-potential-evaluation-assessment" title="Permanent link">&para;</a></h3>
+<p>Scope: 16,055 individualised persons, 32,034 person mentions, 12,554 events. Prosopographically, socially, and economically highly relevant source collection. Economic and legal actions of Viennese citizens at a density that is relevant even in inter-city comparison. Potential NLP test and training material. Systematic data matching with GND/WikiData via OpenRefine recommended.</p>
+    </div>
+    <footer class="vault-detail-footer">
+        <p>Quelle: <code>knowledge/gutachten.md</code> · Gebaut: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Vault: Gutachten</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/edition.js"></script>
+    
+</body>
+</html>

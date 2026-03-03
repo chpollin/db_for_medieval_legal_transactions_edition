@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformations-Pipeline — Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="../index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="../persons.html">Personen</a>
+                        <a href="../organisations.html">Organisationen</a>
+                        <a href="../places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="../edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="../statistics.html">Statistik</a>
+                <a href="../vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="vault-detail-page">
+    <div class="vault-detail-header">
+        <nav class="vault-breadcrumb" aria-label="Breadcrumb">
+            <a href="../vault.html">Vault</a>
+            <span class="vault-breadcrumb-sep">/</span>
+            <span>Transformations-Pipeline</span>
+        </nav>
+        <h1>Transformations-Pipeline</h1>
+        <p class="vault-detail-meta">
+            <span class="vault-detail-file">pipeline.md</span>
+            <span class="vault-detail-lines">460 Zeilen</span>
+        </p>
+    </div>
+    
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#data-flow-overview">Data Flow Overview</a><ul>
+<li><a href="#pipeline-detail-csv-path">Pipeline Detail (CSV path)</a></li>
+</ul>
+</li>
+<li><a href="#analysis">Analysis</a><ul>
+<li><a href="#code-scope">Code Scope</a></li>
+<li><a href="#pipeline-architecture">Pipeline Architecture</a></li>
+<li><a href="#execution-sequence-transform_allsh">Execution Sequence (transform_all.sh)</a></li>
+<li><a href="#dependency-structure">Dependency Structure</a></li>
+<li><a href="#shell-scripts">Shell Scripts</a></li>
+<li><a href="#transformation-logic-per-xslt">Transformation Logic per XSLT</a></li>
+<li><a href="#common-processing-pattern">Common Processing Pattern</a></li>
+<li><a href="#technical-patterns">Technical Patterns</a></li>
+<li><a href="#potential-problems">Potential Problems</a></li>
+</ul>
+</li>
+<li><a href="#python-pipeline-replacement-phase-de">Python Pipeline (Replacement, Phase D+E)</a><ul>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#schema-validation-phase-b1">Schema Validation (Phase B.1)</a></li>
+<li><a href="#standalone-validation-phase-b2">Standalone Validation (Phase B.2)</a></li>
+<li><a href="#integrity-checks-phase-b3">Integrity Checks (Phase B.3)</a></li>
+<li><a href="#mapping-xslt-python">Mapping XSLT -&gt; Python</a></li>
+<li><a href="#debugging-insights-xslt-vs-python">Debugging Insights (XSLT vs. Python)</a></li>
+<li><a href="#debugging-insights-lxml-relaxng">Debugging Insights (lxml / RelaxNG)</a></li>
+</ul>
+</li>
+<li><a href="#er-model">ER Model</a><ul>
+<li><a href="#empirical-cardinalities">Empirical Cardinalities</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+    </nav>
+    
+    <div class="guidelines-body vault-body">
+        <h1 id="pipeline-and-data-model-xslt-python-er-model">Pipeline and Data Model (XSLT, Python, ER Model)<a class="headerlink" href="#pipeline-and-data-model-xslt-python-er-model" title="Permanent link">&para;</a></h1>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>The <strong>authoritative</strong> transformation pipeline is the Python/lxml implementation (<code>pipeline/</code>, 14 transformer modules + 2 validation modules, 313 regression tests, 101,948 data rows). The legacy XSLT layer (<code>analysis_3/</code>, 21 XSLTs, Saxon HE 10.5) is retained as an archived regression reference only. The ER model (79 nodes, 103 edges) is documented below.</p>
+<h2 id="data-flow-overview">Data Flow Overview<a class="headerlink" href="#data-flow-overview" title="Permanent link">&para;</a></h2>
+<p>Three independent processing paths share the same XML source data:</p>
+<div class="highlight"><pre><span></span><code>                    ┌──────────────────────────────────┐
+                    │         SOURCE DATA               │
+                    │  sources/*.xml    (3,530 TEI)     │
+                    │  indices/*.xml    (3 registers)   │
+                    │  normalisation_lists/*.csv (4)    │
+                    └──────┬──────────┬──────────┬─────┘
+                           │          │          │
+              ┌────────────┘          │          └────────────┐
+              ▼                       ▼                       ▼
+┌──────────────────────┐ ┌──────────────────────┐ ┌──────────────────────┐
+│  CSV PIPELINE        │ │  DIGITAL EDITION     │ │  VALIDATION          │
+│  pipeline/           │ │  edition/            │ │  pipeline/validate   │
+│                      │ │                      │ │  pipeline/integrity  │
+│  14 transformers     │ │  renderer.py         │ │                      │
+│  + normalisation     │ │  + register.py       │ │  toolbox.rng         │
+│  + date_parser       │ │  + build.py          │ │  + integrity.py      │
+│  + text_utils        │ │  + 9 Jinja2 templates│ │                      │
+│                      │ │  + guidelines.md     │ │                      │
+│  ┌────────────────┐  │ │  ┌────────────────┐  │ │  ┌────────────────┐  │
+│  │ 21 CSVs        │  │ │  │ docs/          │  │ │  │ Reports        │  │
+│  │ 101,948 rows   │  │ │  │ 3,041 pages    │  │ │  │ validation_    │  │
+│  │ pipeline/output│  │ │  │ 19,699 register│  │ │  │ report.json/md │  │
+│  │ 313 tests      │  │ │  │ vault (8 docs) │  │ │  │ 0 errors       │  │
+│  └────────────────┘  │ │  │ 70 tests       │  │ │  │ 21 schema tests│  │
+│                      │ │  └────────────────┘  │ │  └────────────────┘  │
+└──────────────────────┘ └──────────────────────┘ └──────────────────────┘
+
+Legacy paths (archived, not active):
+  analysis_3/    XSLT/Saxon pipeline → 101,929 rows (regression reference)
+  data_export/   Curated CSV snapshots (historical, K6 filter discontinued)
+</code></pre></div>
+
+<h3 id="pipeline-detail-csv-path">Pipeline Detail (CSV path)<a class="headerlink" href="#pipeline-detail-csv-path" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>sources/*.xml ──┐
+indices/*.xml ──┤  python -m pipeline transform
+norm_lists/ ────┘        │
+                         ▼
+              21 CSVs in pipeline/output/
+              (semicolon delimiter, UTF-8, CRLF)
+</code></pre></div>
+
+<p>Phase A corrections account for +19 rows vs. legacy XSLT output.
+Historical curation filter (K6) removed: all collections processed unconditionally.</p>
+<blockquote>
+<p>Empirically validated via scripts in <code>exploration/</code>. Raw data: <code>exploration/output/</code>.</p>
+</blockquote>
+<h2 id="analysis">Analysis<a class="headerlink" href="#analysis" title="Permanent link">&para;</a></h2>
+<h3 id="code-scope">Code Scope<a class="headerlink" href="#code-scope" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Files</th>
+<th>Lines</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XSLT transformations</td>
+<td>21</td>
+<td>1,757</td>
+</tr>
+<tr>
+<td>Shell scripts (13 individual + 1 master)</td>
+<td>14</td>
+<td>204</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>35</td>
+<td>1,961</td>
+</tr>
+</tbody>
+</table>
+<p>Paths: <code>analysis_3/src/xslt/</code> (XSLT), <code>analysis_3/src/shell/</code> (Shell), <code>analysis_3/output/</code> (CSV output).</p>
+<h3 id="pipeline-architecture">Pipeline Architecture<a class="headerlink" href="#pipeline-architecture" title="Permanent link">&para;</a></h3>
+<p>Phase 1 -- Inventory and master data:
+1. <code>filenames_to_csv.xsl</code> -&gt; <code>filenames.csv</code> (critical dependency for all subsequent steps)
+2. <code>personlist_to_csv.xsl</code> -&gt; <code>persons.csv</code>
+3. <code>orglist_to_csv.xsl</code> -&gt; <code>organisations.csv</code>
+4. <code>placelist_to_csv.xsl</code> -&gt; <code>places.csv</code></p>
+<p>Phase 2 -- Events:
+5. <code>events_to_csv.xsl</code> -&gt; <code>events_in_sources.csv</code></p>
+<p>Phase 3 -- Entities in events:
+6-8. persons/orgs/places_in_events_to_csv.xsl</p>
+<p>Phase 4 -- Entities in sources:
+9-11. persons/orgs/places_in_sources_to_csv.xsl</p>
+<p>Phase 5 -- Relations (multiplexed):
+12. <code>person_relations_in_sources_to_csv.xsl</code> x 6 types (kin, occ, title_ref, rep, friend, buis)
+13. <code>topo_rel_to_csv.xsl</code> x 3 types (topo, tenant, owner)
+14. <code>transactiongoods_in_events_to_csv.xsl</code></p>
+<p>Empirical output statistics (row counts, diff analysis_3 vs. data_export): see Mapping XSLT -&gt; Python table below.</p>
+<h3 id="execution-sequence-transform_allsh">Execution Sequence (transform_all.sh)<a class="headerlink" href="#execution-sequence-transform_allsh" title="Permanent link">&para;</a></h3>
+<p>The exact order from <code>src/shell/transform_all.sh</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Shell command</th>
+<th>Register input</th>
+<th>XSLT</th>
+<th>Output</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>filenames_to_csv.sh</td>
+<td>personList.xml</td>
+<td>filenames_to_csv.xsl</td>
+<td>filenames.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>2</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>personlist_to_csv.xsl</td>
+<td>persons.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>3</td>
+<td>(inline)</td>
+<td>orgList.xml</td>
+<td>orglist_to_csv.xsl</td>
+<td>organisations.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>4</td>
+<td>(inline)</td>
+<td>placeList.xml</td>
+<td>placelist_to_csv.xsl</td>
+<td>places.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>5</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>events_to_csv.xsl</td>
+<td>events_in_sources.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>6</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>persons_in_events_to_csv.xsl</td>
+<td>persons_in_events.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>7</td>
+<td>(inline)</td>
+<td>orgList.xml</td>
+<td>orgs_in_events_to_csv.xsl</td>
+<td>orgs_in_events.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>8</td>
+<td>(inline)</td>
+<td>orgList.xml</td>
+<td>places_in_events_to_csv.xsl</td>
+<td>places_in_events.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>9</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>persons_in_sources_to_csv.xsl</td>
+<td>persons_in_sources.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>10a</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>person_relations_in_sources_to_csv.xsl</td>
+<td>kin_relations_in_sources.csv</td>
+<td>relationtype='kin'</td>
+</tr>
+<tr>
+<td>10b</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>person_relations_in_sources_to_csv.xsl</td>
+<td>occ_relations_in_sources.csv</td>
+<td>relationtype='occ'</td>
+</tr>
+<tr>
+<td>10c</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>person_relations_in_sources_to_csv.xsl</td>
+<td>title-ref_relations_in_sources.csv</td>
+<td>relationtype='title_ref'</td>
+</tr>
+<tr>
+<td>10d</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>person_relations_in_sources_to_csv.xsl</td>
+<td>rep_relations_in_sources.csv</td>
+<td>relationtype='rep'</td>
+</tr>
+<tr>
+<td>10e</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>person_relations_in_sources_to_csv.xsl</td>
+<td>friend_relations_in_sources.csv</td>
+<td>relationtype='friend'</td>
+</tr>
+<tr>
+<td>10f</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>person_relations_in_sources_to_csv.xsl</td>
+<td>buis_relations_in_sources.csv</td>
+<td>relationtype='buis'</td>
+</tr>
+<tr>
+<td>11</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>places_in_sources_to_csv.xsl</td>
+<td>places_in_sources.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>12a</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>topo_rel_to_csv.xsl</td>
+<td>topo_relations_in_sources.csv</td>
+<td>relationtype='topo'</td>
+</tr>
+<tr>
+<td>12b</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>topo_rel_to_csv.xsl</td>
+<td>tenant_relations_in_sources.csv</td>
+<td>relationtype='tenant'</td>
+</tr>
+<tr>
+<td>12c</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>topo_rel_to_csv.xsl</td>
+<td>owner_relations_in_sources.csv</td>
+<td>relationtype='owner'</td>
+</tr>
+<tr>
+<td>13</td>
+<td>(inline)</td>
+<td>personList.xml</td>
+<td>orgs_in_sources_to_csv.xsl</td>
+<td>orgs_in_sources.csv</td>
+<td>--</td>
+</tr>
+<tr>
+<td>14</td>
+<td>(inline)</td>
+<td>orgList.xml</td>
+<td>transactiongoods_in_events_to_csv.xsl</td>
+<td>transactionsgoods_in_events.csv</td>
+<td>--</td>
+</tr>
+</tbody>
+</table>
+<p>Commented-out steps in transform_all.sh (not active):
+- <code>orgs_in_sources_to_csv.xsl</code> via orgList.xml (replaced by version via personList.xml, step 13)
+- <code>places_in_sources_to_csv.xsl</code> via placeList.xml (replaced by version via personList.xml, step 11)
+- <code>place_person_relation_in_sources_to_csv.xsl</code> via placeList.xml (not part of the active pipeline)</p>
+<h3 id="dependency-structure">Dependency Structure<a class="headerlink" href="#dependency-structure" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>filenames.csv (base, step 1)
++---&gt; events_in_sources.csv (step 5)
+|     +---&gt; owner_relations (step 12c, reads events_in_sources.csv)
++---&gt; persons_in_events.csv, orgs_in_events.csv, places_in_events.csv (6-8)
++---&gt; persons_in_sources.csv (9) --&gt; 6 relation types (10a-f)
++---&gt; places_in_sources.csv (11) --&gt; 3 relation types (12a-c)
++---&gt; orgs_in_sources.csv (13)
++---&gt; transactionsgoods_in_events.csv (14)
+
+Master data (directly from indices/, without filenames.csv):
++---&gt; persons.csv, organisations.csv, places.csv (2-4)
+</code></pre></div>
+
+<h3 id="shell-scripts">Shell Scripts<a class="headerlink" href="#shell-scripts" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Filename</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transform_all.sh</td>
+<td>Master orchestrator, executes all steps sequentially</td>
+</tr>
+<tr>
+<td>filenames_to_csv.sh</td>
+<td>Create file inventory</td>
+</tr>
+<tr>
+<td>events_to_csv.sh</td>
+<td>Extract events from sources</td>
+</tr>
+<tr>
+<td>persons_in_events_to_csv.sh</td>
+<td>Persons in events</td>
+</tr>
+<tr>
+<td>person_in_events_to_csv_special.sh</td>
+<td>Special variant for persons in events</td>
+</tr>
+<tr>
+<td>orgs_in_events_to_csv.sh</td>
+<td>Organisations in events</td>
+</tr>
+<tr>
+<td>org_in_sources_to_csv.sh</td>
+<td>Organisations in sources</td>
+</tr>
+<tr>
+<td>places_in_events_to_csv.sh</td>
+<td>Places in events</td>
+</tr>
+<tr>
+<td>places_in_sources_to_csv.sh</td>
+<td>Places in sources</td>
+</tr>
+<tr>
+<td>persons_in_sources_to_csv.sh</td>
+<td>Persons in sources</td>
+</tr>
+<tr>
+<td>person_relations_to_csv.sh</td>
+<td>10 transformations: persons_in_sources + 6 relation types (kin, occ, title_ref, rep, friend, buis) + 3 topo_rel types (topo, tenant, owner). Produces nearly half of the pipeline output. Output filenames sometimes differ from final names (e.g. place_topo_rels.csv vs. topo_relations_in_sources.csv).</td>
+</tr>
+<tr>
+<td>topo_rels_to_csv.sh</td>
+<td>Topological relations</td>
+</tr>
+<tr>
+<td>transactiongoods_in_events_to_csv.sh</td>
+<td>Transaction goods in events</td>
+</tr>
+<tr>
+<td>place_person_relations_in_sources_to_csv</td>
+<td>Place-person relations (not in the active pipeline)</td>
+</tr>
+</tbody>
+</table>
+<p>All shell scripts follow the same pattern:</p>
+<div class="highlight"><pre><span></span><code>java -jar ../saxon-he-10.5.jar [register-XML] [XSLT] -o:[output-CSV] [parameter]
+</code></pre></div>
+
+<h3 id="transformation-logic-per-xslt">Transformation Logic per XSLT<a class="headerlink" href="#transformation-logic-per-xslt" title="Permanent link">&para;</a></h3>
+<h4 id="a-master-data-extraction-directly-from-registers">A: Master Data Extraction (directly from registers)<a class="headerlink" href="#a-master-data-extraction-directly-from-registers" title="Permanent link">&para;</a></h4>
+<p>filenames_to_csv.xsl:
+- Input: personList.xml (as entry point for <code>collection()</code>)
+- XPath: <code>collection(concat($sourceuri, '?select=*.xml;recurse=yes'))</code> -- scans all XMLs in <code>sources/</code>
+- CSV columns: id; file; collection; subcollection; authority; editor; status; projekt; date
+- Includes: process-date.xsl</p>
+<p>personlist_to_csv.xsl:
+- Input: personList.xml (directly, no filenames.csv needed)
+- XPath: <code>tei:listPerson//tei:person</code>
+- CSV columns: id; sex; forename_reg; forename_orig; surname_reg; surname_reg_source; surname_orig; addname_orig; addname_reg; genname; authority; note; dead_before; PAGEID_WienWiki; Name_WienWiki; editor
+- Extracts: <code>@xml:id</code>, <code>@sex</code>, <code>tei:persName/tei:forename/tei:reg|tei:orig</code>, <code>tei:persName/tei:surname/tei:reg|tei:orig</code>, <code>tei:persName/tei:addName</code>, <code>tei:persName/tei:genName</code>, <code>tei:idno[@type='URI']</code>, <code>tei:note</code>, <code>tei:death/@notAfter</code>, <code>tei:idno[@type='PAGEID_WienWiki']</code>, <code>@resp</code></p>
+<p>orglist_to_csv.xsl:
+- Input: orgList.xml (directly)
+- XPath: <code>tei:listOrg//tei:org</code>
+- CSV columns: id; name_reg; name_reg_source; name_orig; type; observance; authority; sub; org_key; place_key; editor
+- Extracts: <code>@xml:id</code>, <code>tei:orgName/tei:reg|tei:orig</code>, <code>@type</code>, <code>tei:trait/tei:desc</code>, <code>tei:idno</code>, hierarchy (<code>ancestor::tei:org</code>), <code>tei:location/tei:address/tei:addrLine/@corresp</code>, <code>@resp</code></p>
+<p>placelist_to_csv.xsl:
+- Input: placeList.xml (directly)
+- XPath: <code>tei:listPlace//tei:place</code>
+- CSV columns: id; name_reg; name_reg_source; name_orig; type; lat; lng; rel_place_key; Adresse_ak; geonames; parzelle_idno; authority; sub; place_key; editor
+- Extracts: <code>@xml:id</code>, <code>tei:placeName/tei:reg|tei:orig</code>, <code>@type</code>, <code>tei:location/tei:geo</code> (lat/lng via substring-before/after), <code>tei:location//tei:addrLine</code>, <code>tei:idno[contains(.,'geonames')]</code>, <code>tei:idno[@type='parzelle']</code>, hierarchy (<code>ancestor::tei:place</code>), <code>@resp</code></p>
+<h4 id="b-entities-in-events">B: Entities in Events<a class="headerlink" href="#b-entities-in-events" title="Permanent link">&para;</a></h4>
+<p>Common pattern: Read filenames.csv via <code>unparsed-text()</code>, filter on <code>status = 'done'</code>, load each source file via <code>doc()</code>, extract <code>tei:rs[@type='event'][not(parent::tei:p[@rend='Nachtrag'])]</code>, then nested entities.</p>
+<p>persons_in_events_to_csv.xsl:
+- XPath: <code>$file//tei:body//tei:rs[@type='event']</code> -&gt; <code>.//*//tei:rs[@type='person']</code>
+- CSV columns: id; event_key; person_key; event_role; cert_to_person_key; event_catchword; file_key</p>
+<p>orgs_in_events_to_csv.xsl:
+- XPath: <code>$file//tei:body//tei:rs[@type='event']</code> -&gt; <code>./tei:rs/tei:rs[@type='org']</code>
+- CSV columns: id; event_key; org_key; event_role; cert; event_catchword; file_key</p>
+<p>places_in_events_to_csv.xsl:
+- XPath: <code>$file//tei:body//tei:rs[@type='event']</code> -&gt; <code>./tei:rs/tei:rs[@type='place']</code>
+- CSV columns: id; event_key; place_key; event_role; event_catchword; file_key</p>
+<h4 id="c-entities-in-sources">C: Entities in Sources<a class="headerlink" href="#c-entities-in-sources" title="Permanent link">&para;</a></h4>
+<p>persons_in_sources_to_csv.xsl:
+- XPath: <code>$file//tei:body//tei:*[@type='person' or contains(@corresp, 'pe__')]</code>
+- CSV columns: id; person_key; kind_of_linking; source_text; cert_to_person_key; source_titles; cert_to_source_titles; source_prof; cert_to_source_prof; source_dead; file_key; doubletten_helper
+- Notable feature: Detects persons both via <code>@ref</code> and via <code>@corresp</code> (dual strategy)</p>
+<p>orgs_in_sources_to_csv.xsl:
+- XPath: <code>$file//tei:body//tei:*[@type='org' or contains(@corresp, 'org__')]</code>
+- CSV columns: id; org_key; kind_of_linking; source_text; cert_to_org_key; file_key; doubletten_helper</p>
+<p>places_in_sources_to_csv.xsl:
+- XPath: <code>$file//tei:body//tei:*[@type='place' or contains(@corresp, 'pl__')]</code>
+- CSV columns: id; place_key; kind_of_linking; source_text; file_key; doubletten_helper</p>
+<h4 id="d-event-extraction">D: Event Extraction<a class="headerlink" href="#d-event-extraction" title="Permanent link">&para;</a></h4>
+<p>events_to_csv.xsl:
+- XPath: <code>$file//tei:rs[@type='event']</code>
+- CSV columns: id; catchwords; event_key; date_not_before; date_not_after; event_in; date_orig; text; file_key
+- External dependencies: filenames.csv + <code>normalisation_lists/label_norm_matching.csv</code> (catchword normalisation)
+- Includes: process-date.xsl</p>
+<h4 id="e-relation-extraction-parameterised">E: Relation Extraction (parameterised)<a class="headerlink" href="#e-relation-extraction-parameterised" title="Permanent link">&para;</a></h4>
+<p>person_relations_in_sources_to_csv.xsl:
+- Parameter: <code>$relationtype</code> (kin, occ, title_ref, rep, friend, buis)
+- XPath: <code>$file//tei:body//tei:roleName[@type=$relationtype]</code>
+- CSV columns: id; person_key; {relationtype}; cert_to_related_key; related_key; select_key; event_key; file_key
+- Extracts: <code>ancestor::tei:rs[@type='person' or @type='org']</code> for context, <code>@corresp</code> for target entity</p>
+<p>topo_rel_to_csv.xsl:
+- Parameter: <code>$relationtype</code> (topo, tenant, owner)
+- XPath (topo/tenant): <code>$file//tei:roleName[@type=$relationtype]</code>
+- XPath (owner, special mode): <code>$file//tei:rs[@type='event']</code> -&gt; Recipient/Issuer -&gt; Transaction-Good-Places
+- CSV columns: id; place_key; cert_place_key; {relationtype}; rel_key; cert_topo_relation_key; event_key; xml_key
+- External dependencies (owner mode): filenames.csv + events_in_sources.csv + <code>normalisation_lists/label_norm_matching.csv</code>
+- Includes: process-date.xsl</p>
+<p>transactiongoods_in_events_to_csv.xsl:
+- XPath: <code>$file//tei:body//tei:rs[@type='event']</code> -&gt; <code>./tei:rs[contains(@role, 'transactiongood')][not(tei:rs)]</code>
+- CSV columns: id; event_key; transactiongood; source_catchword; file_key</p>
+<h4 id="f-not-in-standard-pipeline">F: Not in Standard Pipeline<a class="headerlink" href="#f-not-in-standard-pipeline" title="Permanent link">&para;</a></h4>
+<p>widma_topo_rels_to_csv.xsl:
+- Project-specific (WIDMA). Extracts place relations with filter on <code>tei:add[./text() = 'next_to_widmer']</code>.
+- Not called in transform_all.sh.</p>
+<p>org_regs_from_csv_to_xml.xsl:
+- Reverse transformation: CSV -&gt; XML. Updates <code>tei:orgName</code> elements from CSV data.
+- Not called in transform_all.sh.</p>
+<p>persons_events_to_csv_special.xsl:
+- Alternative variant of persons_in_events. Has its own shell script (<code>person_in_events_to_csv_special.sh</code>), but not included in transform_all.sh.</p>
+<h4 id="g-utility">G: Utility<a class="headerlink" href="#g-utility" title="Permanent link">&para;</a></h4>
+<p>process-date.xsl (232 lines):
+- Shared template library, included via <code>xsl:include</code> in filenames, events, topo_rel.
+- Named template <code>createdate</code>: Normalises TEI date attributes (<code>@notBefore</code>, <code>@notAfter</code>, <code>@from</code>, <code>@to</code>, <code>@when</code>) to ISO format.</p>
+<h3 id="common-processing-pattern">Common Processing Pattern<a class="headerlink" href="#common-processing-pattern" title="Permanent link">&para;</a></h3>
+<p>All source-text-based XSLTs (everything except master data) follow this pattern:</p>
+<ol>
+<li>Load filenames.csv via <code>unparsed-text()</code></li>
+<li>Tokenise each line, filter on <code>status = 'done'</code></li>
+<li>Load source file via <code>doc(concat($source_path, collection, '/', subcollection, '/done/', filename))</code></li>
+<li>Extract TEI elements with specific XPath</li>
+<li>Output CSV row with semicolon delimiter</li>
+</ol>
+<p>Register input: The shell scripts pass personList.xml, orgList.xml, or placeList.xml as input. This serves as the entry point for <code>resolve-uri()</code> -- the actual source texts are loaded via <code>doc()</code>. Which register is passed is functionally irrelevant, as long as the relative path to <code>sources/</code> and <code>analysis_3/output/</code> resolves correctly.</p>
+<h3 id="technical-patterns">Technical Patterns<a class="headerlink" href="#technical-patterns" title="Permanent link">&para;</a></h3>
+<ul>
+<li>XSLT 2.0 throughout (<code>version="2.0"</code>)</li>
+<li>Text output with semicolon as CSV delimiter (<code>$delim = ';'</code>)</li>
+<li><code>unparsed-text()</code> to read CSV (filenames.csv, label_norm_matching.csv, events_in_sources.csv)</li>
+<li><code>collection()</code> for recursive scanning of source texts (only in filenames_to_csv.xsl)</li>
+<li>Parameterisation: <code>$relationtype</code> for multiplexed transformations</li>
+<li>Duplicate detection: <code>doubletten_helper</code> columns in persons/orgs/places_in_sources</li>
+<li>Certainty tracking: <code>@cert</code> attributes are consistently propagated</li>
+<li>Addendum filter: <code>[not(parent::tei:p[@rend='Nachtrag'])]</code> excludes addenda from event extraction</li>
+</ul>
+<h3 id="potential-problems">Potential Problems<a class="headerlink" href="#potential-problems" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Several shell scripts use personList.xml as input for non-person transformations (serves as entry point for <code>resolve-uri()</code>, not as data input).</li>
+<li>No error handling in shell scripts.</li>
+<li>Hardcoded paths to <code>indices/</code> and <code>sources/</code>.</li>
+<li>Saxon JAR excluded via .gitignore -- pipeline not runnable without manual JAR provision.</li>
+<li>3 commented-out steps in transform_all.sh: earlier versions via orgList/placeList were replaced by versions via personList, reason not documented.</li>
+<li><code>topo_rel_to_csv.xsl</code> in owner mode has complex logic with 3 external CSV dependencies -- error-prone and difficult to maintain.</li>
+<li><code>analysis_3/src/shell/README.md</code> contains copy-paste errors: persons_in_events documented as a duplicate of events, typo "Bescheibung" (2x), encoding artefact. The README is unreliable as a documentation source -- the actual logic must be read from the shell scripts themselves.</li>
+</ol>
+<h2 id="python-pipeline-replacement-phase-de">Python Pipeline (Replacement, Phase D+E)<a class="headerlink" href="#python-pipeline-replacement-phase-de" title="Permanent link">&para;</a></h2>
+<p>The XSLT pipeline was fully replaced in Phase D (11 core transformers) and Phase E (10 relations transformers) by a Python/lxml pipeline (<code>pipeline/</code>). This is the authoritative production implementation. 313 tests pass.</p>
+<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pipeline/
+  config.py, cli.py
+  validate.py              -- RelaxNG validation (python -m pipeline validate)
+  integrity.py             -- referential integrity, normalisation matching, annotation checks, reports
+  utils/ (csv_writer, xml_loader, text_utils, date_parser, filenames_reader)
+  transformers/
+    base.py (BaseTransformer: output_filename, columns, transform(output_dir=None), run)
+    filenames, personlist, orglist, placelist          -- master data
+    events                                             -- events
+    persons/orgs/places_in_events                      -- entities in events
+    persons/orgs/places_in_sources                     -- entities in sources
+    person_relations (x6: kin,occ,title_ref,rep,friend,buis)
+    topo_relations (x3: topo,tenant,owner)
+    transactiongoods
+  tests/
+    conftest.py           -- shared fixtures (read_csv_rows, compare_csv_content, skip_if_no_reference)
+    test_regression_all.py -- 21 CSVs: existence, headers, row counts, field counts, trailing newlines
+    test_pipeline_comparison.py -- exact XSLT vs Python comparison (content-identical + Phase A diffs)
+    test_person_relations.py    -- 6 relation types, module-scoped
+    test_topo_relations.py      -- 3 relation types, module-scoped
+    test_transactiongoods.py    -- module-scoped
+    test_date_parser.py         -- unit tests, parametrized
+    test_text_utils.py          -- unit tests for normalize_space, elem_text, all_text_not_add
+    test_csv_writer.py          -- unit tests for CsvWriter format
+    test_schema.py              -- 21 tests: RelaxNG parse, 4 representative files,
+                                   8 edge cases, 6 rejection, 1 full corpus (3,530 files)
+    test_validate.py            -- 5 tests: schema load, corpus validation, invalid detection, CLI exit codes
+    test_integrity.py           -- 17 tests: ref splitting, referential integrity, duplicates,
+                                   normalisation, annotation, report generation
+</code></pre></div>
+
+<h3 id="schema-validation-phase-b1">Schema Validation (Phase B.1)<a class="headerlink" href="#schema-validation-phase-b1" title="Permanent link">&para;</a></h3>
+<p>RelaxNG schema <code>sources/schema/toolbox.rng</code> (~860 lines) validates all 3,530 source files:
+- 48 elements + xi:include (85 unused DTD elements excluded)
+- 6 named attribute groups (att.global, att.typed, att.datable.w3c, att.declarable, att.docStatus, att.sortable)
+- Enumerations enforced: roleName/@type (13 values), triggerstring/@n (4), catchwords/@n (4), rs/@role (7)
+- rs/@type relaxed to text (data quality issues in ~20 files, enforcement deferred to B.3)
+- API: <code>etree.RelaxNG(etree.parse("sources/schema/toolbox.rng"))</code> → <code>schema.validate(doc)</code>
+- Full design rationale summarised in <code>knowledge/project.md</code> Section 2</p>
+<h3 id="standalone-validation-phase-b2">Standalone Validation (Phase B.2)<a class="headerlink" href="#standalone-validation-phase-b2" title="Permanent link">&para;</a></h3>
+<p><code>pipeline/validate.py</code> — validation module, callable via <code>python -m pipeline validate</code>:
+- RelaxNG validation of all 3,530 source files against <code>toolbox.rng</code>
+- Options: <code>--verbose</code> (per-file detail), <code>--quiet</code> (summary only)
+- Exit codes: 0 = all valid, 1 = errors found (CI-compatible)
+- All 326 previously-missing DOCTYPE declarations inserted (B.2a)</p>
+<h3 id="integrity-checks-phase-b3">Integrity Checks (Phase B.3)<a class="headerlink" href="#integrity-checks-phase-b3" title="Permanent link">&para;</a></h3>
+<p><code>pipeline/integrity.py</code> — referential integrity, normalisation matching, annotation issue classification:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Function</th>
+<th>Key results</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Referential integrity</td>
+<td><code>check_referential_integrity()</code></td>
+<td>30,525 @ref values, 0 orphaned (pe/org/pl), 158 NULL, 6,242 event refs (systemic)</td>
+</tr>
+<tr>
+<td>Duplicate IDs</td>
+<td><code>check_duplicate_ids()</code></td>
+<td>0 duplicates within/across registers</td>
+</tr>
+<tr>
+<td>Normalisation matching</td>
+<td><code>check_normalisation_matching()</code></td>
+<td>triggerstring 316/2,112, catchwords 1/8, roleName 1,609/3,197</td>
+</tr>
+<tr>
+<td>Annotation issues</td>
+<td><code>check_annotation_issues()</code></td>
+<td>12 rs without @type, 7 triggerstring without @n, 6 non-canonical rs/@type</td>
+</tr>
+<tr>
+<td>Report generation</td>
+<td><code>generate_reports()</code></td>
+<td><code>pipeline/output/validation_report.json</code> + <code>.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>ID splitting (<code>_split_ref</code>) uses prefix-based detection (<code>pe__</code>, <code>org__</code>, <code>pl__</code>, <code>ev__</code>, <code>f__</code>) instead of whitespace splitting, because some event IDs contain embedded spaces (e.g. <code>ev__QGW_II_III_3955 (= Privil. Nr. 45)</code>). After XPointer migration, <code>_split_ref</code> strips all <code>#</code> characters before prefix detection. The utility function <code>strip_hash()</code> in <code>pipeline/utils/text_utils.py</code> is used throughout the pipeline and edition renderer to convert XPointer references (<code>#pe__xxx</code>) to bare IDs (<code>pe__xxx</code>) for CSV output and register lookups.</p>
+<p>Cleanup applied: 1,947 <code>instant</code> attributes removed from 1,916 files (ODD artifacts with no semantic value).</p>
+<p><strong>Note:</strong> Normalisation lists use TAB delimiter (not semicolon like CSVs).</p>
+<h3 id="mapping-xslt-python">Mapping XSLT -&gt; Python<a class="headerlink" href="#mapping-xslt-python" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>CSV</th>
+<th>XSLT Rows</th>
+<th>Python Rows</th>
+<th>Diff</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>filenames.csv</td>
+<td>3,530</td>
+<td>3,530</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>persons.csv</td>
+<td>16,073</td>
+<td>16,084</td>
+<td>+11</td>
+<td>4 ID-prefix fixes, 11 new persons</td>
+</tr>
+<tr>
+<td>organisations.csv</td>
+<td>1,072</td>
+<td>1,078</td>
+<td>+6</td>
+<td>30 rows changed (URL fix), 6 new orgs</td>
+</tr>
+<tr>
+<td>places.csv</td>
+<td>2,537</td>
+<td>2,537</td>
+<td>0</td>
+<td>3 rows changed (lat, URL, typo)</td>
+</tr>
+<tr>
+<td>events_in_sources.csv</td>
+<td>5,813</td>
+<td>5,813</td>
+<td>0</td>
+<td>1 row changed (triggerstring fix)</td>
+</tr>
+<tr>
+<td>persons_in_events.csv</td>
+<td>18,995</td>
+<td>18,995</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>orgs_in_events.csv</td>
+<td>2,533</td>
+<td>2,533</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>places_in_events.csv</td>
+<td>7</td>
+<td>7</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>persons_in_sources.csv</td>
+<td>28,259</td>
+<td>28,259</td>
+<td>0</td>
+<td>3 rows changed (seligen/Titel)</td>
+</tr>
+<tr>
+<td>orgs_in_sources.csv</td>
+<td>8,983</td>
+<td>8,983</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>places_in_sources.csv</td>
+<td>63</td>
+<td>63</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>kin_relations_in_sources.csv</td>
+<td>6,507</td>
+<td>6,508</td>
+<td>+1</td>
+<td>kind-&gt;kin typo fix</td>
+</tr>
+<tr>
+<td>occ_relations_in_sources.csv</td>
+<td>6,876</td>
+<td>6,876</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>title-ref_relations_in_sources.csv</td>
+<td>6</td>
+<td>7</td>
+<td>+1</td>
+<td>titel_ref-&gt;title_ref fix</td>
+</tr>
+<tr>
+<td>rep_relations_in_sources.csv</td>
+<td>538</td>
+<td>538</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>friend_relations_in_sources.csv</td>
+<td>87</td>
+<td>87</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>buis_relations_in_sources.csv</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>topo_relations_in_sources.csv</td>
+<td>21</td>
+<td>21</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>tenant_relations_in_sources.csv</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>owner_relations_in_sources.csv</td>
+<td>24</td>
+<td>24</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td>transactionsgoods_in_events.csv</td>
+<td>5</td>
+<td>5</td>
+<td>0</td>
+<td>content-identical</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>101,929</strong></td>
+<td><strong>101,948</strong></td>
+<td><strong>+19</strong></td>
+<td><strong>14 identical, 7 Phase A</strong></td>
+</tr>
+</tbody>
+</table>
+<p>"Content-identical" = same header, same set of rows (row ordering differs between Saxon <code>collection()</code> and Python file iteration). All 7 differences are explained by Phase A data corrections. Tested by <code>test_pipeline_comparison.py</code> (29 tests).</p>
+<h3 id="debugging-insights-xslt-vs-python">Debugging Insights (XSLT vs. Python)<a class="headerlink" href="#debugging-insights-xslt-vs-python" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>normalize_space()</code>: XSLT only handles XML whitespace (#x20,#x09,#x0A,#x0D), Python <code>\s</code> also matches U+2028</li>
+<li><code>lxml load_dtd=False</code>: Does not normalise attribute whitespace like Saxon</li>
+<li>XPath <code>.//*//</code>: Requires 2+ nesting levels (not <code>.//</code>)</li>
+<li><code>text()[not(parent::tei:add)]</code>: Only text with an immediate add parent element is excluded</li>
+<li>Saxon <code>base-uri()</code>: URL-encodes spaces as %20</li>
+</ul>
+<h3 id="debugging-insights-lxml-relaxng">Debugging Insights (lxml / RelaxNG)<a class="headerlink" href="#debugging-insights-lxml-relaxng" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xmlns:xsi</code> prefix must be declared on the <code>&lt;grammar&gt;</code> element, otherwise <code>etree.RelaxNG()</code> fails with "no namespace for prefix xsi"</li>
+<li><code>etree.RelaxNG()</code> only accepts XML syntax, not Compact Syntax</li>
+<li><code>etree._RelaxNG</code> is not a public class — use <code>hasattr(obj, "validate")</code> instead of <code>isinstance()</code></li>
+<li>RelaxNG validation of 3,530 files completes in &lt;1 second</li>
+<li>RelaxNG forbids duplicate attribute definitions on a single element — attribute groups that conflict with per-element attributes must be excluded (see <code>project.md</code> Section 2)</li>
+</ul>
+<h2 id="er-model">ER Model<a class="headerlink" href="#er-model" title="Permanent link">&para;</a></h2>
+<p>Originally created as GraphML diagrams (yWorks yEd) in two versions. Source files in upstream repo; see also <a href="https://dhd-blog.org/?p=16737">DHd-Blog article</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Full version</th>
+<th>Light version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nodes</td>
+<td>79</td>
+<td>58</td>
+</tr>
+<tr>
+<td>Edges</td>
+<td>103</td>
+<td>71</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Dissertation "Im Netz der Stadt"</td>
+<td>Project "Stadt und Gemeinschaft"</td>
+</tr>
+</tbody>
+</table>
+<p>Colour coding: Core entities (blue, #3366FF): event, person, organisation, place. Attributes (orange, #FF6600): title, profession, date, etc. Functional roles (green): other, witness, issuer/donor, recipient. Relationship types (magenta): staff, kinship, title, occupation.</p>
+<p>Each node contains in its GraphML <code>description</code> attribute the TEI and CEI encoding rules side by side:
+- Person: <code>&lt;rs type="person" ref="pe__*"/&gt;</code> (TEI) / <code>&lt;cei:persName id="p*..."/&gt;</code> (CEI)
+- Organisation: <code>&lt;rs type="org" ref="org__*"/&gt;</code> (TEI) / <code>&lt;cei:orgName id="o*..."/&gt;</code> (CEI)
+- Event: <code>&lt;rs type="event" ref="ev__*"/&gt;</code> (TEI)</p>
+<p>The CEI notation (Charter Encoding Initiative) is a relic from the Monasterium/MOM origin of the regesta. It is no longer used in the current workflow but remains documented in the data model.</p>
+<p>Edges as directed arrows without cardinalities -- not a standard ER diagram but an informal relationship diagram. Organised in 4 groups: list of persons, list of organisations, list of places, list of events.</p>
+<h3 id="empirical-cardinalities">Empirical Cardinalities<a class="headerlink" href="#empirical-cardinalities" title="Permanent link">&para;</a></h3>
+<p>The following cardinalities were determined empirically from the data (not shown in the GraphML diagrams):</p>
+<table>
+<thead>
+<tr>
+<th>Relation</th>
+<th>Cardinality</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source -&gt; Event</td>
+<td>1:n</td>
+<td>One source contains multiple events</td>
+</tr>
+<tr>
+<td>Event -&gt; Person (fn)</td>
+<td>n:m</td>
+<td>Multiple persons in multiple roles per event</td>
+</tr>
+<tr>
+<td>Event -&gt; Org</td>
+<td>n:m</td>
+<td>Multiple organisations per event</td>
+</tr>
+<tr>
+<td>Person -&gt; roleName</td>
+<td>1:n</td>
+<td>Multiple roles per person per source</td>
+</tr>
+<tr>
+<td>Person -&gt; Person (kin)</td>
+<td>n:m</td>
+<td>Kinship relations</td>
+</tr>
+<tr>
+<td>Person -&gt; Org (occ)</td>
+<td>n:m</td>
+<td>Occupational relations</td>
+</tr>
+<tr>
+<td>Person -&gt; Org (title_ref)</td>
+<td>n:m</td>
+<td>Title references</td>
+</tr>
+</tbody>
+</table>
+    </div>
+    <footer class="vault-detail-footer">
+        <p>Quelle: <code>knowledge/pipeline.md</code> · Gebaut: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Vault: Transformations-Pipeline</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/edition.js"></script>
+    
+</body>
+</html>

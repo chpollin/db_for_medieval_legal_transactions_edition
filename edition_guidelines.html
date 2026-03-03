@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editionsrichtlinien — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="./index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="./index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="./persons.html">Personen</a>
+                        <a href="./organisations.html">Organisationen</a>
+                        <a href="./places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="./edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="./statistics.html">Statistik</a>
+                <a href="./vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="guidelines-page">
+    <div class="guidelines-header">
+        <h1>Editionsrichtlinien</h1>
+        <p class="guidelines-subtitle">Annotationsmodell, Tagging-Workflow und Konventionen</p>
+    </div>
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#1-projektkontext">1. Projektkontext</a><ul>
+<li><a href="#entstehungsgeschichte">Entstehungsgeschichte</a></li>
+<li><a href="#quellensammlungen">Quellensammlungen</a></li>
+</ul>
+</li>
+<li><a href="#2-annotationsmodell-vier-ebenen">2. Annotationsmodell (Vier Ebenen)</a><ul>
+<li><a href="#ebene-1-ereignisse">Ebene 1: Ereignisse</a></li>
+<li><a href="#ebene-2-funktionen">Ebene 2: Funktionen</a></li>
+<li><a href="#ebene-3-entitaeten">Ebene 3: Entitaeten</a></li>
+<li><a href="#ebene-4-attribute-und-relationen">Ebene 4: Attribute und Relationen</a></li>
+<li><a href="#zusammenspiel-der-ebenen">Zusammenspiel der Ebenen</a></li>
+</ul>
+</li>
+<li><a href="#3-tagging-workflow-sieben-schritte">3. Tagging-Workflow (Sieben Schritte)</a><ul>
+<li><a href="#schritt-1-editor-kuerzel">Schritt 1: Editor-Kuerzel</a></li>
+<li><a href="#schritt-2-ereignisse">Schritt 2: Ereignisse</a></li>
+<li><a href="#schritt-3-dispositivformeln">Schritt 3: Dispositivformeln</a></li>
+<li><a href="#schritt-4-funktionen">Schritt 4: Funktionen</a></li>
+<li><a href="#schritt-5-entitaeten">Schritt 5: Entitaeten</a></li>
+<li><a href="#schritt-6-attribute-und-relationen">Schritt 6: Attribute und Relationen</a></li>
+<li><a href="#schritt-7-masseinheiten">Schritt 7: Masseinheiten</a></li>
+<li><a href="#zusaetzliche-konventionen">Zusaetzliche Konventionen</a></li>
+</ul>
+</li>
+<li><a href="#4-id-konstruktionsregeln">4. ID-Konstruktionsregeln</a><ul>
+<li><a href="#ereignisse-ev__">Ereignisse (ev__)</a></li>
+<li><a href="#personen-pe__">Personen (pe__)</a></li>
+<li><a href="#individualisierungsverfahren">Individualisierungsverfahren</a></li>
+<li><a href="#organisationen-org__">Organisationen (org__)</a></li>
+<li><a href="#orte-pl__">Orte (pl__)</a></li>
+</ul>
+</li>
+<li><a href="#5-funktionsrollen-und-relationstypen">5. Funktionsrollen und Relationstypen</a><ul>
+<li><a href="#funktionsrollen">Funktionsrollen</a></li>
+<li><a href="#relationstypen-uebersicht">Relationstypen (Uebersicht)</a></li>
+</ul>
+</li>
+<li><a href="#6-normalisierungsregeln">6. Normalisierungsregeln</a><ul>
+<li><a href="#normalisierungslisten">Normalisierungslisten</a></li>
+<li><a href="#vornamen-normalisierung">Vornamen-Normalisierung</a></li>
+<li><a href="#triggerstring-normalisierung">Triggerstring-Normalisierung</a></li>
+<li><a href="#bekannte-luecken">Bekannte Luecken</a></li>
+</ul>
+</li>
+<li><a href="#7-kurationslogik">7. Kurationslogik</a><ul>
+<li><a href="#filter">Filter</a></li>
+<li><a href="#ergebnis">Ergebnis</a></li>
+</ul>
+</li>
+<li><a href="#8-editor-liste">8. Editor-Liste</a></li>
+</ul>
+</div>
+
+    </nav>
+    <div class="guidelines-body">
+        <h2 id="1-projektkontext">1. Projektkontext<a class="headerlink" href="#1-projektkontext" title="Permanent link">&para;</a></h2>
+<p>Die Datenbank <code>db_for_medieval_legal_transactions</code> ist eine TEI-XML-basierte prosopographische Datenbank mittelalterlicher Wiener Rechtsgeschaefte (ca. 1177--1524). Das Datenmodell folgt dem <strong>Factoid-Ansatz</strong> der digitalen Prosopographie, wie er am King's College London entwickelt wurde.</p>
+<h3 id="entstehungsgeschichte">Entstehungsgeschichte<a class="headerlink" href="#entstehungsgeschichte" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Masterarbeit:</strong> Immobilientransfers Wien 1360--1373 (Excel-basiert)</li>
+<li><strong>Konzeptualisierung:</strong> Uebergang zu einer XML-basierten Datenbank</li>
+<li><strong>Dissertation:</strong> <em>Im Netz der Stadt</em> (Gruenwald) -- Erstellung der vollstaendigen DTD</li>
+<li><strong>Forschungsprojekt:</strong> <em>Stadt und Gemeinschaft</em> (Lutter, Universitaet Wien) -- parallele Nutzung und Erweiterung</li>
+<li><strong>Publikation:</strong> Gruenwald, <em>Die digitale Erfassung von mittelalterlichen Rechtsgeschaeften</em>, DHd-Blog, 31. Okt. 2021</li>
+</ul>
+<p>Das Datenmodell orientiert sich an TEI P5 und der Factoid-Prosopographie (KCL). Langfristig ist eine Kompatibilitaet mit CIDOC-CRM angedacht.</p>
+<h3 id="quellensammlungen">Quellensammlungen<a class="headerlink" href="#quellensammlungen" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Sammlung</th>
+<th>Dateien</th>
+<th>Zeitraum</th>
+<th>Annotationsversion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QGW/Vienna_1177-1414_ready</td>
+<td>2.037</td>
+<td>1177--1414</td>
+<td>light</td>
+</tr>
+<tr>
+<td>Stadtbuecher/Band_1_1395-1400_ready</td>
+<td>628</td>
+<td>1395--1400</td>
+<td>light</td>
+</tr>
+<tr>
+<td>QGW/Vienna_1458-66</td>
+<td>412</td>
+<td>1458--1466</td>
+<td>light</td>
+</tr>
+<tr>
+<td>QGW/Vienna_1493-1500</td>
+<td>305</td>
+<td>1493--1500</td>
+<td>light</td>
+</tr>
+<tr>
+<td>QGW/Vienna_1415-1417</td>
+<td>75</td>
+<td>1415--1417</td>
+<td>light</td>
+</tr>
+<tr>
+<td>QGW/Vienna_1524</td>
+<td>73</td>
+<td>1524</td>
+<td>light</td>
+</tr>
+<tr>
+<td>Gewerbuch_D/GB_D_1449-1460</td>
+<td>--</td>
+<td>1449--1460</td>
+<td>full</td>
+</tr>
+<tr>
+<td>Satzbuch_CD/SB_CD_1449-1460_ready</td>
+<td>--</td>
+<td>1449--1460</td>
+<td>full</td>
+</tr>
+<tr>
+<td>Copeybuch_Zeibig</td>
+<td>--</td>
+<td>1454--1464</td>
+<td>full</td>
+</tr>
+<tr>
+<td>Widmerliste/widmer_1448</td>
+<td>--</td>
+<td>1448</td>
+<td>full</td>
+</tr>
+<tr>
+<td>Genanntenliste_Stubenviertel</td>
+<td>--</td>
+<td>1461--1466</td>
+<td>full</td>
+</tr>
+<tr>
+<td>GenanntenListe_Weinzettel</td>
+<td>--</td>
+<td>1459--1461</td>
+<td>full</td>
+</tr>
+</tbody>
+</table>
+<p>Die <strong>Vollversion</strong> umfasst alle Entitaetstypen, Relationen und Attribute. Die <strong>Lightversion</strong> ist ein vereinfachtes Annotationsschema. Beide verwenden <code>toolbox_full.dtd</code> als DOCTYPE-Deklaration.</p>
+<p>Insgesamt umfasst die Datenbank <strong>3.530 TEI-XML-Quelltexte</strong>.</p>
+<hr />
+<h2 id="2-annotationsmodell-vier-ebenen">2. Annotationsmodell (Vier Ebenen)<a class="headerlink" href="#2-annotationsmodell-vier-ebenen" title="Permanent link">&para;</a></h2>
+<p>Das Annotationsmodell ist hierarchisch aufgebaut: Jede Ebene ist Teil der jeweils hoeheren. Die Verschachtelung im XML spiegelt diese Hierarchie direkt wider.</p>
+<table>
+<thead>
+<tr>
+<th>Ebene</th>
+<th>Gegenstand</th>
+<th>TEI-Element</th>
+<th>Kategorisierung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Ereignisse</td>
+<td>Rechtsgeschaefte</td>
+<td><code>&lt;rs type="event"&gt;</code></td>
+<td>Via <code>&lt;catchwords n="disp"&gt;</code></td>
+</tr>
+<tr>
+<td>2. Funktionen</td>
+<td>Rollen im Rechtsgeschaeft</td>
+<td><code>&lt;rs type="fn"&gt;</code></td>
+<td>Via <code>@role</code></td>
+</tr>
+<tr>
+<td>3. Entitaeten</td>
+<td>Personen, Orte, Organisationen</td>
+<td><code>&lt;rs type="person\|org\|place"&gt;</code></td>
+<td>ID-Verknuepfung mit Registern</td>
+</tr>
+<tr>
+<td>4. Attribute/Relationen</td>
+<td>Eigenschaften und Beziehungen</td>
+<td><code>&lt;roleName&gt;</code></td>
+<td>Via <code>@type</code> und <code>@corresp</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ebene-1-ereignisse">Ebene 1: Ereignisse<a class="headerlink" href="#ebene-1-ereignisse" title="Permanent link">&para;</a></h3>
+<p>Ein Ereignis umschliesst eine vollstaendige rechtliche Handlung. Es wird mit <code>&lt;rs type="event" ref="ev__*"&gt;</code> annotiert. Der <code>@ref</code>-Wert verweist auf eine Ereignis-ID.</p>
+<p>Innerhalb des Ereignisses markiert <code>&lt;catchwords n="disp"&gt;</code> den <strong>dispositiven Triggerstring</strong> -- das Verb oder die Verbalphrase, die die Art des Rechtsgeschaefts bestimmt. Die Kategorisierung erfolgt nicht a priori, sondern durch Extraktion dispositiver Verben und nachtraegliche Kategorienbildung.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;event&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;ev__QGW_II_I_1&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;issuer&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__hadmar_von_schoenberg_QGW_II_I_1&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span>H(admar)<span class="w"> </span>de<span class="w"> </span>Schonenberg<span class="nt">&lt;/rs&gt;</span>,<span class="w"> </span>...
+<span class="w">  </span><span class="nt">&lt;/rs&gt;</span>
+<span class="w">  </span><span class="nt">&lt;triggerstring</span><span class="w"> </span><span class="na">n=</span><span class="s">&quot;disp&quot;</span><span class="nt">&gt;</span>haben<span class="w"> </span><span class="nt">&lt;add&gt;</span>gegeben<span class="nt">&lt;/add&gt;&lt;/triggerstring&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;recipient&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;org&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;org__wien-st_niklas_vor_dem_stubentor_zisterzienserinnen&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span>dem<span class="w"> </span>Nonnenkloster<span class="w"> </span>St.<span class="w"> </span>Nikolaus<span class="nt">&lt;/rs&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/rs&gt;</span>
+<span class="w">  </span>quattuor<span class="w"> </span>iugera<span class="w"> </span>lignorum<span class="w"> </span>...
+<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: QGW II/1 Nr. 1 (1198--1230)</em></p>
+<h3 id="ebene-2-funktionen">Ebene 2: Funktionen<a class="headerlink" href="#ebene-2-funktionen" title="Permanent link">&para;</a></h3>
+<p>Funktionen beschreiben die Rolle einer Person oder Organisation innerhalb eines Ereignisses. Sie werden mit <code>&lt;rs type="fn" role="..."&gt;</code> annotiert.</p>
+<table>
+<thead>
+<tr>
+<th>Rolle</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>issuer</code></td>
+<td>Aussteller/Verkaeufer</td>
+</tr>
+<tr>
+<td><code>recipient</code></td>
+<td>Empfaenger/Kaeufer</td>
+</tr>
+<tr>
+<td><code>witness</code></td>
+<td>Zeuge/Siegler</td>
+</tr>
+<tr>
+<td><code>other</code></td>
+<td>Sonstige Funktion (naeher spezifiziert durch <code>&lt;catchwords n="fn"&gt;</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Bei der Rolle <code>other</code> wird die spezifische Funktion durch einen zusaetzlichen Triggerstring angegeben:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;other&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;triggerstring</span><span class="w"> </span><span class="na">n=</span><span class="s">&quot;fn&quot;</span><span class="nt">&gt;</span>mit<span class="w"> </span>Zustimmung<span class="nt">&lt;/triggerstring&gt;</span><span class="w"> </span>seiner
+<span class="w">  </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__diemut_QGW_II_I_10&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;kin&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;pe__berthold_QGW_II_I_10&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span>Gemahlin<span class="nt">&lt;/roleName&gt;</span><span class="w"> </span>Dimu/od<span class="nt">&lt;/rs&gt;</span>
+<span class="w">  </span>und<span class="w"> </span>seiner<span class="w"> </span>Kinder<span class="w"> </span>und<span class="w"> </span>Erben
+<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: QGW II/1 Nr. 10 (1274)</em></p>
+<p>Zusaetzlich wird die Rolle <code>transactiongood</code> im Pipeline-Output generiert, um Transaktionsgueter zu erfassen.</p>
+<h3 id="ebene-3-entitaeten">Ebene 3: Entitaeten<a class="headerlink" href="#ebene-3-entitaeten" title="Permanent link">&para;</a></h3>
+<p>Entitaeten sind Personen, Organisationen und Orte. Sie werden mit <code>&lt;rs&gt;</code> annotiert und ueber <code>@ref</code> mit den Registern verknuepft.</p>
+<table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Element</th>
+<th>ID-Praefix</th>
+<th>Register</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Person</td>
+<td><code>&lt;rs type="person" ref="pe__*"&gt;</code></td>
+<td><code>pe__</code></td>
+<td>personList.xml (16.088 Eintraege)</td>
+</tr>
+<tr>
+<td>Organisation</td>
+<td><code>&lt;rs type="org" ref="org__*"&gt;</code></td>
+<td><code>org__</code></td>
+<td>orgList.xml (1.078 Eintraege)</td>
+</tr>
+<tr>
+<td>Ort</td>
+<td><code>&lt;rs type="place" ref="pl__*"&gt;</code></td>
+<td><code>pl__</code></td>
+<td>placeList.xml (2.537 Eintraege)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Person:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__konrad_chrannest_QGW_II_I_99&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span>Chunrat<span class="w"> </span>der<span class="w"> </span>Chrannest<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><strong>Organisation:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;org&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;org__wien-st_niklas_vor_dem_stubentor_zisterzienserinnen&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span>dem<span class="w"> </span>Nonnenkloster<span class="w"> </span>St.<span class="w"> </span>Nikolaus<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><strong>Ort:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;place&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pl__wien-immo_hoher_markt_wentkremen_33&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span>zway<span class="w"> </span>hewser<span class="w"> </span>gelegen<span class="w"> </span>...<span class="w"> </span>ze<span class="w"> </span>Wienn<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><strong>Hinweis zu Ortsreferenzen:</strong> Orte sind im Annotationsbestand systematisch unterrepraesentiert. Nur 49 direkte <code>&lt;rs type="place"&gt;</code>-Referenzen existieren fuer 2.537 Register-Eintraege. Orte werden primaer ueber <code>@corresp</code>-Attribute in <code>&lt;roleName&gt;</code> referenziert (topographische und Besitzrelationen, s. Ebene 4).</p>
+<h3 id="ebene-4-attribute-und-relationen">Ebene 4: Attribute und Relationen<a class="headerlink" href="#ebene-4-attribute-und-relationen" title="Permanent link">&para;</a></h3>
+<p>Attribute und Relationen werden mit <code>&lt;roleName type="..." corresp="..."&gt;</code> annotiert. Der <code>@type</code> bestimmt die Art, <code>@corresp</code> verknuepft mit dem Ziel-Eintrag.</p>
+<p><strong>Attributtypen:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Beschreibung</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prof</code></td>
+<td>Beruf/Gewerbe</td>
+<td><code>&lt;roleName type="prof"&gt;priester&lt;/roleName&gt;</code></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>Titel/Anrede</td>
+<td><code>&lt;roleName type="title"&gt;hern&lt;/roleName&gt;</code></td>
+</tr>
+<tr>
+<td><code>dead</code></td>
+<td>Verstorben</td>
+<td><code>&lt;roleName type="dead"&gt;witib&lt;/roleName&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationstypen:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Beschreibung</th>
+<th>Verweisziel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kin</code></td>
+<td>Verwandtschaft</td>
+<td>Person (<code>pe__</code>)</td>
+</tr>
+<tr>
+<td><code>occ</code></td>
+<td>Amtstraeger</td>
+<td>Organisation (<code>org__</code>)</td>
+</tr>
+<tr>
+<td><code>buis</code></td>
+<td>Geschaeftsbeziehung</td>
+<td>Person (<code>pe__</code>)</td>
+</tr>
+<tr>
+<td><code>rep</code></td>
+<td>Stellvertretung</td>
+<td>Person (<code>pe__</code>)</td>
+</tr>
+<tr>
+<td><code>friend</code></td>
+<td>Freundschaft/Naehe</td>
+<td>Person (<code>pe__</code>)</td>
+</tr>
+<tr>
+<td><code>topo</code></td>
+<td>Topographische Lage</td>
+<td>Ort (<code>pl__</code>)</td>
+</tr>
+<tr>
+<td><code>owner</code></td>
+<td>Besitz</td>
+<td>Person (<code>pe__</code>) oder Ort (<code>pl__</code>)</td>
+</tr>
+<tr>
+<td><code>title_ref</code></td>
+<td>Titelverweis</td>
+<td>Person (<code>pe__</code>)</td>
+</tr>
+<tr>
+<td><code>staff</code></td>
+<td>Personalverhaeltnis</td>
+<td>Person (<code>pe__</code>) oder Organisation (<code>org__</code>)</td>
+</tr>
+<tr>
+<td><code>org</code></td>
+<td>Organisationszugehoerigkeit</td>
+<td>Organisation (<code>org__</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verwandtschaft (kin):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__elisabeth_QGW_II_I_100&quot;</span><span class="nt">&gt;</span>Elsbet,<span class="w"> </span>sein
+<span class="w">  </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;kin&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;pe__konrad_chrannest_QGW_II_I_99&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span>hausvrowe<span class="nt">&lt;/roleName&gt;</span>
+<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: QGW II/1 Nr. 100 (1327)</em></p>
+<p><strong>Amtstraeger (occ):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__berthold_QGW_II_I_10&quot;</span><span class="nt">&gt;</span>Bertoldus,
+<span class="w">  </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;occ&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;org__oesterreich-herzogtum&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span>camerarius<span class="nt">&lt;/roleName&gt;</span>
+<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: QGW II/1 Nr. 10 (1274)</em></p>
+<p><strong>Titel (title):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__herbert_auf_der_saeule_QGW_II_I_184&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>Grundherren<span class="nt">&lt;/roleName&gt;</span>,
+<span class="w">  </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>hern<span class="nt">&lt;/roleName&gt;</span><span class="w"> </span>Herbortes<span class="w"> </span>auf<span class="w"> </span>der<span class="w"> </span>Seul<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: QGW II/1 Nr. 100 (1327)</em></p>
+<p><strong>Freundschaft (friend):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;friend&quot;</span>
+<span class="w">  </span><span class="na">corresp=</span><span class="s">&quot;pe__albrecht_chirichhaimer_QGW_II_I_996&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;add&gt;</span>lieben<span class="w"> </span>Freund<span class="nt">&lt;/add&gt;&lt;/roleName&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: QGW II/1 Nr. 996</em></p>
+<p><strong>Topographie und Besitz (topo, owner):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;place&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pl__wien-immo_hoher_markt_wentkremen_33&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;owner&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;pe__katharina_StB_I_8&quot;</span><span class="nt">&gt;</span>irew<span class="nt">&lt;/roleName&gt;</span>
+<span class="w">  </span>zway<span class="w"> </span>hewser<span class="w"> </span>gelegen
+<span class="w">  </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;topo&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;pl__wien-hoher_markt_wentkremen&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span>under<span class="w"> </span>den<span class="nt">&lt;/roleName&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;place&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pl__wien-hoher_markt_wentkremen&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span>Wentchremen<span class="w"> </span>ze<span class="w"> </span>Wienn<span class="nt">&lt;/rs&gt;</span>
+<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: Stadtbuecher Bd. 1, Nr. 8</em></p>
+<p><strong>Stellvertretung (rep):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__johann_cherner_QGW_II_I_810&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span>Janns<span class="w"> </span>Cherner
+<span class="w">  </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;rep&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;pe__thomas_cherner_QGW_II_I_999&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;add&gt;</span>fuer<span class="nt">&lt;/add&gt;&lt;/roleName&gt;</span>
+<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: QGW II/1 Nr. 999</em></p>
+<p><strong>Zusaetzliche Attribute:</strong></p>
+<ul>
+<li><code>@cert</code> -- Sicherheitsangabe (high, medium, low, unknown), z.B. <code>&lt;roleName type="prof" cert="unknown"&gt;Kramer&lt;/roleName&gt;</code></li>
+<li><code>@select</code> -- Raeumliche Praezision bei topographischen Relationen, z.B. <code>@select="gegen"</code> (gegenueber)</li>
+</ul>
+<h3 id="zusammenspiel-der-ebenen">Zusammenspiel der Ebenen<a class="headerlink" href="#zusammenspiel-der-ebenen" title="Permanent link">&para;</a></h3>
+<p>Ein vollstaendiges Beispiel zeigt die Verschachtelung aller vier Ebenen:</p>
+<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- Ebene 1: Ereignis --&gt;</span>
+<span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;event&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;ev__QGW_II_I_10&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Ebene 2: Funktion (Aussteller) --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;issuer&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- Ebene 3: Entitaet (Person) --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__berthold_QGW_II_I_10&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span>Bertoldus,
+<span class="w">      </span><span class="cm">&lt;!-- Ebene 4: Attribut (Amtstraeger) --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;occ&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;org__oesterreich-herzogtum&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span>camerarius<span class="nt">&lt;/roleName&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/rs&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/rs&gt;</span>,
+<span class="w">  </span><span class="nt">&lt;triggerstring</span><span class="w"> </span><span class="na">n=</span><span class="s">&quot;disp&quot;</span><span class="nt">&gt;</span>gibt<span class="nt">&lt;/triggerstring&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Ebene 2: Funktion (Sonstige) --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;other&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;triggerstring</span><span class="w"> </span><span class="na">n=</span><span class="s">&quot;fn&quot;</span><span class="nt">&gt;</span>mit<span class="w"> </span>Zustimmung<span class="nt">&lt;/triggerstring&gt;</span><span class="w"> </span>seiner
+<span class="w">    </span><span class="cm">&lt;!-- Ebene 3: Entitaet (Person) --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__diemut_QGW_II_I_10&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="cm">&lt;!-- Ebene 4: Relation (Verwandtschaft) --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;kin&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;pe__berthold_QGW_II_I_10&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span>Gemahlin<span class="nt">&lt;/roleName&gt;</span><span class="w"> </span>Dimu/od
+<span class="w">    </span><span class="nt">&lt;/rs&gt;</span>
+<span class="w">    </span>und<span class="w"> </span>seiner<span class="w"> </span>Kinder<span class="w"> </span>und<span class="w"> </span>Erben
+<span class="w">  </span><span class="nt">&lt;/rs&gt;</span>
+<span class="w">  </span>eine<span class="w"> </span>Rente<span class="w"> </span>von<span class="w"> </span>12<span class="w"> </span>sh.<span class="w"> </span>dn.<span class="w"> </span>...
+<span class="w">  </span><span class="cm">&lt;!-- Ebene 2: Funktion (Empfaenger) --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;recipient&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- Ebene 3: Entitaet (Organisation) --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;org&quot;</span>
+<span class="w">      </span><span class="na">ref=</span><span class="s">&quot;org__wien-st_niklas_vor_dem_stubentor_zisterzienserinnen&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span>das<span class="w"> </span>Nonnenkloster<span class="w"> </span>bei<span class="w"> </span>S.<span class="w"> </span>Nikolaus<span class="nt">&lt;/rs&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/rs&gt;</span>
+<span class="w">  </span>...
+<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p><em>Quelle: QGW II/1 Nr. 10 (1274) -- Bertoldus, Kaemmerer des Herzogtums Oesterreich, gibt mit Zustimmung seiner Gemahlin Dimu/od eine Rente an das Nonnenkloster St. Nikolaus.</em></p>
+<hr />
+<h2 id="3-tagging-workflow-sieben-schritte">3. Tagging-Workflow (Sieben Schritte)<a class="headerlink" href="#3-tagging-workflow-sieben-schritte" title="Permanent link">&para;</a></h2>
+<p>Der Tagging-Workflow beschreibt die Reihenfolge, in der eine Quelle annotiert wird. Er ist die de facto-Annotationsrichtlinie des Projekts.</p>
+<h3 id="schritt-1-editor-kuerzel">Schritt 1: Editor-Kuerzel<a class="headerlink" href="#schritt-1-editor-kuerzel" title="Permanent link">&para;</a></h3>
+<p>Jeder Bearbeiter traegt sein Kuerzel in das <code>@resp</code>-Attribut des <code>&lt;div&gt;</code>-Elements ein:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;div</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;abstract&quot;</span><span class="w"> </span><span class="na">resp=</span><span class="s">&quot;kg&quot;</span><span class="nt">&gt;</span>
+</code></pre></div>
+
+<p>Die Kuerzel sind in der Editor-Liste (Abschnitt 8) dokumentiert.</p>
+<h3 id="schritt-2-ereignisse">Schritt 2: Ereignisse<a class="headerlink" href="#schritt-2-ereignisse" title="Permanent link">&para;</a></h3>
+<p>Alle Rechtsgeschaefte werden als Ereignisse markiert:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;event&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;ev__QGW_II_I_1&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p>Erwaehnte Ereignisse (nicht das Hauptereignis der Urkunde) erhalten das Suffix <code>_men_</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;event&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;ev__QGW_II_II_00606_men_1&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<h3 id="schritt-3-dispositivformeln">Schritt 3: Dispositivformeln<a class="headerlink" href="#schritt-3-dispositivformeln" title="Permanent link">&para;</a></h3>
+<p>Dispositive Verben und Verbalphrasen werden mit <code>&lt;catchwords n="disp"&gt;</code> markiert:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;triggerstring</span><span class="w"> </span><span class="na">n=</span><span class="s">&quot;disp&quot;</span><span class="nt">&gt;</span>verkaufen<span class="nt">&lt;/triggerstring&gt;</span>
+</code></pre></div>
+
+<p>Fuer implizite Informationen wird <code>&lt;add&gt;</code> innerhalb des Triggerstrings verwendet:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;triggerstring</span><span class="w"> </span><span class="na">n=</span><span class="s">&quot;disp&quot;</span><span class="nt">&gt;</span>haben<span class="w"> </span><span class="nt">&lt;add&gt;</span>gegeben<span class="nt">&lt;/add&gt;&lt;/triggerstring&gt;</span>
+</code></pre></div>
+
+<h3 id="schritt-4-funktionen">Schritt 4: Funktionen<a class="headerlink" href="#schritt-4-funktionen" title="Permanent link">&para;</a></h3>
+<p>Allen beteiligten Personen und Organisationen wird eine Funktionsrolle zugewiesen:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;issuer&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/rs&gt;</span>
+<span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;recipient&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/rs&gt;</span>
+<span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;witness&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/rs&gt;</span>
+<span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fn&quot;</span><span class="w"> </span><span class="na">role=</span><span class="s">&quot;other&quot;</span><span class="nt">&gt;&lt;triggerstring</span><span class="w"> </span><span class="na">n=</span><span class="s">&quot;fn&quot;</span><span class="nt">&gt;</span>mit<span class="w"> </span>Handen<span class="nt">&lt;/triggerstring&gt;</span><span class="w"> </span>...<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<h3 id="schritt-5-entitaeten">Schritt 5: Entitaeten<a class="headerlink" href="#schritt-5-entitaeten" title="Permanent link">&para;</a></h3>
+<p>Entitaeten werden zuerst mit leerem <code>&lt;rs/&gt;</code> markiert, dann wird die ID (<code>@ref</code>) zugewiesen:</p>
+<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- Schritt 5a: Markierung --&gt;</span>
+<span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;</span>Chunrat<span class="w"> </span>der<span class="w"> </span>Chrannest<span class="nt">&lt;/rs&gt;</span>
+
+<span class="cm">&lt;!-- Schritt 5b: ID-Zuweisung --&gt;</span>
+<span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__konrad_chrannest_QGW_II_I_99&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span>Chunrat<span class="w"> </span>der<span class="w"> </span>Chrannest<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<h3 id="schritt-6-attribute-und-relationen">Schritt 6: Attribute und Relationen<a class="headerlink" href="#schritt-6-attribute-und-relationen" title="Permanent link">&para;</a></h3>
+<p>Attribute und Relationen werden innerhalb der Entitaet annotiert:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;rs</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;person&quot;</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;pe__berthold_QGW_II_I_10&quot;</span><span class="nt">&gt;</span>Bertoldus,
+<span class="w">  </span><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;occ&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;org__oesterreich-herzogtum&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span>camerarius<span class="nt">&lt;/roleName&gt;</span>
+<span class="nt">&lt;/rs&gt;</span>
+</code></pre></div>
+
+<p>Bei raeumlicher Praezision wird <code>@select</code> verwendet:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;roleName</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;topo&quot;</span><span class="w"> </span><span class="na">corresp=</span><span class="s">&quot;pl__wien-hoher_markt&quot;</span>
+<span class="w">  </span><span class="na">select=</span><span class="s">&quot;gegenueber&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/roleName&gt;</span>
+</code></pre></div>
+
+<h3 id="schritt-7-masseinheiten">Schritt 7: Masseinheiten<a class="headerlink" href="#schritt-7-masseinheiten" title="Permanent link">&para;</a></h3>
+<p>Masseinheiten und Waehrungsangaben werden mit <code>&lt;measure/&gt;</code> markiert.</p>
+<h3 id="zusaetzliche-konventionen">Zusaetzliche Konventionen<a class="headerlink" href="#zusaetzliche-konventionen" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>@cert</code></strong> -- Wahrscheinlichkeitsangabe (high, medium, low, unknown) fuer unsichere Zuordnungen</li>
+<li><strong><code>&lt;unclear&gt;</code></strong> -- Unleserliche oder schwer lesbare Passagen</li>
+<li><strong><code>&lt;add&gt;</code></strong> -- Editorische Ergaenzungen und implizite Informationen</li>
+</ul>
+<hr />
+<h2 id="4-id-konstruktionsregeln">4. ID-Konstruktionsregeln<a class="headerlink" href="#4-id-konstruktionsregeln" title="Permanent link">&para;</a></h2>
+<h3 id="ereignisse-ev__">Ereignisse (ev__)<a class="headerlink" href="#ereignisse-ev__" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>ev__ + Quellenabkuerzung + (_) Nummer
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Muster</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hauptereignis</td>
+<td><code>ev__QGW_II_I_1</code></td>
+</tr>
+<tr>
+<td>Hauptereignis (mit Nullen)</td>
+<td><code>ev__SB_CD_00642</code></td>
+</tr>
+<tr>
+<td>Erwaehnte Ereignisse</td>
+<td><code>ev__QGW_II_II_00606_men_1</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="personen-pe__">Personen (pe__)<a class="headerlink" href="#personen-pe__" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pe__ + normalisierter_Vorname + (_) normalisierter_Nachname + (_) Quellenabkuerzung + (_) Nummer
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Muster</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard</td>
+<td><code>pe__johann_maurperger_QGW_II_II_2870</code></td>
+</tr>
+<tr>
+<td>Homonyme (Suffixunterscheidung)</td>
+<td><code>pe__agnes_QGW_II_II_3250_a</code>, <code>pe__agnes_QGW_II_II_3250_b</code></td>
+</tr>
+<tr>
+<td>Ohne Nachname (Beruf stattdessen)</td>
+<td><code>pe__berthold_QGW_II_I_10</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Regeln:</strong></p>
+<ul>
+<li>Keine Umlaute in IDs</li>
+<li>Vornamen werden ueber eine externe Normalisierungstabelle vereinheitlicht</li>
+<li>Nachnamen stammen aus dem Quellenregister; fehlt ein Register, wird die Originalschreibung verwendet</li>
+<li>Bei fehlendem Nachnamen wird der Beruf verwendet</li>
+<li>Bei Frauen und Kindern wird ein potenzieller Nachname in <code>&lt;add&gt;</code> ergaenzt</li>
+</ul>
+<h3 id="individualisierungsverfahren">Individualisierungsverfahren<a class="headerlink" href="#individualisierungsverfahren" title="Permanent link">&para;</a></h3>
+<p>Die Disambiguierung von Homonymen erfolgt durch das Suffix <code>_a</code> / <code>_b</code> (usw.) an der Personen-ID. Dieses Verfahren greift, wenn derselbe Name in derselben Quelle mehrfach vorkommt und die Personen durch Kontextinformationen (Beruf, Verwandtschaft, Amt) unterschieden werden koennen.</p>
+<p><strong>Register-Struktur (personList.xml):</strong></p>
+<p>Jeder Personeneintrag enthaelt:</p>
+<ul>
+<li><code>&lt;persName&gt;</code>: <code>&lt;forename&gt;</code>, <code>&lt;surname&gt;</code> (jeweils mit <code>&lt;reg&gt;</code> fuer normalisierte Form), <code>&lt;addName&gt;</code> (Beiname), <code>&lt;genName&gt;</code> (Generationsname)</li>
+<li><code>&lt;death notAfter=""&gt;</code>: Todesdatum</li>
+<li><code>&lt;idno&gt;</code>: Verknuepfung mit externen Normdateien</li>
+<li><code>@sex</code> (f/m), <code>@source</code>, <code>@resp</code>, <code>@cert</code></li>
+<li><code>@sameAs</code>: Queridentifikation mit einer anderen Person im Register</li>
+</ul>
+<p><strong>Namenskonvention als Individualisierungsstrategie:</strong></p>
+<p>Die Struktur der Personen-ID selbst -- normalisierter Vorname + Nachname + Quelle + Nummer -- bildet bereits eine erste Individualisierungsschicht. Unterschiedliche Quellen erzeugen unterschiedliche IDs fuer potentiell identische Personen. Die Zusammenfuehrung erfolgt ueber <code>@sameAs</code> im Register.</p>
+<h3 id="organisationen-org__">Organisationen (org__)<a class="headerlink" href="#organisationen-org__" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>org__ + Siedlung + (-) Patron/Eigenname + (_) Institutionstyp + (-) Unterorganisation
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Muster</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Siedlung</td>
+<td><code>org__wien</code></td>
+</tr>
+<tr>
+<td>Kirche</td>
+<td><code>org__wien-st_stephan</code></td>
+</tr>
+<tr>
+<td>Altar einer Kirche</td>
+<td><code>org__wien-st_stephan-altar_st_dorothea</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Prinzip:</strong> Vom Allgemeinen zum Spezifischen. Hierarchische Verschachtelung in orgList.xml.</p>
+<p><strong>Organisationstypen:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stadt</td>
+<td>Stadtverwaltung</td>
+</tr>
+<tr>
+<td>Dioezese</td>
+<td>Kirchliche Verwaltungseinheit</td>
+</tr>
+<tr>
+<td>Kirche/Kapelle</td>
+<td>Gotteshaus</td>
+</tr>
+<tr>
+<td>Pfarre</td>
+<td>Kirchliche Seelsorgeeinheit</td>
+</tr>
+<tr>
+<td>Spital</td>
+<td>Wohltaetigkeitseinrichtung</td>
+</tr>
+<tr>
+<td>Kloster (m/f)</td>
+<td>Maennliches bzw. weibliches Kloster</td>
+</tr>
+<tr>
+<td>Altar</td>
+<td>Altar innerhalb einer Kirche</td>
+</tr>
+<tr>
+<td>Messe</td>
+<td>Messstiftung</td>
+</tr>
+<tr>
+<td>Zeche/Bruderschaft</td>
+<td>Religioese Laienvereinigung</td>
+</tr>
+<tr>
+<td>Herzogtum</td>
+<td>Territoriale Herrschaft</td>
+</tr>
+<tr>
+<td>Koenigreich</td>
+<td>Uebergeordnete Herrschaft</td>
+</tr>
+<tr>
+<td>Reich</td>
+<td>Reichsebene</td>
+</tr>
+</tbody>
+</table>
+<h3 id="orte-pl__">Orte (pl__)<a class="headerlink" href="#orte-pl__" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pl__ + Siedlung + (-) Name
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Muster</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Siedlung</td>
+<td><code>pl__wien</code></td>
+</tr>
+<tr>
+<td>Strasse</td>
+<td><code>pl__wien-hoher_markt</code></td>
+</tr>
+<tr>
+<td>Immobilie</td>
+<td><code>pl__wien-immo_karntnerstrasse_1</code></td>
+</tr>
+</tbody>
+</table>
+<p>Das Praefix <code>immo_</code> kennzeichnet Immobilien. Hierarchisierung (Haeuser in Strassen) ist moeglich.</p>
+<hr />
+<h2 id="5-funktionsrollen-und-relationstypen">5. Funktionsrollen und Relationstypen<a class="headerlink" href="#5-funktionsrollen-und-relationstypen" title="Permanent link">&para;</a></h2>
+<h3 id="funktionsrollen">Funktionsrollen<a class="headerlink" href="#funktionsrollen" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rolle</th>
+<th>Beschreibung</th>
+<th>Element</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>issuer</td>
+<td>Aussteller, Verkaeufer</td>
+<td><code>&lt;rs type="fn" role="issuer"&gt;</code></td>
+</tr>
+<tr>
+<td>recipient</td>
+<td>Empfaenger, Kaeufer</td>
+<td><code>&lt;rs type="fn" role="recipient"&gt;</code></td>
+</tr>
+<tr>
+<td>witness</td>
+<td>Zeuge, Siegler</td>
+<td><code>&lt;rs type="fn" role="witness"&gt;</code></td>
+</tr>
+<tr>
+<td>other</td>
+<td>Sonstige (spezifiziert durch <code>&lt;catchwords n="fn"&gt;</code>)</td>
+<td><code>&lt;rs type="fn" role="other"&gt;</code></td>
+</tr>
+<tr>
+<td>transactiongood</td>
+<td>Transaktionsgut (Pipeline-Output)</td>
+<td>-- (extrahiert aus <code>&lt;rs type="event"&gt;</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relationstypen-uebersicht">Relationstypen (Uebersicht)<a class="headerlink" href="#relationstypen-uebersicht" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Beschreibung</th>
+<th>Verweisziel</th>
+<th>Beispiel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kin</td>
+<td>Verwandtschaft</td>
+<td><code>pe__</code></td>
+<td><em>hausvrowe</em>, <em>sun</em>, <em>tochter</em></td>
+</tr>
+<tr>
+<td>occ</td>
+<td>Amtstraeger</td>
+<td><code>org__</code></td>
+<td><em>camerarius</em>, <em>Buergermeister</em></td>
+</tr>
+<tr>
+<td>buis</td>
+<td>Geschaeftsbeziehung</td>
+<td><code>pe__</code></td>
+<td>Geschaeftspartner</td>
+</tr>
+<tr>
+<td>rep</td>
+<td>Stellvertretung</td>
+<td><code>pe__</code></td>
+<td><em>fuer</em>, <em>anstatt</em></td>
+</tr>
+<tr>
+<td>friend</td>
+<td>Freundschaft</td>
+<td><code>pe__</code></td>
+<td><em>lieben Freund</em></td>
+</tr>
+<tr>
+<td>topo</td>
+<td>Topographische Lage</td>
+<td><code>pl__</code></td>
+<td><em>gelegen bei</em>, <em>under den</em></td>
+</tr>
+<tr>
+<td>owner</td>
+<td>Besitz</td>
+<td><code>pe__</code>/<code>pl__</code></td>
+<td><em>irew</em> (ihre Haeuser)</td>
+</tr>
+<tr>
+<td>title_ref</td>
+<td>Titelverweis</td>
+<td><code>pe__</code></td>
+<td>Referenz auf Titeltraeger</td>
+</tr>
+<tr>
+<td>staff</td>
+<td>Personalverhaeltnis</td>
+<td><code>pe__</code>/<code>org__</code></td>
+<td>Bedienstete</td>
+</tr>
+<tr>
+<td>org</td>
+<td>Organisationszugehoerigkeit</td>
+<td><code>org__</code></td>
+<td>Mitgliedschaft</td>
+</tr>
+<tr>
+<td>dead</td>
+<td>Verstorben</td>
+<td>--</td>
+<td><em>selig</em>, <em>witib</em></td>
+</tr>
+<tr>
+<td>prof</td>
+<td>Beruf/Gewerbe</td>
+<td>--</td>
+<td><em>priester</em>, <em>Kramer</em></td>
+</tr>
+<tr>
+<td>title</td>
+<td>Titel/Anrede</td>
+<td>--</td>
+<td><em>hern</em>, <em>Meister</em></td>
+</tr>
+</tbody>
+</table>
+<p>Die letzten drei (<code>dead</code>, <code>prof</code>, <code>title</code>) sind <strong>Attribute</strong> (keine Verknuepfung ueber <code>@corresp</code>), die uebrigen sind <strong>Relationen</strong> (Verknuepfung ueber <code>@corresp</code> mit einem Registereintrag).</p>
+<hr />
+<h2 id="6-normalisierungsregeln">6. Normalisierungsregeln<a class="headerlink" href="#6-normalisierungsregeln" title="Permanent link">&para;</a></h2>
+<p>Die Pipeline verwendet vier Normalisierungslisten fuer die Standardisierung von Annotationsinhalten.</p>
+<h3 id="normalisierungslisten">Normalisierungslisten<a class="headerlink" href="#normalisierungslisten" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Datei</th>
+<th>Zeilen</th>
+<th>Delimiter</th>
+<th>Zweck</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>roleName_norm_matching.csv</td>
+<td>3.950</td>
+<td>TAB</td>
+<td>Titel, Berufe, Verwandtschaft</td>
+</tr>
+<tr>
+<td>label_norm_matching.csv</td>
+<td>2.460</td>
+<td>TAB</td>
+<td>Ereignis-Trigger</td>
+</tr>
+<tr>
+<td>function_norm_matching.csv</td>
+<td>685</td>
+<td>TAB</td>
+<td>Funktionen (Rolle "other")</td>
+</tr>
+<tr>
+<td>editors/Name_of_Editors.csv</td>
+<td>7</td>
+<td>Semikolon</td>
+<td>Editor-Kuerzel</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vornamen-normalisierung">Vornamen-Normalisierung<a class="headerlink" href="#vornamen-normalisierung" title="Permanent link">&para;</a></h3>
+<p>Die Normalisierung von Vornamen erfolgt ueber einen externen Webservice (<code>medieval-legal-transactions.univie.ac.at/norm_names/</code>), der nicht im Repository enthalten ist. Die normalisierten Formen fliessen in die Personen-IDs und Register-Eintraege ein.</p>
+<h3 id="triggerstring-normalisierung">Triggerstring-Normalisierung<a class="headerlink" href="#triggerstring-normalisierung" title="Permanent link">&para;</a></h3>
+<p>Von 2.112 einzigartigen Triggerstrings in den Quellen werden 316 (15%) durch die Normalisierungsliste <code>function_norm_matching.csv</code> abgedeckt. Die Normalisierung erfolgt durch exakten Stringabgleich (TAB-separierte Listen).</p>
+<h3 id="bekannte-luecken">Bekannte Luecken<a class="headerlink" href="#bekannte-luecken" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>727 ungematchte Triggerstrings</strong> in <code>label_norm_matching.csv</code> -- Triggerstrings aus den Quellen, fuer die keine Normalisierung existiert</li>
+<li><strong>1.588 ungematchte roleName-Eintraege</strong> -- 50% Match-Rate bei <code>roleName_norm_matching.csv</code></li>
+<li>Viele Felder in den Normalisierungslisten (Spalten 6--9 in <code>roleName_norm_matching.csv</code>) sind leer</li>
+</ul>
+<hr />
+<h2 id="7-kurationslogik">7. Kurationslogik<a class="headerlink" href="#7-kurationslogik" title="Permanent link">&para;</a></h2>
+<p>Die Kuration filtert den vollstaendigen Pipeline-Output fuer den SQL-Import.</p>
+<h3 id="filter">Filter<a class="headerlink" href="#filter" title="Permanent link">&para;</a></h3>
+<p>Die Kuration erfolgt ueber einen Quellensammlungs-Filter auf <code>filenames.csv</code>. Folgende Sammlungen sind im kurierten Bestand enthalten:</p>
+<ul>
+<li>QGW/Vienna_1177-1414_ready</li>
+<li>Copeybuch_Zeibig (alle Sammlungen)</li>
+<li>Stadtbuecher/Band_1_1395-1400_ready</li>
+<li>Satzbuch_CD/SB_CD_1449-1460_ready</li>
+<li>Gewerbuch_D/GB_D_1449-1460</li>
+<li>Widmerliste, Genanntenlisten</li>
+</ul>
+<h3 id="ergebnis">Ergebnis<a class="headerlink" href="#ergebnis" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metrik</th>
+<th>Wert</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gesamtdateien</td>
+<td>3.530</td>
+</tr>
+<tr>
+<td>Kurierte Dateien</td>
+<td>2.711</td>
+</tr>
+<tr>
+<td>Entfernte Dateien</td>
+<td>819</td>
+</tr>
+<tr>
+<td>Datenzeilen (gesamt)</td>
+<td>101.948</td>
+</tr>
+<tr>
+<td>Datenzeilen (kuriert)</td>
+<td>92.029</td>
+</tr>
+<tr>
+<td>Entfernte Datenzeilen</td>
+<td>9.919</td>
+</tr>
+</tbody>
+</table>
+<p>Die entfernten Dateien stammen aus den Sammlungen QGW 1458--1500 und Teilen von QGW 1415--1417.</p>
+<hr />
+<h2 id="8-editor-liste">8. Editor-Liste<a class="headerlink" href="#8-editor-liste" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Kuerzel</th>
+<th>Bearbeiter</th>
+<th>CRediT-Rolle</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>kg</td>
+<td>Korbinian Gruenwald</td>
+<td>Projektleitung, Datenerhebung, Programmierung</td>
+<td><a href="https://stadtgemeinschaftwien.univie.ac.at/korbinian-gruenwald/">Profil</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>cs</td>
+<td>Carina Siegl</td>
+<td>Datenerhebung</td>
+<td><a href="https://geschichtsforschung.univie.ac.at/ueber-uns/personen/unidocs/siegl-carina/">Profil</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>rs</td>
+<td>Ronald Salzer</td>
+<td>Datenerhebung</td>
+<td>--</td>
+</tr>
+<tr>
+<td>4</td>
+<td>df</td>
+<td>Daniel Frey</td>
+<td>Datenerhebung</td>
+<td>--</td>
+</tr>
+<tr>
+<td>5</td>
+<td>hk</td>
+<td>Herbert Krammer</td>
+<td>Datenerhebung</td>
+<td><a href="https://geschichtsforschung.univie.ac.at/ueber-uns/personen/unidocs/krammer-herbert/">Profil</a></td>
+</tr>
+<tr>
+<td>6</td>
+<td>lp</td>
+<td>Lisa Pichler</td>
+<td>Datenerhebung</td>
+<td>--</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ks</td>
+<td>Ksenia Paesold</td>
+<td>Datenerhebung</td>
+<td>--</td>
+</tr>
+</tbody>
+</table>
+<p>Die Kuerzel entsprechen dem <code>@resp</code>-Attribut in <code>&lt;div&gt;</code>. Rollen folgen der <a href="https://credit.niso.org/">CRediT-Taxonomie</a>.</p>
+    </div>
+    <footer class="guidelines-footer">
+        <p>Zuletzt aktualisiert: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Editionsrichtlinien</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./static/edition.js"></script>
+    
+</body>
+</html>

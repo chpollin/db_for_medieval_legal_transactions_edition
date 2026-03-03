@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementierungsplan — Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="../index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="../persons.html">Personen</a>
+                        <a href="../organisations.html">Organisationen</a>
+                        <a href="../places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="../edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="../statistics.html">Statistik</a>
+                <a href="../vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="vault-detail-page">
+    <div class="vault-detail-header">
+        <nav class="vault-breadcrumb" aria-label="Breadcrumb">
+            <a href="../vault.html">Vault</a>
+            <span class="vault-breadcrumb-sep">/</span>
+            <span>Implementierungsplan</span>
+        </nav>
+        <h1>Implementierungsplan</h1>
+        <p class="vault-detail-meta">
+            <span class="vault-detail-file">plan.md</span>
+            <span class="vault-detail-lines">211 Zeilen</span>
+        </p>
+    </div>
+    
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#phase-overview">Phase Overview</a></li>
+<li><a href="#decision-points">Decision Points</a></li>
+<li><a href="#phase-a-data-cleanup-foundations-done">Phase A -- Data Cleanup &amp; Foundations DONE</a></li>
+<li><a href="#phase-b-schema-validation-done">Phase B -- Schema &amp; Validation DONE</a></li>
+<li><a href="#phase-c-edition-guidelines-done">Phase C -- Edition Guidelines DONE</a></li>
+<li><a href="#phase-d-python-pipeline-core-done">Phase D -- Python Pipeline Core DONE</a></li>
+<li><a href="#phase-e-python-pipeline-relations">Phase E -- Python Pipeline Relations</a><ul>
+<li><a href="#e1-person-relations-x6-types-done">E.1 Person Relations x6 Types DONE</a></li>
+<li><a href="#e2-topo-relations-transactiongoods-done">E.2 Topo Relations + Transactiongoods DONE</a></li>
+<li><a href="#e3-cli-remaining">E.3 CLI &amp; Remaining</a></li>
+</ul>
+</li>
+<li><a href="#phase-f-pipeline-integration-regression-done">Phase F -- Pipeline Integration &amp; Regression DONE</a></li>
+<li><a href="#phase-g-web-interface-export-removed">~~Phase G -- Web Interface Export~~ REMOVED</a></li>
+<li><a href="#phase-h-digital-edition-view">Phase H -- Digital Edition View</a><ul>
+<li><a href="#h1-tei-xml-to-html-rendering-done">H.1 TEI-XML to HTML Rendering DONE</a></li>
+<li><a href="#h2-register-linking-done">H.2 Register Linking DONE</a></li>
+<li><a href="#h3-web-interface-navigation-done">H.3 Web Interface &amp; Navigation DONE</a></li>
+</ul>
+</li>
+<li><a href="#future-scope-not-in-current-contract">Future Scope (not in current contract)</a></li>
+<li><a href="#risks">Risks</a></li>
+<li><a href="#changelog">Changelog</a></li>
+</ul>
+</div>
+
+    </nav>
+    
+    <div class="guidelines-body vault-body">
+        <h1 id="implementation-plan">Implementation Plan<a class="headerlink" href="#implementation-plan" title="Permanent link">&para;</a></h1>
+<p>Modernisation of the prosopographic database of medieval Viennese legal transactions.
+Contractor: Digital Humanities Craft OG | Scenario B (Packages 0+1+3) | Updated: 2026-03-02</p>
+<p>Phase G removed from scope. All pipeline phases (A–F) done. Remaining: H.3 statistics dashboard.</p>
+<hr />
+<h2 id="phase-overview">Phase Overview<a class="headerlink" href="#phase-overview" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>Phase A: Data Cleanup &amp; Foundations        [Paket 1]  ██████████ DONE
+Phase B: Schema &amp; Validation               [Paket 1]  ██████████ DONE
+Phase C: Edition Guidelines                [Paket 1]  ██████████ DONE
+Phase D: Python Pipeline -- Core           [Paket 1]  ██████████ DONE
+Phase E: Python Pipeline -- Relations      [Paket 1]  ██████████ DONE
+Phase F: Pipeline Integration &amp; Regression [Paket 1]  ██████████ DONE
+Phase G: Web Interface Export              [Paket 3]  ────────── REMOVED
+Phase H: Digital Edition View              [Paket 3]  ██████████ H.1+H.2+H.3 DONE
+</code></pre></div>
+
+<p>Dependencies:</p>
+<div class="highlight"><pre><span></span><code>A ──&gt; D ──&gt; E ──&gt; F
+B ──────────────&gt; F
+C (independent)
+H (independent, done)
+</code></pre></div>
+
+<h2 id="decision-points">Decision Points<a class="headerlink" href="#decision-points" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Question</th>
+<th>Affects</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>K1</td>
+<td>Final licence choice (CC-BY-4.0 placeholder)</td>
+<td>Compliance</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>K2</td>
+<td>newpersonList.xml: keep or delete?</td>
+<td>Data quality</td>
+<td>Done (deleted)</td>
+</tr>
+<tr>
+<td>K3</td>
+<td>eventList.xml: keep or delete?</td>
+<td>Data quality</td>
+<td>Done (deleted)</td>
+</tr>
+<tr>
+<td>K4</td>
+<td>Empty tables (buis, tenant, title-ref): gap or intentional?</td>
+<td>Documentation</td>
+<td>Done (not relevant for pipeline)</td>
+</tr>
+<tr>
+<td>K5</td>
+<td>Low place annotation (49 direct refs): intentional?</td>
+<td>C, Doku</td>
+<td><strong>Resolved</strong> -- placeList is an external gazetteer (2,537 IDs); only 74 are referenced anywhere in 3,530 sources (2.9%). Annotation was done for ~16 files (Stadtbücher Band 1, select QGW). No data loss; this is the annotation status quo.</td>
+</tr>
+<tr>
+<td>K6</td>
+<td>Curation filter (QGW up to 1414): stays?</td>
+<td>E.3</td>
+<td><strong>Resolved</strong> -- no curation filter; all collections processed unconditionally</td>
+</tr>
+<tr>
+<td>K7</td>
+<td>~~Web frontend: keep PHP/jQuery or modernise?~~</td>
+<td>G</td>
+<td><strong>Removed</strong> -- Phase G dropped from scope</td>
+</tr>
+<tr>
+<td>K8</td>
+<td>~~Documentation repo (_documentation suffix): access?~~</td>
+<td>C</td>
+<td><strong>Removed</strong> -- no longer relevant</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="phase-a-data-cleanup-foundations-done">Phase A -- Data Cleanup &amp; Foundations DONE<a class="headerlink" href="#phase-a-data-cleanup-foundations-done" title="Permanent link">&para;</a></h2>
+<p>Security (credentials removed, LICENSE CC-BY-4.0, CRediT roles, .gitignore, README fixes), data quality (5 typos, 17 orphaned refs, 4 ID prefix fixes, orgList duplicate cleaned), normalisation lists cleaned (duplicates, column names, encoding), documentation updated (curation logic, empty tables, place annotation, DOCTYPEs).</p>
+<hr />
+<h2 id="phase-b-schema-validation-done">Phase B -- Schema &amp; Validation DONE<a class="headerlink" href="#phase-b-schema-validation-done" title="Permanent link">&para;</a></h2>
+<p>B.1: DTD→RelaxNG conversion (<code>sources/schema/toolbox.rng</code>, ~860 lines, 48 elements, 6 attribute groups). Iterative validation: 0 errors across 3,530 files. 21 schema tests. ODD-vs-RelaxNG decision documented (Gutachten #2).</p>
+<p>B.2: DOCTYPE added to 326 files. <code>pipeline/validate.py</code> CLI with exit codes. All 3,530 files validated.</p>
+<p>B.3: Referential integrity (0 orphaned pe/org/pl refs, 158 NULL, 6,242 event refs systemic). Normalisation matching (triggerstring 316/2112, roleName 1609/3197). 0 duplicate IDs. 187 annotation findings classified (0 errors). 1,947 instant attributes removed. XPointer conformance: 48,421 '#' prefixes added (Gutachten #4). Validation report: <code>pipeline/output/validation_report.{json,md}</code>.</p>
+<hr />
+<h2 id="phase-c-edition-guidelines-done">Phase C -- Edition Guidelines DONE<a class="headerlink" href="#phase-c-edition-guidelines-done" title="Permanent link">&para;</a></h2>
+<p><code>edition/content/edition_guidelines.md</code> (8 sections, German): project context, 4-level annotation model with real XML examples, 7-step tagging workflow, ID construction rules, function roles (13 types), normalisation rules, curation logic, 7 editors with CRediT roles. Fulfils Gutachten #5 (individualisation) and #6 (encoding guidelines).</p>
+<p>Build: Markdown→HTML via Python-Markdown, Jinja2 template, nav link on all 3,041+ pages, ~170 lines CSS, 8 tests.</p>
+<hr />
+<h2 id="phase-d-python-pipeline-core-done">Phase D -- Python Pipeline Core DONE<a class="headerlink" href="#phase-d-python-pipeline-core-done" title="Permanent link">&para;</a></h2>
+<p>11 transformers reimplemented from XSLT: filenames (3,530), persons (16,084), organisations (1,078), places (2,537), events (5,813), persons/orgs/places_in_events (18,995 + 2,533 + 7), persons/orgs/places_in_sources (28,259 + 8,983 + 63). Infrastructure: config, csv_writer, xml_loader, text_utils, date_parser. 87,882 rows total, 118 tests. 6/11 content-identical with XSLT, 5/11 differ only by Phase A corrections.</p>
+<hr />
+<h2 id="phase-e-python-pipeline-relations">Phase E -- Python Pipeline Relations<a class="headerlink" href="#phase-e-python-pipeline-relations" title="Permanent link">&para;</a></h2>
+<h3 id="e1-person-relations-x6-types-done">E.1 Person Relations x6 Types DONE<a class="headerlink" href="#e1-person-relations-x6-types-done" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] person_relations.py: parameterised (kin, occ, title_ref, rep, friend, buis)</li>
+<li>[x] All 6 relation types as loop, individual CSVs</li>
+<li>[x] kin_relations encoding: Python produces UTF-8</li>
+</ul>
+<h3 id="e2-topo-relations-transactiongoods-done">E.2 Topo Relations + Transactiongoods DONE<a class="headerlink" href="#e2-topo-relations-transactiongoods-done" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] topo/tenant mode: roleName[@type=$relationtype], Widmerliste special case</li>
+<li>[x] owner mode: transaction catchword filter, events_in_sources.csv + label_norm_matching.csv dependencies</li>
+<li>[x] transactiongoods_in_events.py</li>
+</ul>
+<p>Verification: 8/10 content-identical, 2/10 +1 row (Phase A corrections kin/title_ref). 40 tests passed.</p>
+<h3 id="e3-cli-remaining">E.3 CLI &amp; Remaining<a class="headerlink" href="#e3-cli-remaining" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] cli.py: transform subcommand extended to 21 CSVs total</li>
+<li>~~Curation filter~~ -- K6 resolved: no filter, all collections processed unconditionally</li>
+<li>[x] UTF-7 encoding in kin_relations: Python produces UTF-8 (confirmed content-identical with XSLT). data_export UTF-7 is legacy artifact.</li>
+<li>[x] Update requirements.txt</li>
+</ul>
+<hr />
+<h2 id="phase-f-pipeline-integration-regression-done">Phase F -- Pipeline Integration &amp; Regression DONE<a class="headerlink" href="#phase-f-pipeline-integration-regression-done" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] Regression tests: test_regression_all.py (180+ parametrised tests) + test_pipeline_comparison.py (21 tests)</li>
+<li>[x] Row count verification: 101,929 XSLT, 101,948 Python (hardcoded assertions)</li>
+<li>[x] Pipeline documentation: pipeline/README.md</li>
+<li>[x] Performance measurement: <code>--timing</code> flag writes timing.json</li>
+<li>[x] Integrate validation as pipeline step: <code>python -m pipeline validate</code> + <code>--validate</code> flag on transform</li>
+<li>[x] CI/CD: <code>.github/workflows/test.yml</code> (2 jobs: pipeline + edition)</li>
+<li>[x] Git tagging convention: documented in pipeline/README.md (semver, manual tags)</li>
+</ul>
+<hr />
+<h2 id="phase-g-web-interface-export-removed">~~Phase G -- Web Interface Export~~ REMOVED<a class="headerlink" href="#phase-g-web-interface-export-removed" title="Permanent link">&para;</a></h2>
+<p>Phase G (Web Interface Export) has been dropped from the project scope.
+The PHP/MariaDB web frontend (K7) and documentation repo access (K8) are no longer relevant.</p>
+<hr />
+<h2 id="phase-h-digital-edition-view">Phase H -- Digital Edition View<a class="headerlink" href="#phase-h-digital-edition-view" title="Permanent link">&para;</a></h2>
+<h3 id="h1-tei-xml-to-html-rendering-done">H.1 TEI-XML to HTML Rendering DONE<a class="headerlink" href="#h1-tei-xml-to-html-rendering-done" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] Python/Jinja2 renderer: TEI-XML -&gt; HTML edition (<code>edition/renderer.py</code>)</li>
+<li>[x] Preserve text structure: paragraphs, line breaks, headings from TEI</li>
+<li>[x] Colour-code annotations:</li>
+<li>Persons (rs[@type='person']) -&gt; blue underline + background + tooltip</li>
+<li>Organisations (rs[@type='org']) -&gt; purple underline + background + tooltip</li>
+<li>Places (rs[@type='place']) -&gt; green underline + background + tooltip</li>
+<li>Events (rs[@type='event']) -&gt; transparent wrapper span</li>
+<li>Functions (rs[@type='fn']) -&gt; left-border accent by role</li>
+<li>Attributes (roleName) -&gt; italic/small-caps by type</li>
+<li>[x] Render metadata header (date, place, archive, citation, facsimile links)</li>
+</ul>
+<h3 id="h2-register-linking-done">H.2 Register Linking DONE<a class="headerlink" href="#h2-register-linking-done" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] Resolve person IDs against personList.xml -&gt; forename, surname, addName, death</li>
+<li>[x] Resolve organisation IDs against orgList.xml -&gt; full name, type</li>
+<li>[x] Resolve place IDs against placeList.xml -&gt; name, type, geo coordinates</li>
+<li>[x] JS-enhanced tooltips on hover (type badge, name, ID)</li>
+<li>[x] Reverse index: <code>_extract_entity_refs()</code> scans all entity refs per document, aggregated into <code>{entity_id → [doc_meta_list]}</code> (10,339 entities linked)</li>
+</ul>
+<h3 id="h3-web-interface-navigation-done">H.3 Web Interface &amp; Navigation DONE<a class="headerlink" href="#h3-web-interface-navigation-done" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] Static HTML generation for 3,041 "done" documents (~7s build, two-pass architecture)</li>
+<li>[x] Index page: timeline sparkline, collection chips, faceted filters (place, facs, decade)</li>
+<li>[x] Search: client-side full-text (JSON embedded in index.html, pre-computed search strings)</li>
+<li>[x] Progressive table rendering (IntersectionObserver, 100-row batches)</li>
+<li>[x] Row preview: details-on-demand with full regest + facsimile thumbnail</li>
+<li>[x] Prev/next document navigation (computed per collection at build time)</li>
+<li>[x] Facsimile viewer: Text-Bild-Synopse (synopsis as default), lazy loading, zoom/pan</li>
+<li>[x] Responsive layout (desktop + mobile + print)</li>
+<li>[x] Off-canvas sidebar (metadata, legend, provenance)</li>
+<li>[x] CSS design tokens, keyboard accessibility</li>
+<li>[x] Cross-file refactoring: dead code removal, CSS consolidation, JS performance, build/renderer DRY helpers</li>
+<li>[x] Register browse pages: persons.html, organisations.html, places.html (search, alphabet bar, type/docs filter, sortable table)</li>
+<li>[x] Register detail pages: 19,699 entity pages under docs/register/ (metadata + reverse-index document table)</li>
+<li>[x] Navigation dropdown: "Register" menu with links to all three register pages</li>
+<li>[x] Dual-handle range slider: replaces SVG bar chart with histogram background + two range handles for year filtering</li>
+<li>[x] JS shared infrastructure: setupSearch, setupSortHeaders, createTableRenderer, addFilterChip (DRY refactoring of initIndex/initRegister)</li>
+<li>[x] CSS DRY: chip base consolidation, card surface grouping, merged print blocks</li>
+<li>[x] Template macros: search_box, result_count, active_filters, no_results, json_data (shared between index + register)</li>
+<li>[x] Statistics dashboard: statistics.html with hero cards, decade histogram, annotation depth, coverage bars, top-10 rankings, collection comparison</li>
+<li>[x] 82 tests (30 renderer + 13 register + 9 build + 10 register pages + 8 guidelines + 12 statistics), all passing</li>
+</ul>
+<hr />
+<h2 id="future-scope-not-in-current-contract">Future Scope (not in current contract)<a class="headerlink" href="#future-scope-not-in-current-contract" title="Permanent link">&para;</a></h2>
+<p>These items are outside the current Scenario B scope. Listed for completeness.</p>
+<ul>
+<li>[ ] RDF conversion of the dataset -- High effort</li>
+<li>[ ] CIDOC-CRM projection of the factoid model -- High effort</li>
+<li>[ ] BeNASch schema migration -- High effort</li>
+<li>[ ] GND/Wikidata matching (systematic authority data) -- Substantial effort</li>
+<li>[ ] SPARQL endpoint -- Substantial effort</li>
+<li>[ ] Pipeline extensibility for new source collections -- Moderate effort</li>
+<li>[ ] AI-assisted annotation (NLP/promptotyping) -- High effort</li>
+<li>[ ] HTR for Gewerbuch_D and other handwritten sources -- High effort</li>
+<li>[ ] Transfer first-name normalisation into repository (currently external) -- Low effort</li>
+<li>[x] Ballast files deleted (Session 10)</li>
+</ul>
+<hr />
+<h2 id="risks">Risks<a class="headerlink" href="#risks" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Byte identity not achievable (collection() vs. glob sorting)</td>
+<td>Deterministic sorting by path. Accept sorted comparison if needed</td>
+</tr>
+<tr>
+<td>kin_relations encoding (UTF-7 modified)</td>
+<td>Python produces UTF-8. Ensure content identity, accept byte difference</td>
+</tr>
+<tr>
+<td>Owner mode topo_rel too complex</td>
+<td>24 rows checked in detail against XSLT. Manual row comparison</td>
+</tr>
+<tr>
+<td>12 defective CSV rows (semicolons in free text)</td>
+<td>Reproduce exactly. Document as bug, optionally offer escaping</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-02-20</td>
+<td>Plan created. Phase A completed.</td>
+</tr>
+<tr>
+<td>2026-02-20</td>
+<td>Phase D completed: 11 transformers, 87,882 rows, 118 tests.</td>
+</tr>
+<tr>
+<td>2026-02-26</td>
+<td>Phase E.1+E.2 completed: 10 relation transformers, 101,948 rows, 158 tests.</td>
+</tr>
+<tr>
+<td>2026-02-26</td>
+<td>Package 4 removed. Phase H (Digital Edition View) added.</td>
+</tr>
+<tr>
+<td>2026-02-27</td>
+<td>Consolidated from Plan.md + action_items.md into single checklist.</td>
+</tr>
+<tr>
+<td>2026-02-27</td>
+<td>Phase H (Digital Edition) implemented: 3,041 HTML pages, 43 tests. knowledge/edition.md added.</td>
+</tr>
+<tr>
+<td>2026-02-27</td>
+<td>Two-layer UI: scholarly labels, regest extraction, provenance block, SAMMLUNG column removed. knowledge/design.md added.</td>
+</tr>
+<tr>
+<td>2026-02-27</td>
+<td>UI redesign: Information Seeking Mantra — timeline, chips, faceted filters, row preview, facsimile viewer, prev/next, progressive rendering, Jinja2 macros, CSS tokens, keyboard a11y.</td>
+</tr>
+<tr>
+<td>2026-02-28</td>
+<td>Text-Bild-Synopse: synopsis layout, compact toolbar, off-canvas sidebar. Cross-file refactoring: dead CSS/macros removed (~120 lines), CSS consolidated (entity/fn/sidebar-dl/facs base classes), JS cached esc()/collectionLabels map/JSON.parse guards, build.py _xpath_text()/_load_registers(), renderer.py _ENTITY_MAP dispatch.</td>
+</tr>
+<tr>
+<td>2026-02-28</td>
+<td>Pipeline DRY refactoring (8 commits): repo hygiene (3 tracked artifacts removed), missing dependencies, _read_filenames → shared utility, BaseTransformer output_dir pass-through (10 run() overrides eliminated), _join_elem_text → text_utils, frontend modernisation (var→const/let, CSS .hidden, skip-link), DATA_EXPORT_DIR configurable via env var. ~280 lines removed, 188+43 tests green.</td>
+</tr>
+<tr>
+<td>2026-03-01</td>
+<td>Test refactoring: 231→310 tests. 11 redundant test files deleted, 3 new (text_utils, csv_writer, pipeline_comparison). Parametrized tests, HTML parsing assertions, tmp_path isolation. "byte-identical" corrected to "content-identical" (14 CSVs). Exact XSLT vs Python diff counts documented.</td>
+</tr>
+<tr>
+<td>2026-03-01</td>
+<td>Phase B.1 done: DTD→RelaxNG conversion. Hand-written sources/schema/toolbox.rng (~860 lines, 48 elements + xi:include). 6 attribute groups, 4 conflict resolutions (cert/n/source/resp). Iterative validation: 0 errors across all 3,530 files. 21 schema tests (pipeline/tests/test_schema.py). ODD-vs-RelaxNG documented in schema preamble.</td>
+</tr>
+<tr>
+<td>2026-03-01</td>
+<td>Phase B.2+B.3 done: DOCTYPE added to 326 files. pipeline/validate.py (CLI, exit codes). pipeline/integrity.py: referential integrity (0 orphaned refs), normalisation matching, duplicate detection (0 dupes), annotation classification (187 findings, 0 errors). 1,947 instant attributes removed (ODD artifact). validation_report.json+md generated. 301 tests green (279+5+17).</td>
+</tr>
+<tr>
+<td>2026-03-01</td>
+<td>Phase C done: edition/content/edition_guidelines.md (8 sections, German). Markdown-&gt;HTML build via Python-Markdown (tables, fenced_code, toc, attr_list). guidelines.html template, .guidelines-page CSS (~170 lines), "Richtlinien" nav link. 8 tests. Fulfils Gutachten #5 (individualisation) and #6 (encoding guidelines). 361 tests green (301+60).</td>
+</tr>
+<tr>
+<td>2026-03-02</td>
+<td>Register pages + range slider + refactoring: Register list pages (persons/orgs/places with search, alphabet bar, sort), 19,699 entity detail pages with reverse index, nav dropdown. Dual-handle range slider replaces SVG bar chart. JS shared infrastructure (setupSearch, setupSortHeaders, createTableRenderer, addFilterChip), CSS DRY (chip base, card surface, merged print), 5 new template macros. 70 tests green (313+70).</td>
+</tr>
+<tr>
+<td>2026-03-02</td>
+<td>Knowledge base refactoring: K7/K8/Phase G removed, data_flow.md merged into pipeline.md (9→8 docs), Phases A-D compressed, gutachten.md compressed (all 6 conditions DONE), journal.md translated to English. Verification: 11 stale numbers fixed (7,127→7,102 normalisation rows, test counts, PHP/jQuery refs). CLAUDE.md: Agent Instructions added (Rules + Before You Start routing). README.md: Digital Edition section + docs/ folder added.</td>
+</tr>
+<tr>
+<td>2026-03-02</td>
+<td>Phase F done: <code>validate</code> CLI subcommand + <code>--validate</code>/<code>--timing</code> flags on transform. pipeline/README.md (architecture, testing, XSLT correspondence, releases). <code>.github/workflows/test.yml</code> (2 jobs: pipeline 313 tests + edition 70 tests). Git history cleanup removed from scope (original project's responsibility). Git tagging convention documented (semver).</td>
+</tr>
+<tr>
+<td>2026-03-02</td>
+<td>Statistics dashboard + final cleanup: statistics.html (hero cards, decade histogram, annotation depth, coverage bars, top-10 rankings, collection table). E.3 UTF-7 resolved (Python UTF-8 confirmed), edition/requirements.txt lxml added. 12 new tests (82 edition total). All phases A–F + H complete.</td>
+</tr>
+</tbody>
+</table>
+    </div>
+    <footer class="vault-detail-footer">
+        <p>Quelle: <code>knowledge/plan.md</code> · Gebaut: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Vault: Implementierungsplan</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/edition.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promptotyping Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="./index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="./index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="./persons.html">Personen</a>
+                        <a href="./organisations.html">Organisationen</a>
+                        <a href="./places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="./edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="./statistics.html">Statistik</a>
+                <a href="./vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<div class="vault-page">
+
+    <header class="vault-header">
+        <h1>Promptotyping Vault</h1>
+        <p class="vault-subtitle">Wissensdokumentation zum Projekt — generiert im agentic coding workflow</p>
+    </header>
+
+    <div class="vault-grid">
+        
+        <a href="./vault/design.html" class="vault-card">
+            <h2 class="vault-card-title">Design System</h2>
+            <p class="vault-card-desc">Farben, Typographie, Komponenten, Spacing, Annotationsstile</p>
+            <span class="vault-card-meta">design.md · 256 Zeilen</span>
+        </a>
+        
+        <a href="./vault/edition.html" class="vault-card">
+            <h2 class="vault-card-title">Digital Edition</h2>
+            <p class="vault-card-desc">Build-System, TEI→HTML Rendering, Makros, JS-Infrastruktur</p>
+            <span class="vault-card-meta">edition.md · 277 Zeilen</span>
+        </a>
+        
+        <a href="./vault/export_specification.html" class="vault-card">
+            <h2 class="vault-card-title">SQL-Export</h2>
+            <p class="vault-card-desc">Tabellenstrukturen, FK-Graph, bekannte Bugs</p>
+            <span class="vault-card-meta">export_specification.md · 522 Zeilen</span>
+        </a>
+        
+        <a href="./vault/gutachten.html" class="vault-card">
+            <h2 class="vault-card-title">Gutachten</h2>
+            <p class="vault-card-desc">Externe Evaluation, Qualitätsbewertung, Zustandsmapping</p>
+            <span class="vault-card-meta">gutachten.md · 142 Zeilen</span>
+        </a>
+        
+        <a href="./vault/journal.html" class="vault-card">
+            <h2 class="vault-card-title">Journal</h2>
+            <p class="vault-card-desc">Session-Log der agentic coding Sitzungen</p>
+            <span class="vault-card-meta">journal.md · 262 Zeilen</span>
+        </a>
+        
+        <a href="./vault/pipeline.html" class="vault-card">
+            <h2 class="vault-card-title">Transformations-Pipeline</h2>
+            <p class="vault-card-desc">Python/lxml Pipeline, XSLT-Legacy, ER-Modell, Validierung</p>
+            <span class="vault-card-meta">pipeline.md · 460 Zeilen</span>
+        </a>
+        
+        <a href="./vault/plan.html" class="vault-card">
+            <h2 class="vault-card-title">Implementierungsplan</h2>
+            <p class="vault-card-desc">Phasen A–H, Fortschritt, Changelog</p>
+            <span class="vault-card-meta">plan.md · 211 Zeilen</span>
+        </a>
+        
+        <a href="./vault/project.html" class="vault-card">
+            <h2 class="vault-card-title">Projektkontext</h2>
+            <p class="vault-card-desc">Datenmodell, Annotationsschema, ID-Regeln, Quellen und Register</p>
+            <span class="vault-card-meta">project.md · 234 Zeilen</span>
+        </a>
+        
+    </div>
+
+    <footer class="vault-footer">
+        <p>8 Dokumente · Zuletzt gebaut: 2026-03-02</p>
+    </footer>
+
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Promptotyping Vault</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./static/edition.js"></script>
+    
+</body>
+</html>

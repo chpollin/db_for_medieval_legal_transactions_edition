@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projektkontext — Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="../index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="../persons.html">Personen</a>
+                        <a href="../organisations.html">Organisationen</a>
+                        <a href="../places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="../edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="../statistics.html">Statistik</a>
+                <a href="../vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="vault-detail-page">
+    <div class="vault-detail-header">
+        <nav class="vault-breadcrumb" aria-label="Breadcrumb">
+            <a href="../vault.html">Vault</a>
+            <span class="vault-breadcrumb-sep">/</span>
+            <span>Projektkontext</span>
+        </nav>
+        <h1>Projektkontext</h1>
+        <p class="vault-detail-meta">
+            <span class="vault-detail-file">project.md</span>
+            <span class="vault-detail-lines">234 Zeilen</span>
+        </p>
+    </div>
+    
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#1-project-context">1. Project Context</a></li>
+<li><a href="#2-source-collections">2. Source Collections</a><ul>
+<li><a href="#relaxng-schema">RelaxNG Schema</a></li>
+<li><a href="#data-quality-phase-b3">Data Quality (Phase B.3)</a></li>
+</ul>
+</li>
+<li><a href="#3-four-level-annotation-model">3. Four-Level Annotation Model</a></li>
+<li><a href="#4-id-construction-schemes">4. ID Construction Schemes</a><ul>
+<li><a href="#events">Events</a></li>
+<li><a href="#persons">Persons</a></li>
+<li><a href="#organisations">Organisations</a></li>
+<li><a href="#places">Places</a></li>
+</ul>
+</li>
+<li><a href="#5-seven-step-tagging-workflow">5. Seven-Step Tagging Workflow</a></li>
+<li><a href="#6-registers">6. Registers</a></li>
+<li><a href="#7-normalisation-lists">7. Normalisation Lists</a></li>
+</ul>
+</div>
+
+    </nav>
+    
+    <div class="guidelines-body vault-body">
+        <h1 id="project-and-research-context">Project and Research Context<a class="headerlink" href="#project-and-research-context" title="Permanent link">&para;</a></h1>
+<p>Description of the project, data model, and annotation methodology. Primary source for Gutachten conditions #2 (ODD), #5 (individualisation), and #6 (encoding guidelines).</p>
+<h2 id="1-project-context">1. Project Context<a class="headerlink" href="#1-project-context" title="Permanent link">&para;</a></h2>
+<p>The database <code>db_for_medieval_legal_transactions</code> is a TEI-XML-based prosopographic database for medieval Viennese legal transactions (ca. 1177--1524). The data model follows the factoid approach of digital prosopography.</p>
+<p><strong>Origin:</strong>
+- Master thesis (real estate transfers Vienna 1360--1373, Excel)
+- Conceptualisation of XML-based database
+- Dissertation "Im Netz der Stadt" (Gruenwald) -- full DTD created here
+- Parallel use in the project "Stadt und Gemeinschaft" (Lutter, University of Vienna)
+- Light DTD was designed but never deployed in DOCTYPE declarations</p>
+<p><strong>Reference models:</strong> Factoid prosopography (KCL, factoid-dighum.kcl.ac.uk), TEI P5, CIDOC-CRM (long-term).</p>
+<p><strong>Publication:</strong> DHd blog post "Die digitale Erfassung von mittelalterlichen Rechtsgeschaeften" (Gruenwald, 31 Oct 2021, dhd-blog.org/?p=16737).</p>
+<h2 id="2-source-collections">2. Source Collections<a class="headerlink" href="#2-source-collections" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Collection</th>
+<th>Files</th>
+<th>DOCTYPE</th>
+<th>Period</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QGW/Vienna_1177-1414_ready</td>
+<td>2,037</td>
+<td>2,036 full, 1 without</td>
+<td>1177--1414</td>
+</tr>
+<tr>
+<td>Stadtbuecher/Band_1_1395-1400_ready</td>
+<td>628</td>
+<td>all full</td>
+<td>1395--1400</td>
+</tr>
+<tr>
+<td>QGW/Vienna_1458-66</td>
+<td>412</td>
+<td>all full</td>
+<td>1458--1466</td>
+</tr>
+<tr>
+<td>QGW/Vienna_1493-1500</td>
+<td>305</td>
+<td>54 full, 251 without</td>
+<td>1493--1500</td>
+</tr>
+<tr>
+<td>QGW/Vienna_1415-1417</td>
+<td>75</td>
+<td>74 full, 1 without</td>
+<td>1415--1417</td>
+</tr>
+<tr>
+<td>QGW/Vienna_1524</td>
+<td>73</td>
+<td>all without</td>
+<td>1524</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>3,530</strong></td>
+<td><strong>all with DOCTYPE</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>All files reference <code>toolbox_full.dtd</code> via DOCTYPE (326 files without DOCTYPE were fixed in Phase B.2). <code>toolbox_light.dtd</code> (126 elements, subset of full) was never used.</p>
+<p><strong>DTD comparison:</strong> 7 elements only in full (lb, cert, row, measure, author, pubPlace, publisher). All 126 light elements exist in full. Consequence: only one schema (full) is needed.</p>
+<h3 id="relaxng-schema">RelaxNG Schema<a class="headerlink" href="#relaxng-schema" title="Permanent link">&para;</a></h3>
+<p>RelaxNG schema <code>sources/schema/toolbox.rng</code> (~860 lines) replaces the DTD as active schema (Gutachten requirement #2). Hand-written from empirical analysis because: (1) <code>trang</code> converter requires Java (unavailable), (2) DTD was bloated with ODD artifacts (133 defined elements, only 48 used).</p>
+<p><strong>Architecture — 12 sections:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>6 attribute groups (att.global, att.typed, att.datable.w3c, att.declarable, att.docStatus, att.sortable)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2 content macros (macro.paraContent = 18 inline elements, macro.phraseSeq = 16)</td>
+</tr>
+<tr>
+<td>3--6</td>
+<td>Root (TEI), Header, Manuscript description, Facsimile</td>
+</tr>
+<tr>
+<td>7--8</td>
+<td>Body/Text, Annotation model (rs, roleName, triggerstring, catchwords)</td>
+</tr>
+<tr>
+<td>9--10</td>
+<td>Inline elements (p, add, reg, etc.), Bibliographic (bibl, title, etc.)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>XInclude (own namespace)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Documentation of 85 excluded elements</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attribute conflict resolutions</strong> (RelaxNG forbids duplicate attribute definitions):</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Conflict</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cert</code></td>
+<td>att.global vs. rs/roleName enum</td>
+<td>Removed from att.global, per-element on rs/roleName</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>att.global (text) vs. triggerstring/catchwords (enum)</td>
+<td>att.global NOT applied to triggerstring/catchwords</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>att.global vs. reg/placeName</td>
+<td>Removed from att.global, per-element</td>
+</tr>
+<tr>
+<td><code>resp</code></td>
+<td>att.global vs. div</td>
+<td>Removed from att.global, per-element on div/TEI</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Constraint strategy</strong> (why some attributes use <code>&lt;text/&gt;</code> instead of enums):</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Constraint</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rs/@type</code></td>
+<td><code>&lt;text/&gt;</code></td>
+<td>Data quality: off, rs, pe, witness, empty in ~20 files</td>
+</tr>
+<tr>
+<td><code>rs/@ref</code></td>
+<td><code>&lt;text/&gt;</code></td>
+<td>158 files with ref="NULL" placeholder</td>
+</tr>
+<tr>
+<td><code>rs/@role</code></td>
+<td>Enum (7 values)</td>
+<td>Stable, no deviations in corpus</td>
+</tr>
+<tr>
+<td><code>roleName/@type</code></td>
+<td>Enum (13 values, optional)</td>
+<td>"org" as 13th value found empirically; optional because 1 file lacks @type</td>
+</tr>
+<tr>
+<td><code>triggerstring/@n</code></td>
+<td>Enum (4 values, optional)</td>
+<td>"impl_rules" as 4th value; optional because 7 files lack @n</td>
+</tr>
+<tr>
+<td><code>date/@when</code></td>
+<td><code>&lt;text/&gt;</code></td>
+<td>Contains values like "99999999"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Content model deviations</strong> (DTD definition vs. empirical usage):</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>DTD</th>
+<th>Empirical</th>
+<th>Schema solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>triggerstring</td>
+<td><code>#PCDATA</code></td>
+<td><code>mixed{add, rs, roleName}</code></td>
+<td><code>zeroOrMore{text\|add\|rs\|roleName}</code></td>
+</tr>
+<tr>
+<td>measure</td>
+<td><code>#PCDATA</code></td>
+<td><code>mixed{add}</code></td>
+<td><code>zeroOrMore{text\|add}</code></td>
+</tr>
+<tr>
+<td>text</td>
+<td><code>(front?, body)</code></td>
+<td>bare text before body (1 file)</td>
+<td>Allow mixed content</td>
+</tr>
+<tr>
+<td>div</td>
+<td>Complex</td>
+<td><code>(p\|div\|xi:include)*</code></td>
+<td>Simplified, can be empty</td>
+</tr>
+<tr>
+<td>physDesc</td>
+<td><code>(p*, sealDesc?)</code></td>
+<td>Can be empty</td>
+<td><code>zeroOrMore{p\|sealDesc}</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-quality-phase-b3">Data Quality (Phase B.3)<a class="headerlink" href="#data-quality-phase-b3" title="Permanent link">&para;</a></h3>
+<p>Referential integrity check across all 3,530 files (0 orphaned pe/org/pl refs, 0 duplicate IDs):</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total @ref values</td>
+<td>30,525</td>
+</tr>
+<tr>
+<td>Person refs resolved</td>
+<td>21,171</td>
+</tr>
+<tr>
+<td>Org refs resolved</td>
+<td>2,905</td>
+</tr>
+<tr>
+<td>Place refs resolved</td>
+<td>49</td>
+</tr>
+<tr>
+<td>Event refs (no register, systemic)</td>
+<td>6,242</td>
+</tr>
+<tr>
+<td>NULL placeholders</td>
+<td>158</td>
+</tr>
+<tr>
+<td>Orphaned pe/org/pl refs</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Total @corresp values</td>
+<td>14,830</td>
+</tr>
+<tr>
+<td>Orphaned @corresp</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>Duplicate IDs (within/across registers)</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Normalisation matching (exact string match against TAB-delimited lists):</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Unique texts</th>
+<th>Matched</th>
+<th>Unmatched</th>
+<th>List</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>triggerstring</td>
+<td>2,112</td>
+<td>316 (15%)</td>
+<td>1,796</td>
+<td>function_norm_matching.csv</td>
+</tr>
+<tr>
+<td>catchwords</td>
+<td>8</td>
+<td>1</td>
+<td>7</td>
+<td>label_norm_matching.csv</td>
+</tr>
+<tr>
+<td>roleName</td>
+<td>3,197</td>
+<td>1,609 (50%)</td>
+<td>1,588</td>
+<td>roleName_norm_matching.csv</td>
+</tr>
+</tbody>
+</table>
+<p>Annotation issues classified (187 findings total, 0 errors):</p>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Count</th>
+<th>Severity</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rs/@ref="NULL"</code></td>
+<td>158 files</td>
+<td>warning</td>
+<td>Placeholder, needs manual resolution</td>
+</tr>
+<tr>
+<td><code>rs</code> without <code>@type</code></td>
+<td>12</td>
+<td>warning</td>
+<td>Empty container elements</td>
+</tr>
+<tr>
+<td><code>triggerstring</code> without <code>@n</code></td>
+<td>7</td>
+<td>warning</td>
+<td>Missing classification</td>
+</tr>
+<tr>
+<td><code>rs/@type</code> non-canonical (off, rs, pe, witness, empty)</td>
+<td>7</td>
+<td>warning</td>
+<td>Annotation errors</td>
+</tr>
+<tr>
+<td><code>roleName/@type="org"</code></td>
+<td>2</td>
+<td>info</td>
+<td>Non-standard but semantically correct</td>
+</tr>
+<tr>
+<td><code>roleName</code> without <code>@type</code></td>
+<td>1</td>
+<td>warning</td>
+<td>Missing required annotation</td>
+</tr>
+<tr>
+<td><code>instant</code> attribute (ODD artifact)</td>
+<td>—</td>
+<td><strong>removed</strong></td>
+<td>1,947 attributes removed from 1,916 files</td>
+</tr>
+<tr>
+<td><code>listBibl/@default</code> (ODD artifact)</td>
+<td>663</td>
+<td>info</td>
+<td>Accepted in schema via att.declarable</td>
+</tr>
+</tbody>
+</table>
+<p>Full report regenerable via <code>python -c "from pipeline.integrity import generate_reports; generate_reports()"</code>.</p>
+<h2 id="3-four-level-annotation-model">3. Four-Level Annotation Model<a class="headerlink" href="#3-four-level-annotation-model" title="Permanent link">&para;</a></h2>
+<p>Hierarchical annotation structure (each level is part of the higher one):</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Subject</th>
+<th>TEI Element</th>
+<th>Categorisation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Events</td>
+<td>Legal transactions</td>
+<td><code>&lt;rs type="event" ref="#ev__*"&gt;</code></td>
+<td>Via <code>&lt;catchwords n="disp"&gt;</code> -- dispositive verbs extracted, categorised post-hoc</td>
+</tr>
+<tr>
+<td>2. Functions</td>
+<td>Roles in legal transaction</td>
+<td><code>&lt;rs type="fn" role="issuer\|recipient\|witness\|other"&gt;</code></td>
+<td>For "other": <code>&lt;catchwords n="fn"&gt;</code> for specification</td>
+</tr>
+<tr>
+<td>3. Entities</td>
+<td>Persons, places, organisations</td>
+<td><code>&lt;rs type="person\|org\|place" ref="#*__*"&gt;</code></td>
+<td>ID linkage to registers (XPointer shorthand)</td>
+</tr>
+<tr>
+<td>4. Attributes/Relations</td>
+<td>Properties + connections</td>
+<td><code>&lt;roleName type="*" corresp="#*__*"&gt;</code></td>
+<td>Attributes: prof, title, dead; Relations: kin, buis, rep, owner, off, title_ref, staff, topo, friend</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key design decision:</strong> Event categorisation is not done a priori but through extraction of dispositive verbs and post-hoc category formation. This allows flexibility across heterogeneous source collections.</p>
+<p><strong>Place references:</strong> Places are referenced via two mechanisms: <code>&lt;rs type="place"&gt;</code> (49 occurrences) and <code>@corresp</code> containing <code>pl__</code> in <code>&lt;roleName&gt;</code> (topo, owner relations). Both mechanisms combined reach only 44 of 2,537 place register entries -- places are systematically underrepresented in annotations (K5 resolved: annotation status quo).</p>
+<p><strong>roleName/@type distribution (empirical):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Total</th>
+<th>with @corresp</th>
+<th>Category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>occ (occupation)</td>
+<td>7,301</td>
+<td>7,297</td>
+<td>Relation</td>
+</tr>
+<tr>
+<td>kin (kinship)</td>
+<td>6,779</td>
+<td>6,778</td>
+<td>Relation</td>
+</tr>
+<tr>
+<td>title</td>
+<td>6,216</td>
+<td>7</td>
+<td>Attribute</td>
+</tr>
+<tr>
+<td>prof (profession)</td>
+<td>1,799</td>
+<td>16</td>
+<td>Attribute</td>
+</tr>
+<tr>
+<td>dead</td>
+<td>1,612</td>
+<td>1</td>
+<td>Attribute</td>
+</tr>
+<tr>
+<td>rep (representation)</td>
+<td>597</td>
+<td>597</td>
+<td>Relation</td>
+</tr>
+<tr>
+<td>friend</td>
+<td>87</td>
+<td>87</td>
+<td>Relation</td>
+</tr>
+<tr>
+<td>topo</td>
+<td>21</td>
+<td>21</td>
+<td>Relation</td>
+</tr>
+<tr>
+<td>owner</td>
+<td>19</td>
+<td>19</td>
+<td>Relation</td>
+</tr>
+<tr>
+<td>title_ref</td>
+<td>7</td>
+<td>2</td>
+<td>Relation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-id-construction-schemes">4. ID Construction Schemes<a class="headerlink" href="#4-id-construction-schemes" title="Permanent link">&para;</a></h2>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>ev__ + source_abbreviation + (_) number
+e.g.: ev__QGW_II_II_2870, ev__SB_CD_00642
+Mentioned events: ev__QGW_II_II_00606_men_1
+</code></pre></div>
+
+<h3 id="persons">Persons<a class="headerlink" href="#persons" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pe__ + normalised_forename + (_) normalised_surname + (_) source_abbreviation + (_) number
+e.g.: pe__johann_maurperger_QGW_II_II_2870
+Homonyms: pe__agnes_QGW_II_II_3250_a, pe__agnes_QGW_II_II_3250_b
+</code></pre></div>
+
+<p>Rules: No umlauts in IDs. Forenames via external normalisation table. Surnames via source register; if absent: original spelling. No surname → occupation. Women/children: potential surname added in <code>&lt;add&gt;</code>.</p>
+<h3 id="organisations">Organisations<a class="headerlink" href="#organisations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>org__ + settlement + (-) patron_saint/proper_name + (_) institution_type + (-) sub_org
+e.g.: org__wien, org__wien-st_stephan, org__wien-st_stephan-altar_st_dorothea
+</code></pre></div>
+
+<p>Principle: From general to specific. Hierarchical nesting in orgList.
+Types: Stadt, Dioezese, Kirche/Kapelle, Pfarre, Spital, Kloster (m/f), Altar, Messe, Zeche/Bruderschaft, Herzogtum, Koenigreich, Reich, OTHER.</p>
+<h3 id="places">Places<a class="headerlink" href="#places" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pl__ + settlement + (-) name
+e.g.: pl__wien, pl__wien-hoher_markt
+Real estate: pl__ + settlement + (-) immo_ + street + (_) number
+e.g.: pl__wien-immo_karntnerstrasse_1
+</code></pre></div>
+
+<p>Types: settlement, street, immo. Hierarchisation possible.</p>
+<h2 id="5-seven-step-tagging-workflow">5. Seven-Step Tagging Workflow<a class="headerlink" href="#5-seven-step-tagging-workflow" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Insert editor initials (<code>@resp</code>)</li>
+<li>Mark up events (<code>&lt;rs type="event"&gt;</code>)</li>
+<li>Mark dispositive verbs (<code>&lt;catchwords n="disp"&gt;</code>) -- optionally with <code>&lt;add&gt;</code> for implicit information</li>
+<li>Assign functions (<code>&lt;rs type="fn" role="issuer|recipient|witness|other"&gt;</code>) -- for "other": additionally <code>&lt;catchwords n="fn"&gt;</code></li>
+<li>Mark up entities -- first <code>&lt;rs/&gt;</code>, then assign IDs (<code>@ref</code>)</li>
+<li>Add attributes/relations (<code>&lt;roleName type="*" corresp="*__*"&gt;</code>) -- incl. <code>@select</code> for spatial precision</li>
+<li>Mark up units of measurement (<code>&lt;measure/&gt;</code>)</li>
+</ol>
+<p>Additional: <code>@cert</code> (high--low) for probability assessment, <code>&lt;unclear&gt;</code>, <code>&lt;add&gt;</code>.</p>
+<p>This workflow is the de facto annotation guideline of the project and the substantive basis for Gutachten condition #6.</p>
+<h2 id="6-registers">6. Registers<a class="headerlink" href="#6-registers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Entries</th>
+<th>Size</th>
+<th>ID Prefix</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>personList.xml</td>
+<td>16,088</td>
+<td>8.4 MB</td>
+<td>pe__</td>
+<td><code>indices/</code></td>
+</tr>
+<tr>
+<td>orgList.xml</td>
+<td>1,078</td>
+<td>381 KB</td>
+<td>org__</td>
+<td><code>indices/</code></td>
+</tr>
+<tr>
+<td>placeList.xml</td>
+<td>2,537</td>
+<td>1.4 MB</td>
+<td>pl__</td>
+<td><code>indices/</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Coverage:</strong> 9,215 of 19,703 register entries are never referenced from any source file. Breakdown: 6,342 persons, 2,493 places, 380 organisations (see <a href="pipeline.md">pipeline</a> Integrity Checks).</p>
+<p><strong>Register structure:</strong>
+- personList: <code>&lt;persName&gt;</code> (forename/reg, surname/reg, addName/reg, genName), <code>&lt;death notAfter=""&gt;</code>, <code>&lt;idno&gt;</code> for external authorities. <code>@sex</code> (f/m), <code>@source</code>, <code>@resp</code>, <code>@cert</code>, <code>@sameAs</code>.
+- orgList: Hierarchical <code>&lt;org&gt;</code> elements, with <code>&lt;location&gt;/&lt;address&gt;</code>, <code>&lt;trait&gt;/&lt;label&gt;/&lt;desc&gt;</code>. Types via <code>@type</code>.
+- placeList: Places with GeoNames URIs (<code>&lt;idno&gt;</code>) and lat/lng coordinates (<code>&lt;geo&gt;</code>). Hierarchical places (houses within streets). Types: immo, settlement, street, river.</p>
+<p>Schema: <code>lists.xsd</code>. Defines listPerson (<code>@sex</code> required f/m), listOrg (19 type values), listPlace (4 type values with <code>&lt;geo&gt;</code> and <code>&lt;idno&gt;</code>), listEvent (deprecated, eventList deleted).</p>
+<p><strong>Phase A corrections:</strong> 4 entries in personList with faulty ID prefix (<code>pe_</code> instead of <code>pe__</code> or missing prefix) corrected. 1 duplicate in orgList resolved (<code>org__wien-st_stephan-altar_zwoelfapostel-messe_ybbs_anna</code>, line 3726 type="Altar" vs. 3772 type="Messe").</p>
+<h2 id="7-normalisation-lists">7. Normalisation Lists<a class="headerlink" href="#7-normalisation-lists" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Rows</th>
+<th>Purpose</th>
+<th>Delimiter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>roleName_norm_matching.csv</td>
+<td>3,950</td>
+<td>Titles, occupations, kinship</td>
+<td>TAB</td>
+</tr>
+<tr>
+<td>label_norm_matching.csv</td>
+<td>2,460</td>
+<td>Event triggers</td>
+<td>TAB</td>
+</tr>
+<tr>
+<td>function_norm_matching.csv</td>
+<td>685</td>
+<td>Functions (role "other")</td>
+<td>TAB</td>
+</tr>
+<tr>
+<td>editors/Name_of_Editors.csv</td>
+<td>7</td>
+<td>Editor initials</td>
+<td>Semicolon</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Column details:</strong>
+- roleName_norm_matching: roleName_spelling, roleName_spelling_norm, roleName_contentual_norm, Gewerbe_nach_Uhlirz_GstW, roleName_type, authority, note, resp, Kommentar. Many empty fields in columns 6--9.
+- label_norm_matching: Normalises event triggers. 727 of 2,813 unique triggerstrings in the sources have no normalisation match.
+- function_norm_matching: Normalises functions with role "other". Duplicates removed in Phase A (formerly 710 rows).
+- editors/Name_of_Editors: 7 editors with initials. Encoding repaired in Phase A.</p>
+<p>Forename normalisation is external (via <code>medieval-legal-transactions.univie.ac.at/norm_names/</code>, not in repository).</p>
+    </div>
+    <footer class="vault-detail-footer">
+        <p>Quelle: <code>knowledge/project.md</code> · Gebaut: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Vault: Projektkontext</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/edition.js"></script>
+    
+</body>
+</html>

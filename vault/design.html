@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System — Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="../index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="../persons.html">Personen</a>
+                        <a href="../organisations.html">Organisationen</a>
+                        <a href="../places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="../edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="../statistics.html">Statistik</a>
+                <a href="../vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="vault-detail-page">
+    <div class="vault-detail-header">
+        <nav class="vault-breadcrumb" aria-label="Breadcrumb">
+            <a href="../vault.html">Vault</a>
+            <span class="vault-breadcrumb-sep">/</span>
+            <span>Design System</span>
+        </nav>
+        <h1>Design System</h1>
+        <p class="vault-detail-meta">
+            <span class="vault-detail-file">design.md</span>
+            <span class="vault-detail-lines">256 Zeilen</span>
+        </p>
+    </div>
+    
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#design-principles">Design Principles</a></li>
+<li><a href="#colour-palette">Colour Palette</a><ul>
+<li><a href="#base-colours-parchment-inspired">Base Colours (parchment-inspired)</a></li>
+<li><a href="#annotation-colours-muted-academic-tones">Annotation Colours (muted academic tones)</a></li>
+<li><a href="#colour-logic">Colour Logic</a></li>
+<li><a href="#css-architecture-dry-consolidation">CSS Architecture (DRY consolidation)</a></li>
+</ul>
+</li>
+<li><a href="#typography">Typography</a><ul>
+<li><a href="#font-stack">Font Stack</a></li>
+<li><a href="#scale">Scale</a></li>
+<li><a href="#line-heights">Line Heights</a></li>
+<li><a href="#typographic-conventions">Typographic Conventions</a></li>
+</ul>
+</li>
+<li><a href="#components">Components</a><ul>
+<li><a href="#navigation-bar">Navigation Bar</a></li>
+<li><a href="#index-page-corpus-overview">Index Page — Corpus Overview</a></li>
+<li><a href="#index-table">Index Table</a></li>
+<li><a href="#document-toolbar-sticky">Document Toolbar (sticky)</a></li>
+<li><a href="#synopsis-layout-text-bild-synopse">Synopsis Layout (Text-Bild-Synopse)</a></li>
+<li><a href="#facsimile-panel">Facsimile Panel</a></li>
+<li><a href="#sidebar-off-canvas-metadata">Sidebar (off-canvas metadata)</a></li>
+<li><a href="#prevnext-navigation">Prev/Next Navigation</a></li>
+<li><a href="#annotation-legend-in-sidebar">Annotation Legend (in sidebar)</a></li>
+<li><a href="#provenance-block-in-sidebar">Provenance Block (in sidebar)</a></li>
+<li><a href="#print-metadata">Print Metadata</a></li>
+<li><a href="#document-body">Document Body</a></li>
+<li><a href="#tooltips-js-enhanced">Tooltips (JS-enhanced)</a></li>
+<li><a href="#register-list-pages-personsorganisationsplaces">Register List Pages (persons/organisations/places)</a></li>
+<li><a href="#register-detail-pages-19700-pages">Register Detail Pages (~19,700 pages)</a></li>
+</ul>
+</li>
+<li><a href="#css-architecture-dry-consolidation_1">CSS Architecture: DRY Consolidation</a><ul>
+<li><a href="#card-surface-grouped-selector">Card Surface (grouped selector)</a></li>
+<li><a href="#chip-base-grouped-selector">Chip Base (grouped selector)</a></li>
+<li><a href="#print-styles-single-merged-block">Print Styles (single merged block)</a></li>
+</ul>
+</li>
+<li><a href="#spacing-system">Spacing System</a></li>
+<li><a href="#transition-z-index-tokens">Transition &amp; Z-Index Tokens</a></li>
+<li><a href="#layout-tokens">Layout Tokens</a></li>
+<li><a href="#responsive-breakpoints">Responsive Breakpoints</a></li>
+<li><a href="#print-stylesheet">Print Stylesheet</a></li>
+<li><a href="#open-design-tasks">Open Design Tasks</a></li>
+</ul>
+</div>
+
+    </nav>
+    
+    <div class="guidelines-body vault-body">
+        <h1 id="design-system-digital-edition">Design System — Digital Edition<a class="headerlink" href="#design-system-digital-edition" title="Permanent link">&para;</a></h1>
+<p>Visual design system for the Wiener Urkundenbuch digital edition. Scholarly, warm, transparent.</p>
+<h2 id="design-principles">Design Principles<a class="headerlink" href="#design-principles" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Scholarly gravity</strong>: Serif typography, warm palette, generous whitespace — the edition must feel like a serious research tool, not a web app</li>
+<li><strong>Epistemic transparency</strong>: The data pipeline is visible, not hidden. Technical identifiers coexist with human-readable labels (two-layer UI, see <code>edition.md</code>)</li>
+<li><strong>Annotation without distraction</strong>: Colour-coded highlights must be visible but never compete with the source text</li>
+<li><strong>Desktop-first, print-aware</strong>: Scholars work on large screens. Print output must be clean and usable</li>
+</ol>
+<h2 id="colour-palette">Colour Palette<a class="headerlink" href="#colour-palette" title="Permanent link">&para;</a></h2>
+<h3 id="base-colours-parchment-inspired">Base Colours (parchment-inspired)<a class="headerlink" href="#base-colours-parchment-inspired" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Hex</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--color-bg</code></td>
+<td><code>#faf8f4</code></td>
+<td>Page background</td>
+</tr>
+<tr>
+<td><code>--color-bg-warm</code></td>
+<td><code>#f5f1ea</code></td>
+<td>Table headers, hover states</td>
+</tr>
+<tr>
+<td><code>--color-bg-card</code></td>
+<td><code>#ffffff</code></td>
+<td>Cards, document body</td>
+</tr>
+<tr>
+<td><code>--color-bg-nav</code></td>
+<td><code>#2c2825</code></td>
+<td>Navigation bar</td>
+</tr>
+<tr>
+<td><code>--color-bg-footer</code></td>
+<td><code>#37332f</code></td>
+<td>Footer</td>
+</tr>
+<tr>
+<td><code>--color-text</code></td>
+<td><code>#2c2825</code></td>
+<td>Primary text</td>
+</tr>
+<tr>
+<td><code>--color-text-muted</code></td>
+<td><code>#6b6560</code></td>
+<td>Secondary text</td>
+</tr>
+<tr>
+<td><code>--color-text-light</code></td>
+<td><code>#8c8680</code></td>
+<td>Labels, placeholders</td>
+</tr>
+<tr>
+<td><code>--color-border</code></td>
+<td><code>#e0dbd4</code></td>
+<td>Primary borders</td>
+</tr>
+<tr>
+<td><code>--color-border-light</code></td>
+<td><code>#ece8e2</code></td>
+<td>Subtle dividers</td>
+</tr>
+</tbody>
+</table>
+<h3 id="annotation-colours-muted-academic-tones">Annotation Colours (muted academic tones)<a class="headerlink" href="#annotation-colours-muted-academic-tones" title="Permanent link">&para;</a></h3>
+<p>Designed for layered readability: background tints + bottom borders on entities, left borders on function roles.</p>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Primary</th>
+<th>Background</th>
+<th>Border</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Person</td>
+<td><code>#2e5a88</code> (slate blue)</td>
+<td><code>#e8f0f8</code></td>
+<td><code>#b8d0e8</code></td>
+</tr>
+<tr>
+<td>Organisation</td>
+<td><code>#7b4d8e</code> (muted purple)</td>
+<td><code>#f2eaf6</code></td>
+<td><code>#d4bce0</code></td>
+</tr>
+<tr>
+<td>Place</td>
+<td><code>#3a7a5c</code> (sage green)</td>
+<td><code>#e6f3ed</code></td>
+<td><code>#b4d8c6</code></td>
+</tr>
+<tr>
+<td>Fn: Issuer</td>
+<td><code>#b85c2f</code> (burnt orange)</td>
+<td><code>rgba(184,92,47,0.06)</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Fn: Recipient</td>
+<td><code>#2e7a88</code> (teal)</td>
+<td><code>rgba(46,122,136,0.06)</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Fn: Witness</td>
+<td><code>#6b6040</code> (olive)</td>
+<td><code>rgba(107,96,64,0.06)</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Fn: Other</td>
+<td><code>#7a6b8c</code> (lavender)</td>
+<td><code>rgba(122,107,140,0.06)</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Triggerstring</td>
+<td><code>#8c5a2e</code> (warm brown)</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Editorial add</td>
+<td><code>#5a7a3a</code> (moss green)</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Attribute</td>
+<td><code>#6b6560</code> (warm grey)</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="colour-logic">Colour Logic<a class="headerlink" href="#colour-logic" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Entities</strong> (person/org/place): Subtle background + 2px bottom border. These are the most important annotations — always visible inline</li>
+<li><strong>Function roles</strong> (issuer/recipient/witness): 3px left border + very faint background. These frame groups of entities</li>
+<li><strong>Triggerstrings</strong>: Bold text colour only (no background), to highlight dispositive verbs without visual noise</li>
+<li><strong>Editorial additions</strong> (<code>&lt;add&gt;</code>): Italic + CSS-generated brackets <code>[...]</code> in light grey</li>
+<li><strong>Unclear text</strong>: Wavy underline — standard philological convention</li>
+</ul>
+<h3 id="css-architecture-dry-consolidation">CSS Architecture (DRY consolidation)<a class="headerlink" href="#css-architecture-dry-consolidation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Entity annotations</strong>: <code>.anno-person</code>, <code>.anno-org</code>, <code>.anno-place</code> share a grouped base selector (border-radius, padding, cursor, transition). Each only sets <code>background</code> + <code>border-bottom-color</code></li>
+<li><strong>Function roles</strong>: <code>.anno-fn</code> base class provides <code>border-left: 3px solid</code> + <code>padding-left</code>. Modifiers (<code>-issuer</code>, <code>-recipient</code>, <code>-witness</code>, <code>-other</code>) only set colour + background</li>
+<li><strong>Sidebar lists</strong>: <code>.sidebar-dl</code> shared base for metadata and provenance definition lists (grid layout, typography)</li>
+<li><strong>Facsimile buttons</strong>: shared selector for <code>.facs-controls button</code> and <code>.facs-zoom-controls button</code></li>
+<li><strong>Section labels</strong>: <code>.tei-seal::before</code> and <code>.tei-nota::before</code> share a grouped pseudo-element selector</li>
+</ul>
+<h2 id="typography">Typography<a class="headerlink" href="#typography" title="Permanent link">&para;</a></h2>
+<h3 id="font-stack">Font Stack<a class="headerlink" href="#font-stack" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Font</th>
+<th>Fallback</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Body text</td>
+<td>Crimson Pro</td>
+<td>Georgia, Times New Roman, serif</td>
+<td>400 (regular), 500 (medium), 600 (semibold)</td>
+</tr>
+<tr>
+<td>UI elements</td>
+<td>Inter</td>
+<td>-apple-system, Segoe UI, sans-serif</td>
+<td>300–600</td>
+</tr>
+<tr>
+<td>Technical IDs</td>
+<td>JetBrains Mono</td>
+<td>Consolas, monospace</td>
+<td>400</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scale">Scale<a class="headerlink" href="#scale" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Size</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--text-2xs</code></td>
+<td>0.6875rem (11px)</td>
+<td>Meta labels, timeline labels, seal/nota pseudo-elements</td>
+</tr>
+<tr>
+<td><code>--text-xs</code></td>
+<td>0.8125rem (13px)</td>
+<td>Labels, technical IDs, breadcrumbs</td>
+</tr>
+<tr>
+<td><code>--text-sm</code></td>
+<td>0.875rem (14px)</td>
+<td>Table cells, secondary text</td>
+</tr>
+<tr>
+<td><code>--text-base</code></td>
+<td>1.0625rem (17px)</td>
+<td>Body text, metadata values</td>
+</tr>
+<tr>
+<td><code>--text-lg</code></td>
+<td>1.25rem (20px)</td>
+<td>Subtitles</td>
+</tr>
+<tr>
+<td><code>--text-xl</code></td>
+<td>1.5rem (24px)</td>
+<td>Page headings (mobile)</td>
+</tr>
+<tr>
+<td><code>--text-2xl</code></td>
+<td>2rem (32px)</td>
+<td>Page headings (desktop)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="line-heights">Line Heights<a class="headerlink" href="#line-heights" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Body text: <code>1.85</code> — generous for readability of dense medieval German</li>
+<li>Headings: <code>1.3</code> — tight for visual weight</li>
+</ul>
+<h3 id="typographic-conventions">Typographic Conventions<a class="headerlink" href="#typographic-conventions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Meta labels</strong>: Sans-serif, uppercase, 0.6875rem, letter-spacing 0.06em — creates clear hierarchy without bold</li>
+<li><strong>Original dates</strong>: Italic serif — signals historical language</li>
+<li><strong>Citations</strong>: Smaller, muted colour — visually subordinate</li>
+<li><strong>Technical IDs / paths</strong>: Monospace, smaller — distinct from content</li>
+</ul>
+<h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h2>
+<h3 id="navigation-bar">Navigation Bar<a class="headerlink" href="#navigation-bar" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fixed (sticky) at top, dark background (<code>#2c2825</code>), <code>z-index: var(--z-nav)</code></li>
+<li>Brand: Serif font + Unicode sigil (❖) + uppercase subtitle "DIGITAL EDITION"</li>
+<li>Height: 3.5rem</li>
+<li><strong>Register dropdown</strong>: hover/click menu with links to Personen, Organisationen, Orte. CSS <code>.nav-dropdown</code> with absolute-positioned <code>.nav-dropdown-menu</code>. Escape-to-close, outside-click-to-close</li>
+</ul>
+<h3 id="index-page-corpus-overview">Index Page — Corpus Overview<a class="headerlink" href="#index-page-corpus-overview" title="Permanent link">&para;</a></h3>
+<p><strong>Corpus summary line</strong>: one-line stats ("3.041 Quellen, 16.084 Personen, 1.078 Organisationen — Wien, ca. 1177–1524")</p>
+<p><strong>Dual-handle range slider</strong>: Replaces the old SVG bar chart. Mini-histogram background (5rem height, <code>--anno-person</code> bars), two overlaid <code>&lt;input type="range"&gt;</code> for min/max year selection. Features: crossing prevention, dynamic label positioning (labels track handles via JS percentage calc), track fill between handles, histogram bar opacity reflects selection (in-range 70%, out-of-range 12%, default 35%). Thumbs: 18px circles, <code>--anno-person</code> colour, hover halo. Year labels follow handle positions with <code>transform: translateX(-50%)</code>.</p>
+<p><strong>Collection chips</strong>: inline pill buttons replacing the old large cards. 1px border, 1rem border-radius. Active state: blue border + tint. Click toggles collection filter.</p>
+<p><strong>Faceted filters</strong>: place dropdown (top 15 places), facsimile dropdown (with/without), text search with icon. Active filters shown as removable chips below.</p>
+<h3 id="index-table">Index Table<a class="headerlink" href="#index-table" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Sortable columns (click headers, arrow indicators ↑↓)</li>
+<li>Hover highlight + alternate row shading (<code>nth-child(even)</code>)</li>
+<li>Truncated regest column (2-line clamp with <code>-webkit-line-clamp</code>)</li>
+<li>Progressive rendering via <code>IntersectionObserver</code> (100 rows per batch, no hard cap)</li>
+<li><strong>Row preview</strong>: click row to expand inline detail (full regest, metadata, facsimile thumbnail). Keyboard accessible (<code>tabindex</code>, Enter/Space).</li>
+<li>Preview animation: 0.2s ease-out fade-in</li>
+</ul>
+<h3 id="document-toolbar-sticky">Document Toolbar (sticky)<a class="headerlink" href="#document-toolbar-sticky" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Sticky below nav bar (<code>top: 3.5rem</code>, <code>z-index: var(--z-nav) - 1</code>)</li>
+<li>Left: breadcrumb + "Nr. X · date · place" (serif, inline)</li>
+<li>Right: inline prev/next links, [i] metadata button, [?] legend button</li>
+<li>Toolbar buttons: 2rem square, border, hover accent</li>
+<li>Mobile (&lt; 768px): not sticky, wraps, inline paging hidden</li>
+</ul>
+<h3 id="synopsis-layout-text-bild-synopse">Synopsis Layout (Text-Bild-Synopse)<a class="headerlink" href="#synopsis-layout-text-bild-synopse" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Default view: text + facsimile side by side (CSS grid <code>1fr 1fr</code>, <code>max-width: 90rem</code>)</li>
+<li>No tab switching — facsimile always visible for documents with facsimile URLs (79%)</li>
+<li>No-facsimile fallback (21%): single column, text centred at <code>max-width: 52rem</code></li>
+<li>Breakpoint: stacks at ≤ 1024px</li>
+</ul>
+<h3 id="facsimile-panel">Facsimile Panel<a class="headerlink" href="#facsimile-panel" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Always visible in synopsis, <code>position: sticky; top: 7rem</code></li>
+<li>First image loads immediately on init (no tab activation needed)</li>
+<li>Page navigation (prev/next) for multi-page documents</li>
+<li>Zoom controls: +, −, 1:1 reset. Mouse wheel zoom on image wrap</li>
+<li>CSS transform zoom (no library), <code>transform-origin: center</code></li>
+</ul>
+<h3 id="sidebar-off-canvas-metadata">Sidebar (off-canvas metadata)<a class="headerlink" href="#sidebar-off-canvas-metadata" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Off-canvas overlay from right, width <code>var(--sidebar-width)</code> (22rem)</li>
+<li><code>z-index: var(--z-sidebar)</code> (200), semi-transparent overlay backdrop</li>
+<li>Sections: metadata (<code>&lt;dl&gt;</code>), annotation legend, provenance</li>
+<li>Triggered by toolbar [i] button (scrolls to metadata) or [?] button (scrolls to legend)</li>
+<li>Close: × button, overlay click, Escape key</li>
+<li>Mobile (&lt; 768px): full-width sidebar</li>
+</ul>
+<h3 id="prevnext-navigation">Prev/Next Navigation<a class="headerlink" href="#prevnext-navigation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Inline in toolbar (compact, small font) + bottom of page</li>
+<li>Styled as bordered links with hover transition</li>
+</ul>
+<h3 id="annotation-legend-in-sidebar">Annotation Legend (in sidebar)<a class="headerlink" href="#annotation-legend-in-sidebar" title="Permanent link">&para;</a></h3>
+<ul>
+<li>CSS grid of colour swatches with labels</li>
+<li>Swatches mirror actual annotation styles (border patterns match rendering)</li>
+<li>No collapsible toggle — always visible inside sidebar</li>
+</ul>
+<h3 id="provenance-block-in-sidebar">Provenance Block (in sidebar)<a class="headerlink" href="#provenance-block-in-sidebar" title="Permanent link">&para;</a></h3>
+<ul>
+<li>"Datenherkunft" section inside sidebar</li>
+<li>Definition list: source file, collection, registers, renderer</li>
+</ul>
+<h3 id="print-metadata">Print Metadata<a class="headerlink" href="#print-metadata" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Hidden <code>&lt;div class="doc-print-meta"&gt;</code> — shown only in <code>@media print</code></li>
+<li>Contains: Nr., date, place, archive, citation</li>
+</ul>
+<h3 id="document-body">Document Body<a class="headerlink" href="#document-body" title="Permanent link">&para;</a></h3>
+<ul>
+<li>White card with generous padding (2.5rem horizontal)</li>
+<li>Justified text with CSS hyphens</li>
+<li>Annotation spans are inline — no layout disruption</li>
+</ul>
+<h3 id="tooltips-js-enhanced">Tooltips (JS-enhanced)<a class="headerlink" href="#tooltips-js-enhanced" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Dark background (<code>#2c2825</code>), sans-serif, <code>z-index: var(--z-tooltip)</code></li>
+<li>Type badge (coloured pill: Person / Organisation / Ort)</li>
+<li>Name in regular weight, ID in monospace below</li>
+<li>Positioned near cursor, viewport-aware</li>
+<li><code>var(--transition-fast)</code> fade-in transition</li>
+</ul>
+<h3 id="register-list-pages-personsorganisationsplaces">Register List Pages (persons/organisations/places)<a class="headerlink" href="#register-list-pages-personsorganisationsplaces" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Same layout pattern as index page (<code>.index-page.register-page</code>)</li>
+<li><strong>Alphabet bar</strong>: 26 letter buttons + "Alle" toggle. <code>.alpha-btn</code> inline pills, active state with <code>--anno-person</code> colour</li>
+<li><strong>Search/filter bar</strong>: shared <code>search_box</code> macro, type/sex dropdown, docs dropdown (with/without documents)</li>
+<li><strong>Sortable table</strong>: name, sex/type, death/type, doc count, ID. Progressive rendering via shared <code>createTableRenderer()</code></li>
+<li><strong>Entity type badges</strong>: <code>.entity-type-badge</code> coloured pills (person blue, org purple, place green)</li>
+<li><strong>Doc count badge</strong>: <code>.doc-count-badge</code> with zero-state variant (<code>.doc-count-zero</code> muted)</li>
+</ul>
+<h3 id="register-detail-pages-19700-pages">Register Detail Pages (~19,700 pages)<a class="headerlink" href="#register-detail-pages-19700-pages" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Breadcrumb</strong>: Dokumente &gt; Register &gt; [Typ] &gt; Name</li>
+<li><strong>Metadata block</strong>: <code>&lt;dl&gt;</code> with entity-specific fields (person: forename/surname/sex/death; org: type; place: type/coordinates)</li>
+<li><strong>Document table</strong>: reverse-index data (date, Nr. linked, collection, regest). Sorted by date</li>
+<li><strong>Provenance footer</strong>: xml:id, source register file</li>
+<li>Output: <code>docs/register/{persons,orgs,places}/{entity_id}.html</code></li>
+</ul>
+<h2 id="css-architecture-dry-consolidation_1">CSS Architecture: DRY Consolidation<a class="headerlink" href="#css-architecture-dry-consolidation_1" title="Permanent link">&para;</a></h2>
+<h3 id="card-surface-grouped-selector">Card Surface (grouped selector)<a class="headerlink" href="#card-surface-grouped-selector" title="Permanent link">&para;</a></h3>
+<p><code>.doc-body</code>, <code>.facs-viewer</code>, <code>.index-table-wrap</code> share: <code>background: var(--color-bg-card)</code>, <code>border</code>, <code>border-radius: var(--radius-lg)</code>, <code>box-shadow: var(--shadow-sm)</code>. Each only adds component-specific rules (padding, overflow).</p>
+<h3 id="chip-base-grouped-selector">Chip Base (grouped selector)<a class="headerlink" href="#chip-base-grouped-selector" title="Permanent link">&para;</a></h3>
+<p><code>.chip</code>, <code>.chip-active</code>, <code>.filter-chip</code> share: <code>display: inline-flex</code>, <code>align-items</code>, <code>gap</code>, <code>border</code>, <code>border-radius: 1rem</code>, <code>font-family: var(--font-sans)</code>. Variants only override padding, background, font-size, colour.</p>
+<h3 id="print-styles-single-merged-block">Print Styles (single merged block)<a class="headerlink" href="#print-styles-single-merged-block" title="Permanent link">&para;</a></h3>
+<p>All <code>@media print</code> rules consolidated into one block at end of file (document + guidelines).</p>
+<h2 id="spacing-system">Spacing System<a class="headerlink" href="#spacing-system" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--space-xs</code></td>
+<td>0.25rem</td>
+<td>Inline gaps</td>
+</tr>
+<tr>
+<td><code>--space-sm</code></td>
+<td>0.5rem</td>
+<td>Tight padding</td>
+</tr>
+<tr>
+<td><code>--space-md</code></td>
+<td>1rem</td>
+<td>Standard padding</td>
+</tr>
+<tr>
+<td><code>--space-lg</code></td>
+<td>1.5rem</td>
+<td>Section spacing</td>
+</tr>
+<tr>
+<td><code>--space-xl</code></td>
+<td>2.5rem</td>
+<td>Major sections</td>
+</tr>
+<tr>
+<td><code>--space-2xl</code></td>
+<td>4rem</td>
+<td>Page-level spacing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="transition-z-index-tokens">Transition &amp; Z-Index Tokens<a class="headerlink" href="#transition-z-index-tokens" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--transition-fast</code></td>
+<td>0.15s</td>
+<td>Hover effects, tooltips, all interactive elements</td>
+</tr>
+<tr>
+<td><code>--transition-normal</code></td>
+<td>0.2s</td>
+<td>Preview animation</td>
+</tr>
+<tr>
+<td><code>--z-nav</code></td>
+<td>100</td>
+<td>Sticky navigation bar</td>
+</tr>
+<tr>
+<td><code>--z-sidebar</code></td>
+<td>200</td>
+<td>Off-canvas sidebar</td>
+</tr>
+<tr>
+<td><code>--z-tooltip</code></td>
+<td>1000</td>
+<td>Entity hover tooltips</td>
+</tr>
+</tbody>
+</table>
+<h2 id="layout-tokens">Layout Tokens<a class="headerlink" href="#layout-tokens" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--max-width</code></td>
+<td>52rem</td>
+<td>Text-only readable width</td>
+</tr>
+<tr>
+<td><code>--max-width-wide</code></td>
+<td>90rem</td>
+<td>Synopsis layout + index page</td>
+</tr>
+<tr>
+<td><code>--sidebar-width</code></td>
+<td>22rem</td>
+<td>Off-canvas sidebar</td>
+</tr>
+</tbody>
+</table>
+<h2 id="responsive-breakpoints">Responsive Breakpoints<a class="headerlink" href="#responsive-breakpoints" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Width</th>
+<th>Adjustments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt; 1024px</td>
+<td>Full synopsis layout (text + facsimile side by side)</td>
+</tr>
+<tr>
+<td>≤ 1024px</td>
+<td>Synopsis stacks (text above facsimile), facs panel not sticky</td>
+</tr>
+<tr>
+<td>≤ 768px</td>
+<td>Toolbar not sticky, inline paging hidden, sidebar full-width, table h-scroll, preview thumb hidden</td>
+</tr>
+<tr>
+<td>≤ 480px</td>
+<td>Single-column legend, stacked collection chips</td>
+</tr>
+</tbody>
+</table>
+<h2 id="print-stylesheet">Print Stylesheet<a class="headerlink" href="#print-stylesheet" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Hidden: navigation, footer, toolbar, sidebar, facsimile panel, paging, active filters</li>
+<li>Shown: <code>doc-print-meta</code> block (Nr., date, place, archive, citation)</li>
+<li>White background, 11pt body text</li>
+<li>Annotations: no backgrounds, 1px solid underlines</li>
+<li>Function roles: no left borders or backgrounds</li>
+<li>No shadows or rounded corners</li>
+</ul>
+<h2 id="open-design-tasks">Open Design Tasks<a class="headerlink" href="#open-design-tasks" title="Permanent link">&para;</a></h2>
+<p>27 design features implemented (Sessions 21-25). See plan.md Phase H for full list.</p>
+<ul>
+<li>[x] Statistics dashboard (entity counts, annotation coverage, decade histogram, rankings, collection comparison)</li>
+</ul>
+    </div>
+    <footer class="vault-detail-footer">
+        <p>Quelle: <code>knowledge/design.md</code> · Gebaut: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Vault: Design System</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/edition.js"></script>
+    
+</body>
+</html>

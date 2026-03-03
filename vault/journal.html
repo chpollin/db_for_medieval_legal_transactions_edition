@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal — Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="../index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="../persons.html">Personen</a>
+                        <a href="../organisations.html">Organisationen</a>
+                        <a href="../places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="../edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="../statistics.html">Statistik</a>
+                <a href="../vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="vault-detail-page">
+    <div class="vault-detail-header">
+        <nav class="vault-breadcrumb" aria-label="Breadcrumb">
+            <a href="../vault.html">Vault</a>
+            <span class="vault-breadcrumb-sep">/</span>
+            <span>Journal</span>
+        </nav>
+        <h1>Journal</h1>
+        <p class="vault-detail-meta">
+            <span class="vault-detail-file">journal.md</span>
+            <span class="vault-detail-lines">262 Zeilen</span>
+        </p>
+    </div>
+    
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#session-1-2026-02-19-explore-repo-incorporate-expert-review">Session 1 – 2026-02-19 – Explore repo, incorporate expert review</a></li>
+<li><a href="#session-2-2026-02-20-integrate-blog-post">Session 2 – 2026-02-20 – Integrate blog post</a></li>
+<li><a href="#session-3-2026-02-20-data-flow-exploration">Session 3 – 2026-02-20 – Data flow exploration</a></li>
+<li><a href="#session-4-2026-02-20-action-items-consolidated">Session 4 – 2026-02-20 – Action items consolidated</a></li>
+<li><a href="#sessions-56-2026-02-20-knowledge-audit-and-formatting">Sessions 5–6 – 2026-02-20 – Knowledge audit and formatting</a></li>
+<li><a href="#session-7-2026-02-20-xslt-deep-analysis">Session 7 – 2026-02-20 – XSLT deep analysis</a></li>
+<li><a href="#session-8-2026-02-20-k1-verification-synthesis-report-number-correction">Session 8 – 2026-02-20 – K1 verification, synthesis report, number correction</a></li>
+<li><a href="#session-9-2026-02-20-unexplored-repo-areas">Session 9 – 2026-02-20 – Unexplored repo areas</a></li>
+<li><a href="#session-10-2026-02-20-repo-cleanup">Session 10 – 2026-02-20 – Repo cleanup</a></li>
+<li><a href="#session-11-2026-02-20-update-exploration-scripts-verify-numbers">Session 11 – 2026-02-20 – Update exploration scripts, verify numbers</a></li>
+<li><a href="#sessions-1213-2026-02-20-python-pipeline-core">Sessions 12–13 – 2026-02-20 – Python Pipeline Core</a></li>
+<li><a href="#session-14-2026-02-26-python-pipeline-relations">Session 14 – 2026-02-26 – Python Pipeline Relations</a></li>
+<li><a href="#sessions-1516-2026-02-26-knowledge-update-and-plan-revision">Sessions 15–16 – 2026-02-26 – Knowledge update and plan revision</a></li>
+<li><a href="#sessions-1718-2026-02-2627-knowledge-base-consolidation-phase-1">Sessions 17–18 – 2026-02-26/27 – Knowledge base consolidation, Phase 1</a></li>
+<li><a href="#session-19-2026-02-27-verification-of-consolidation">Session 19 – 2026-02-27 – Verification of consolidation</a></li>
+<li><a href="#session-20-2026-02-27-plan-consolidation-english-unification">Session 20 – 2026-02-27 – Plan consolidation, English unification</a></li>
+<li><a href="#session-21-2026-02-2728-text-facsimile-synopsis">Session 21 – 2026-02-27/28 – Text-facsimile synopsis</a></li>
+<li><a href="#session-22-2026-02-28-cross-file-refactoring">Session 22 – 2026-02-28 – Cross-file refactoring</a></li>
+<li><a href="#session-22b-2026-02-28-pipeline-dry-refactoring">Session 22b – 2026-02-28 – Pipeline DRY refactoring</a></li>
+<li><a href="#session-23-2026-03-01-test-refactoring">Session 23 – 2026-03-01 – Test refactoring</a></li>
+<li><a href="#session-24-2026-03-02-xpointer-migration-gutachten-requirement-4">Session 24 – 2026-03-02 – XPointer migration (Gutachten requirement #4)</a></li>
+<li><a href="#session-25-2026-03-02-register-pages-range-slider-frontend-refactoring">Session 25 – 2026-03-02 – Register pages, range slider, frontend refactoring</a><ul>
+<li><a href="#phase-1-reverse-index">Phase 1: Reverse Index</a></li>
+<li><a href="#phase-2-navigation-dropdown">Phase 2: Navigation Dropdown</a></li>
+<li><a href="#phase-3-register-list-pages">Phase 3: Register List Pages</a></li>
+<li><a href="#phase-4-register-detail-pages">Phase 4: Register Detail Pages</a></li>
+<li><a href="#phase-5-dual-handle-range-slider">Phase 5: Dual-Handle Range Slider</a></li>
+<li><a href="#phase-6-tests">Phase 6: Tests</a></li>
+<li><a href="#phase-7-frontend-refactoring">Phase 7: Frontend Refactoring</a></li>
+</ul>
+</li>
+<li><a href="#session-26-2026-03-02-knowledge-base-refactoring-verification-documentation-improvement">Session 26 -- 2026-03-02 -- Knowledge base refactoring, verification, documentation improvement</a><ul>
+<li><a href="#phase-1-scope-cleanup">Phase 1: Scope cleanup</a></li>
+<li><a href="#phase-2-knowledge-base-refactoring-8-actions">Phase 2: Knowledge base refactoring (8 actions)</a></li>
+<li><a href="#phase-3-systematic-verification">Phase 3: Systematic verification</a></li>
+<li><a href="#phase-4-claudemd-agent-instructions">Phase 4: CLAUDE.md Agent Instructions</a></li>
+<li><a href="#phase-5-readmemd-improvements">Phase 5: README.md improvements</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+    </nav>
+    
+    <div class="guidelines-body vault-body">
+        <h1 id="journal">Journal<a class="headerlink" href="#journal" title="Permanent link">&para;</a></h1>
+<h2 id="session-1-2026-02-19-explore-repo-incorporate-expert-review">Session 1 – 2026-02-19 – Explore repo, incorporate expert review<a class="headerlink" href="#session-1-2026-02-19-explore-repo-incorporate-expert-review" title="Permanent link">&para;</a></h2>
+<p>Goal: Complete knowledge base for three-tier cost estimate.</p>
+<p>13 knowledge documents created (knowledge/00–11 + gutachten_original.md). Numbers verified against repo (27/30 exact, 3 corrected). Consolidated to 10 thematic documents + Gutachten comparison + anonymised Gutachten. External Gutachten systematically incorporated: 13 confirmed findings, 5 newly quantified, 8 additional repo findings, 9 web frontend findings. Triangulation (Gutachten + repo analysis + project overview) converges.</p>
+<p>Core findings: Data model and annotation solid, technology outdated (XSLT/Saxon). 20,874 ballast files. Credentials in README. Light-DTD subset of Full-DTD, one schema suffices. The 6 short-term Gutachten requirements define tier 1 precisely.</p>
+<h2 id="session-2-2026-02-20-integrate-blog-post">Session 2 – 2026-02-20 – Integrate blog post<a class="headerlink" href="#session-2-2026-02-20-integrate-blog-post" title="Permanent link">&para;</a></h2>
+<p>Goal: Integrate DHd blog post into knowledge folder, close checkpoint #7.</p>
+<p>knowledge/12_blog_post.md created (Summary, Analysis, Implications, Dependencies). Core contents: 4-level annotation model, ID construction schemata for all 4 entity types, 7-step tagging workflow, evaluation statistics 1448, comparison blog vs. DB_Presentation.pdf. Checkpoint #7 closed (7/7). Cross-references added in 00, 01, 02.</p>
+<p>Core finding: Blog is primary source for Gutachten requirements #2 (ODD), #5 (individualisation procedures), #6 (encoding guidelines). Significantly reduces effort for tier 1.</p>
+<h2 id="session-3-2026-02-20-data-flow-exploration">Session 3 – 2026-02-20 – Data flow exploration<a class="headerlink" href="#session-3-2026-02-20-data-flow-exploration" title="Permanent link">&para;</a></h2>
+<p>Goal: Empirical validation of data path via Python exploration scripts.</p>
+<p>3 scripts in exploration/ (config.py, 01_xml_census.py, 02_ref_integrity.py, 03_csv_diff.py). knowledge/13_data_flow.md created.</p>
+<p>Core findings: XML census 42,557 rs elements, 24,446 roleNames, 5,464 triggerstrings, only 49 place references (vs. 21,163 person), 5 typos in annotations (disue, titel_ref, death, kind, fn). Reference integrity 1,255 orphaned refs (1,233 ev__, 11 pe__, 6 org__), 12,760 never-referenced register IDs (2,494 of 2,538 places), 0 duplicates. Double person list clarified: newpersonList is older version (15,036 shared, 1,038 only in personList, 8 only in newpersonList). Curation logic decoded: data_export = analysis_3 minus 819 files, source inventory filter on QGW up to 1414 + CL + Stb + StuGe.</p>
+<h2 id="session-4-2026-02-20-action-items-consolidated">Session 4 – 2026-02-20 – Action items consolidated<a class="headerlink" href="#session-4-2026-02-20-action-items-consolidated" title="Permanent link">&para;</a></h2>
+<p>Goal: Consolidate all tasks from 14 knowledge documents as basis for cost estimate.</p>
+<p>knowledge/14_action_items.md: 49 action items + 8 clarification questions. Tier 1 (25 items, approx. 5–10 days, fixed price possible), Tier 2 (14 items, approx. 6–10 weeks), Tier 3 (10 items, framework contract). Each item with priority (Blocker/Should/Can), effort category and source document. 2 blockers in Tier 1 (credentials + licence), 2 blockers in Tier 2 (pipeline + validation).</p>
+<h2 id="sessions-56-2026-02-20-knowledge-audit-and-formatting">Sessions 5–6 – 2026-02-20 – Knowledge audit and formatting<a class="headerlink" href="#sessions-56-2026-02-20-knowledge-audit-and-formatting" title="Permanent link">&para;</a></h2>
+<p>Goal: Review knowledge base for correctness, redundancies, compaction potential.</p>
+<p>16 consolidated to 14 documents (06_data_export.md deleted, integrated into 13). Systematic refactoring of all documents: redundancies, percentages, bold, emojis removed. gutachten_original.md deleted (requirements integrated as appendix in 11). 03_csv_diff.py repaired (semicolons in free-text fields, fix: quoting=3 + on_bad_lines="warn", 12 defective CSV rows identified). Numbers in 13_data_flow.md corrected (total output 80,043-&gt;101,918, curation difference -8,515-&gt;-9,890).</p>
+<h2 id="session-7-2026-02-20-xslt-deep-analysis">Session 7 – 2026-02-20 – XSLT deep analysis<a class="headerlink" href="#session-7-2026-02-20-xslt-deep-analysis" title="Permanent link">&para;</a></h2>
+<p>Goal: Fully document XSLT transformation logic (Gutachten requirement "document transformation scripts in more detail"). Clarify schema validation status.</p>
+<p>04_xslt_pipeline.md expanded: All 21 XSLT files with XPath expressions, CSV columns, input/output, parameterisation. 7 categories (A–G), 14 shell scripts, exact execution sequence from transform_all.sh, 3 commented-out steps identified, 2 problem areas (commented-out steps, complex owner logic). 01_sources.md extended: XSD for registers (lists.xsd, 336 lines), missing ODD documented (generated 2020-08-06, TEI 4.0.0), no active schema validation in workflow.</p>
+<h2 id="session-8-2026-02-20-k1-verification-synthesis-report-number-correction">Session 8 – 2026-02-20 – K1 verification, synthesis report, number correction<a class="headerlink" href="#session-8-2026-02-20-k1-verification-synthesis-report-number-correction" title="Permanent link">&para;</a></h2>
+<p>Goal: Verify K1 (toolbox_light DTD). Create synthesis report.</p>
+<p>K1 clarified: toolbox_light.dtd was never used. 0 of 3,530 files reference it, all 3,204 DOCTYPE declarations point to toolbox_full.dtd. README is incorrect on this point. Explanation: Full was created first (dissertation), Light was conceived but never implemented. Findings updated in 01, 09, 11, 13.</p>
+<p>knowledge/15_synthesis.md created: Compact synthesis report with all key numbers from 14 individual documents (7 sections: Subject, Data Model, Data Flow, Technical Status, Gutachten, Action Required, Sources).</p>
+<p>Systematic number verification against repo data, 4 error categories: (1) Register numbers: personList 16,074-&gt;16,073, newpersonList 15,044-&gt;15,043, orgList 1,072-&gt;1,073, placeList 2,538-&gt;2,537 (cause: 5 nested person elements without pe__-ID). (2) CSV totals: analysis_3 101,918-&gt;101,909, data_export 92,028-&gt;92,011 (cause: pandas vs. wc -l). (3) Normalisation lists: 7,117-&gt;7,127 (typo in Summary). (4) exploration/ 11-&gt;13 files. Corrected in 00, 02, 03, 09, 10, 11, 13, 14, 15.</p>
+<h2 id="session-9-2026-02-20-unexplored-repo-areas">Session 9 – 2026-02-20 – Unexplored repo areas<a class="headerlink" href="#session-9-2026-02-20-unexplored-repo-areas" title="Permanent link">&para;</a></h2>
+<p>Goal: Systematic audit of all previously unread files.</p>
+<p>~60 functionally relevant files identified. knowledge/16_unexplored_findings.md created (compacted to 40 lines after user review).</p>
+<p>Phase 0 discovered: scripts/python/ListsCreators/ generates registers from external sources (TSV/CSV/file lists), 4-phase data flow becomes 5-phase model. PlaceListCreator.py has faulty ID prefix (ev__ instead of pl__). Error logs: 528 person extraction errors in 117 files (474 from QGW/1412–1417), 1 encoding error. Shell README unreliable (copy-paste errors, person_relations_to_csv.sh executes 10 transformations). CEI notation in GraphML (Monasterium origin). Oxygen project not incorporated (user decision: 4 Saxon versions not relevant for analysis_3 pipeline). Findings incorporated into 04, 05, 07, 09, 13, 15.</p>
+<h2 id="session-10-2026-02-20-repo-cleanup">Session 10 – 2026-02-20 – Repo cleanup<a class="headerlink" href="#session-10-2026-02-20-repo-cleanup" title="Permanent link">&para;</a></h2>
+<p>Goal: Delete archived and unused files, reduce repo to active components.</p>
+<p>Repo reduced from ~25,500 to ~3,750 files: archive_analysis/ (~802 files, deprecated per its own README), sources_actually_not_used/ (~20,874 files, explicitly "not used"), scripts/ (~85 files, deprecated, ListsCreators were one-time generators with hardcoded paths), regesten_split/ (3 files, legacy CEI-TEI splitting), indices/newpersonList.xml (older version), indices/eventList.xml (deprecated per README). Handbook PDF classified as not relevant. Everything recoverable from git history.</p>
+<p>12 knowledge documents updated. Action items 1.3.3, 1.4.2, 1.4.8, 3.10 marked as completed. Clarification questions K2, K3 marked as completed.</p>
+<h2 id="session-11-2026-02-20-update-exploration-scripts-verify-numbers">Session 11 – 2026-02-20 – Update exploration scripts, verify numbers<a class="headerlink" href="#session-11-2026-02-20-update-exploration-scripts-verify-numbers" title="Permanent link">&para;</a></h2>
+<p>Goal: Adapt exploration scripts to Session 10 deletions. Empirically verify all numbers.</p>
+<p>02_ref_integrity.py reworked (newpersonList/eventList references removed, prefix filtering only pe__/org__/pl__ IDs, personList comparison block and pandas dependency removed). 03_csv_diff.py reworked (new count_file_lines() function instead of wc -l, skipped column for pandas-skipped rows).</p>
+<p>New findings: orgList duplicate (org__wien-st_stephan-altar_zwoelfapostel-messe_ybbs_anna, line 3726 type="Altar" vs. line 3772 type="Messe", grep counts 1,073, lxml 1,072 due to silent overwrite). 4 personList entries with faulty ID prefix (pe_ instead of pe__ 2x, without prefix 2x, yields 16,069 pe__-prefixed IDs instead of 16,073). CSV totals corrected again to 101,929 / 92,029 (Session 8 values counted files without trailing newline too low). Orphans updated: 4,107 in sources (instead of 1,255, ev__ references now all orphaned after eventList deletion), 9,215 in registers (instead of 12,760, 3,539 eventList orphans eliminated).</p>
+<p>2 new action items: 1.3.8 (orgList duplicate), 1.3.9 (personList prefixes). Total count 51 + 8 clarifications.</p>
+<h2 id="sessions-1213-2026-02-20-python-pipeline-core">Sessions 12–13 – 2026-02-20 – Python Pipeline Core<a class="headerlink" href="#sessions-1213-2026-02-20-python-pipeline-core" title="Permanent link">&para;</a></h2>
+<p>Goal: Reimplement all 11 XSLT transformations as Python/lxml pipeline. Acceptance criterion: content-identical CSV output.</p>
+<p>39 Python files in pipeline/ (5 utils, 11 transformers, 14 tests, CLI, report, config). 118 tests passed. 87,882 rows in ~12s. CLI: <code>python -m pipeline transform|test|report</code>.</p>
+<p>Implementation in 7 sub-steps: D.1 Infrastructure, D.2 Date Parser (8-priority lookup), D.3 Master data (byte-identical), D.4 Filenames + Events, D.5 Entities in Events (18,995 + 2,533 + 7 rows), D.6 Entities in Sources (28,259 + 8,983 + 63 rows), D.7 CLI + HTML Report.</p>
+<p>Verification: 6/11 CSVs content-identical. 5/11 WARN, fully explained by Phase A data differences: persons.csv (+11 new persons, 4 ID prefix corrections), organisations.csv (+6 new orgs, URL corrections "Wien (W)" removed), places.csv (3 rows: Region, Wiki URL, typo), events_in_sources.csv (1 triggerstring disue-&gt;disp), persons_in_sources.csv (3 rows: new Blessed/title changes).</p>
+<p>Debugging insights XSLT vs. Python (details in pipeline.md): normalize_space() only XML whitespace vs. Python \s incl. U+2028. lxml load_dtd=False does not normalise attribute whitespace like Saxon. XPath .//*// requires 2+ nesting levels. text()[not(parent::tei:add)] only immediate parent element. Saxon base-uri() URL-encodes spaces as %20.</p>
+<h2 id="session-14-2026-02-26-python-pipeline-relations">Session 14 – 2026-02-26 – Python Pipeline Relations<a class="headerlink" href="#session-14-2026-02-26-python-pipeline-relations" title="Permanent link">&para;</a></h2>
+<p>Goal: Implement all 10 relation transformations as Python/lxml.</p>
+<p>3 transformers: person_relations.py (6 types parameterised), topo_relations.py (3 types with owner special mode), transactiongoods.py. 3 test files (24 + 12 + 4 tests). CLI extended to 21 CSVs (11 Core + 10 Relations).</p>
+<p>Verification: 8/10 content-identical. 2/10 +1 row (kin_relations: kind-&gt;kin fix; title-ref_relations: titel_ref-&gt;title_ref fix). 14,066 new data rows, 101,948 total. 158 tests passed.</p>
+<h2 id="sessions-1516-2026-02-26-knowledge-update-and-plan-revision">Sessions 15–16 – 2026-02-26 – Knowledge update and plan revision<a class="headerlink" href="#sessions-1516-2026-02-26-knowledge-update-and-plan-revision" title="Permanent link">&para;</a></h2>
+<p>17 knowledge documents brought up to date with Phase A, D, E: 00, 04, 14, 15, 13, 09, 10, 11, 02, 03 updated. 22 of 51 items marked as completed. 6 of 7 documentation gaps marked as completed. Risk table and requirements table updated with status.</p>
+<p>Package 4 (competence building, workshop) removed from plan. Phase H redefined: Digital edition view with H.1 TEI-&gt;HTML rendering, H.2 Register linking, H.3 Web interface and navigation. Action item 2.4.5 new, total count 52 + 8 clarifications.</p>
+<h2 id="sessions-1718-2026-02-2627-knowledge-base-consolidation-phase-1">Sessions 17–18 – 2026-02-26/27 – Knowledge base consolidation, Phase 1<a class="headerlink" href="#sessions-1718-2026-02-2627-knowledge-base-consolidation-phase-1" title="Permanent link">&para;</a></h2>
+<p>Goal: Reduce redundancies, unify language.</p>
+<p>Comparison matrix of all 17 documents created. 4 merges performed: 01+02+03-&gt;01_data_inventory (data inventory, shared Phase A corrections), 05+08+16-&gt;05_legacy (deleted assets, after Session 10 only historical), 09+10-&gt;09_quality (quality and assessment topically inseparable), 04+07-&gt;04_pipeline (pipeline and ER model describe the same data flow). 17-&gt;11 documents, gaps in numbering intentional (reference stability).</p>
+<p>Then number prefixes removed, all documents translated to English. 00-&gt;README, 01-&gt;project.md (incl. distilled blog content), 05 eliminated (archival, git-recoverable), 12 eliminated (distilled into project.md), 15 eliminated (pure summary, contained 3 outdated numbers). 11-&gt;6 documents + journal.</p>
+<h2 id="session-19-2026-02-27-verification-of-consolidation">Session 19 – 2026-02-27 – Verification of consolidation<a class="headerlink" href="#session-19-2026-02-27-verification-of-consolidation" title="Permanent link">&para;</a></h2>
+<p>7 parallel agents compared each new document against the deleted originals (git show HEAD~1). pipeline.md, data_flow.md, action_items.md: lossless. project.md: 2 gaps (register file sizes and row counts were missing, added). gutachten.md: "Implications for Cost Estimate" section was missing (restored). 05_legacy (eliminated): 4 items with Tier 3 relevance, all recoverable from git.</p>
+<h2 id="session-20-2026-02-27-plan-consolidation-english-unification">Session 20 – 2026-02-27 – Plan consolidation, English unification<a class="headerlink" href="#session-20-2026-02-27-plan-consolidation-english-unification" title="Permanent link">&para;</a></h2>
+<p>Plan.md + action_items.md -&gt; knowledge/plan.md (single checklist, 25 of 55 items completed). All .md files in repo translated to English: CLAUDE.md, README.md, 8 folder READMEs (indices/, analysis_3/, analysis_3/src/shell/, sources/, exploration/, normalisation_lists/, data_export/, database_description/). Outdated content corrected: indices/README (reference to deleted eventList), shell/README (copy-paste errors, persons_in_events was documented as events duplicate), sources/README ("full/light version" refers to annotation depth, not DTD). docs/ dissolved (ER cardinalities into pipeline.md, KNOWN_ISSUES into normalisation_lists/README).</p>
+<p>Result: project.md, pipeline.md, gutachten.md, data_flow.md, plan.md, journal.md. All English, no number prefixes, no scattered documentation files.</p>
+<h2 id="session-21-2026-02-2728-text-facsimile-synopsis">Session 21 – 2026-02-27/28 – Text-facsimile synopsis<a class="headerlink" href="#session-21-2026-02-2728-text-facsimile-synopsis" title="Permanent link">&para;</a></h2>
+<p>Goal: Rebuild document page from tabbed view (Text/Facsimile/Both) to always-visible synopsis. Metadata into off-canvas sidebar.</p>
+<p>Document page (document.html): Header card, metadata grid, regest display, view tabs removed. Compact sticky toolbar (breadcrumb, no./date/location, prev/next, metadata/legend buttons). Synopsis grid (CSS grid 1fr 1fr, text + facsimile). Off-canvas sidebar (metadata, annotation legend, provenance). Print-only metadata block. No-facsimile fallback: single column at max-width 52rem. Responsive: stacks at 1024px, toolbar not sticky at 768px. Tab switching logic removed, initSidebar() added.</p>
+<p>43 tests passed, 3,041 documents built. knowledge/edition.md and design.md updated.</p>
+<h2 id="session-22-2026-02-28-cross-file-refactoring">Session 22 – 2026-02-28 – Cross-file refactoring<a class="headerlink" href="#session-22-2026-02-28-cross-file-refactoring" title="Permanent link">&para;</a></h2>
+<p>Goal: Clean up DRY violations and dead code, no feature changes.</p>
+<p>Dead code removed: chevron()/collapsible() macros, ~120 CSS lines orphaned selectors, unused Python imports. CSS consolidated: entity annotations, function roles, sidebar lists, facsimile buttons, section labels onto shared base selectors. JS: esc() cached via IIFE, collectionLabels as Map instead of O(n) scan, JSON.parse with try/catch. Build (build.py): _xpath_text() extracted (~60-&gt;~20 lines), _load_registers() deduplicated, _extract_regest() inlined. Renderer: _ENTITY_MAP dispatch table (35-&gt;10 lines). Templates: Jinja2 loops instead of repeated HTML blocks (legend 9-&gt;loop, metadata 6-&gt;loop). edition-plan.md deleted (superseded by edition.md + design.md).</p>
+<h2 id="session-22b-2026-02-28-pipeline-dry-refactoring">Session 22b – 2026-02-28 – Pipeline DRY refactoring<a class="headerlink" href="#session-22b-2026-02-28-pipeline-dry-refactoring" title="Permanent link">&para;</a></h2>
+<p>Goal: Structural cleanup of pipeline and frontend.</p>
+<p>8 commits: Repo hygiene (3 tracked artifacts removed: pipeline/output/<em>.csv, exploration/output/</em>.csv, exploration/<strong>pycache</strong>), missing dependencies added. _read_filenames() extracted as shared utility. BaseTransformer output_dir pass-through (10 run() overrides eliminated). _join_elem_text() moved to text_utils. Frontend modernisation (var-&gt;const/let, CSS .hidden utility, skip-link). DATA_EXPORT_DIR configurable via DATA_EXPORT_NAME env var. ~280 lines removed, 188+43 tests green.</p>
+<h2 id="session-23-2026-03-01-test-refactoring">Session 23 – 2026-03-01 – Test refactoring<a class="headerlink" href="#session-23-2026-03-01-test-refactoring" title="Permanent link">&para;</a></h2>
+<p>Goal: Fix structural problems in test suite, add missing coverage.</p>
+<p>9-step plan created and executed:</p>
+<ol>
+<li>
+<p>conftest.py cleaned up: Dead code removed (reference_dir fixture, compare_csv_byte_identical(), _find_first_diff()), skip_if_no_reference() helper added.</p>
+</li>
+<li>
+<p>11 redundant test files deleted (test_filenames.py, test_events.py, test_personlist.py, test_orglist.py, test_placelist.py, test_persons_in_events.py, test_orgs_in_events.py, test_places_in_events.py, test_persons_in_sources.py, test_orgs_in_sources.py, test_places_in_sources.py). Unique checks absorbed into expanded test_regression_all.py: test_csv_field_count (with _KNOWN_DEFECTIVE tolerance for 8+4 defective CSV rows), test_csv_header_exact, test_no_trailing_newline, test_filenames_trailing_newline, test_personlist_trailing_semicolon, test_filenames_row_count_exact.</p>
+</li>
+<li>
+<p>test_date_parser.py: 13 individual tests -&gt; 1 parameterised test. 2 duplicates removed. 4 edge cases added (notadate passthrough, None, from-without-to, ElementTree input).</p>
+</li>
+<li>
+<p>test_text_utils.py (new, 19 tests): normalize_space (U+2028 behaviour), elem_text, all_text, all_text_not_add (add exclusion, nesting, tail text), join_elem_text. Previously 0 tests for these critical utilities.</p>
+</li>
+<li>
+<p>test_csv_writer.py (new, 9 tests): Header-only, trailing newline true/false, UTF-8 umlauts, semicolon non-escaping, missing directories, CRLF line endings.</p>
+</li>
+<li>
+<p>test_renderer.py: fn roles parameterised (+other), 9 roleName types parameterised. TagFinder class (HTMLParser) for structured HTML assertions instead of string matching. data-ref and data-corresp attributes verified.</p>
+</li>
+<li>
+<p>test_build.py: DOCS_DIR monkeypatched to tmp_path -&gt; no side effects on docs/. Redundant test_output_file_exists removed.</p>
+</li>
+<li>
+<p>test_pipeline_comparison.py (new, 29 tests): Exact XSLT-vs-Python comparison. Empirical correction: "byte-identical" was wrong, actually 14 CSVs content-identical (same row count, different ordering Saxon vs. Python). 7 CSVs with exact diff counts (e.g. persons.csv: 4 only in XSLT, 15 only in Python). Totals: XSLT=101,929, Python=101,948.</p>
+</li>
+</ol>
+<h2 id="session-24-2026-03-02-xpointer-migration-gutachten-requirement-4">Session 24 – 2026-03-02 – XPointer migration (Gutachten requirement #4)<a class="headerlink" href="#session-24-2026-03-02-xpointer-migration-gutachten-requirement-4" title="Permanent link">&para;</a></h2>
+<p>Goal: Align @ref/@corresp/@select with XPointer rules (Gutachten Vogeler, requirement 4).</p>
+<ol>
+<li>
+<p><strong>strip_hash() utility</strong> in pipeline/utils/text_utils.py: Removes leading '#' from XPointer references. Returns None for None (preserves None-vs-"" distinction in person_relations.py).</p>
+</li>
+<li>
+<p><strong>_split_ref() update</strong> in pipeline/integrity.py: Removes all '#' before prefix recognition (not just lstrip, because multi-references like "#pe__a #pe__b" would otherwise fail).</p>
+</li>
+<li>
+<p><strong>12 pipeline transformers</strong> updated: strip_hash() around all .get("ref"), .get("corresp"), .get("select") calls. XPath expressions unchanged (contains(@corresp, 'pe__') also matches '#pe__xxx').</p>
+</li>
+<li>
+<p><strong>Edition renderer</strong> updated: strip_hash() on @ref and @corresp in _render_rs() and _render_rolename(). HTML data-ref/data-corresp contain bare IDs.</p>
+</li>
+<li>
+<p><strong>XML bulk transformation</strong>: 3,402 files modified, 48,421 '#' prefixes added. Regex with negative lookahead for ref="NULL" (158 files, remains without '#') and idempotency (no '##'). 3 index files included.</p>
+</li>
+<li>
+<p><strong>Verification</strong>: 3,530/3,530 schema-validated (0 errors), 313/313 tests passed, 0 orphaned references, CSV output unchanged.</p>
+</li>
+<li>
+<p><strong>Documentation</strong>: plan.md, gutachten.md, pipeline.md, project.md, CLAUDE.md, README.md, edition/README.md, data_flow.md, edition.md updated. Test counts: Pipeline 301-&gt;313, Edition 43-&gt;60.</p>
+</li>
+</ol>
+<p>Result: 231-&gt;310 tests, ~43s runtime. No false-green tests remaining, no working tree side effects. Knowledge base updated (pipeline.md, data_flow.md, edition.md, plan.md).</p>
+<h2 id="session-25-2026-03-02-register-pages-range-slider-frontend-refactoring">Session 25 – 2026-03-02 – Register pages, range slider, frontend refactoring<a class="headerlink" href="#session-25-2026-03-02-register-pages-range-slider-frontend-refactoring" title="Permanent link">&para;</a></h2>
+<p>Goal: Build three register browse pages + ~19,700 detail pages with reverse index. Replace timeline bar chart with dual-handle range slider. Frontend DRY refactoring.</p>
+<h3 id="phase-1-reverse-index">Phase 1: Reverse Index<a class="headerlink" href="#phase-1-reverse-index" title="Permanent link">&para;</a></h3>
+<p><code>_extract_entity_refs(root)</code> extracts all entity references per document (<code>&lt;rs type="person|org|place" ref="..."&gt;</code> + <code>&lt;roleName corresp="..."&gt;</code>). Integrated into <code>_parse_file()</code> (4-tuple instead of 3). Reverse index after pass 1: <code>{entity_id -&gt; [{url, idno, date_display, date_iso, collection_label, regest}]}</code>. 10,339 entities linked.</p>
+<h3 id="phase-2-navigation-dropdown">Phase 2: Navigation Dropdown<a class="headerlink" href="#phase-2-navigation-dropdown" title="Permanent link">&para;</a></h3>
+<p>Register dropdown in base.html: <code>&lt;div class="nav-dropdown"&gt;</code> with Persons/Organisations/Places. CSS: Absolute positioning, <code>--color-bg-nav</code>. JS: <code>initNavDropdown()</code> with click toggle, escape/outside-click close.</p>
+<h3 id="phase-3-register-list-pages">Phase 3: Register List Pages<a class="headerlink" href="#phase-3-register-list-pages" title="Permanent link">&para;</a></h3>
+<p>Shared template <code>register_list.html</code> (parameterised via <code>register_type</code>). Alphabet bar (A-Z quick filter), search field, type/gender filter, document linkage filter. Sortable table with progressive rendering. Embedded JSON. JS: <code>initRegister()</code> (~250 lines).</p>
+<h3 id="phase-4-register-detail-pages">Phase 4: Register Detail Pages<a class="headerlink" href="#phase-4-register-detail-pages" title="Permanent link">&para;</a></h3>
+<p>Shared template <code>register_detail.html</code>. Breadcrumb, metadata block (<code>&lt;dl&gt;</code>), document table (from reverse index). Output: <code>docs/register/{persons,orgs,places}/{entity_id}.html</code> -- 16,084 + 1,078 + 2,537 = 19,699 pages in ~47s.</p>
+<h3 id="phase-5-dual-handle-range-slider">Phase 5: Dual-Handle Range Slider<a class="headerlink" href="#phase-5-dual-handle-range-slider" title="Permanent link">&para;</a></h3>
+<p>SVG bar chart in index.html replaced by: <code>.range-histogram</code> (flexbox bars per decade, height 5rem), <code>.range-inputs</code> (two overlaid <code>&lt;input type="range"&gt;</code>), <code>.range-labels</code> (dynamically positioned via JS). Histogram bars: opacity levels (in-range 70%, out-of-range 12%). <code>initRangeSlider(state, applyFilters)</code> synchronises handles, labels, track fill, histogram opacity live.</p>
+<h3 id="phase-6-tests">Phase 6: Tests<a class="headerlink" href="#phase-6-tests" title="Permanent link">&para;</a></h3>
+<p>10 new tests in <code>test_register_pages.py</code>: Entity ref extraction (returns set, finds persons, known person, excludes NULL, strips hash, captures roleName/@corresp), register data (persons display name, orgs name, places name, persons sex).</p>
+<h3 id="phase-7-frontend-refactoring">Phase 7: Frontend Refactoring<a class="headerlink" href="#phase-7-frontend-refactoring" title="Permanent link">&para;</a></h3>
+<p><strong>JS</strong> (926-&gt;879 lines): 4 shared functions extracted -- <code>setupSearch(state, applyFilters)</code>, <code>setupSortHeaders(tableId, state, applyFilters)</code>, <code>createTableRenderer({tbodyId, noResultsId, colCount, renderRow})</code>, <code>addFilterChip(container, label, onRemove)</code>. initIndex and initRegister use these instead of duplicating code.</p>
+<p><strong>CSS</strong> (2215-&gt;2208 lines): Print blocks merged (guidelines + general -&gt; one <code>@media print</code> block). Chip base consolidated (<code>.chip, .chip-active, .filter-chip</code> shared selector). Card surface grouped (<code>.doc-body, .facs-viewer, .index-table-wrap</code> shared selector).</p>
+<p><strong>Templates</strong>: 5 new macros in macros.html (<code>search_box</code>, <code>result_count</code>, <code>active_filters</code>, <code>no_results</code>, <code>json_data</code>). index.html and register_list.html use macros instead of duplicated HTML.</p>
+<p>Result: 3,041 documents + 19,699 detail pages in ~70s. 70 tests green (313 pipeline + 70 edition). Knowledge base updated (design.md, edition.md, plan.md, journal.md).</p>
+<h2 id="session-26-2026-03-02-knowledge-base-refactoring-verification-documentation-improvement">Session 26 -- 2026-03-02 -- Knowledge base refactoring, verification, documentation improvement<a class="headerlink" href="#session-26-2026-03-02-knowledge-base-refactoring-verification-documentation-improvement" title="Permanent link">&para;</a></h2>
+<p>Goal: Remove stale scope (K7/K8, Phase G), refactor knowledge base for consistency and conciseness, verify all documentation, enhance CLAUDE.md with agent instructions, improve README.md.</p>
+<h3 id="phase-1-scope-cleanup">Phase 1: Scope cleanup<a class="headerlink" href="#phase-1-scope-cleanup" title="Permanent link">&para;</a></h3>
+<p>K7/K8 marked as "Removed" in plan.md Decision Points table. Phase G (Web Interface Export) removed from scope (section replaced with REMOVED note, dependency graph simplified, risk table cleaned). All hour estimates (<code>~Xh</code>) stripped from plan.md and journal.md.</p>
+<h3 id="phase-2-knowledge-base-refactoring-8-actions">Phase 2: Knowledge base refactoring (8 actions)<a class="headerlink" href="#phase-2-knowledge-base-refactoring-8-actions" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>data_flow.md merged into pipeline.md</strong> (deleted): Data flow ASCII diagram added as "Data Flow Overview" section. roleName/@type distribution table migrated to project.md. 80% was redundant with pipeline.md/project.md.</li>
+<li><strong>plan.md Phases A-D compressed</strong>: 139 lines of completed checklists -&gt; ~15 lines of summaries preserving key deliverables and remaining items.</li>
+<li><strong>gutachten.md compressed</strong>: All 6 short-term conditions marked DONE with commit/phase references. 4 "Evaluation vs. Repo Findings" tables -&gt; 1 summary paragraph. "Implications for Cost Estimate" -&gt; "Delivery Status".</li>
+<li><strong>CLAUDE.md cleaned</strong>: Resolved Clarification Questions section removed. Test count 313-&gt;383. Knowledge Base table 9-&gt;8 docs. Data quality issues table updated.</li>
+<li><strong>export_specification.md retitled</strong>: "MariaDB Import" -&gt; "Pipeline Output Specification". SQL file references removed. "Index Recommendations" -&gt; "Future: SQL Import Notes".</li>
+<li><strong>journal.md translated</strong>: Complete German-&gt;English translation (216 lines, 25 sessions).</li>
+<li><strong>design.md compressed</strong>: 27 completed task items -&gt; summary line. 1 open item retained (statistics dashboard).</li>
+<li><strong>Quick Reference added</strong> to CLAUDE.md (question-oriented index mapping to documents).</li>
+</ol>
+<p>Result: 9-&gt;8 documents, ~2,650-&gt;~2,408 lines, 0 German content, 0 stale sections.</p>
+<h3 id="phase-3-systematic-verification">Phase 3: Systematic verification<a class="headerlink" href="#phase-3-systematic-verification" title="Permanent link">&para;</a></h3>
+<p>3 parallel agents checked: (1) numbers consistency across all docs, (2) cross-references between documents, (3) stale references to deleted files/phases.</p>
+<p><strong>11 errors found and fixed:</strong>
+- Normalisation list total 7,127-&gt;<strong>7,102</strong> in CLAUDE.md, pipeline.md, gutachten.md (Phase A removed 25 duplicates from function_norm_matching, total never updated).
+- pipeline.md body: "301 tests" -&gt; "313 tests" (stale snapshot).
+- analysis_3/README.md: "301" -&gt; "313".
+- README.md: "9" -&gt; "8" knowledge docs, "60" -&gt; "70" edition tests, "313 tests" -&gt; "383 regression tests (313 pipeline + 70 edition)", PHP/jQuery reference -&gt; digital edition description.
+- data_export/README.md: "MariaDB/PHP web frontend" -&gt; "legacy", curation filter marked as historical (K6 resolved).</p>
+<h3 id="phase-4-claudemd-agent-instructions">Phase 4: CLAUDE.md Agent Instructions<a class="headerlink" href="#phase-4-claudemd-agent-instructions" title="Permanent link">&para;</a></h3>
+<p>Quick Reference replaced with two new sections:
+- <strong>Rules</strong> (7 directives): Language (English), protected data (sources/ + indices/ + normalisation_lists/), testing commands, edition build command, pipeline output conventions, knowledge base maintenance, schema validation, XPointer convention.
+- <strong>Before You Start</strong> (9-row routing table): Task-oriented document routing replacing the question-oriented Quick Reference. Edition guidelines file (<code>edition/content/edition_guidelines.md</code>) added.</p>
+<p>Additional fixes: "Semicolon throughout" corrected (normalisation lists use TAB). "lxml + pandas" clarified (lxml for pipeline, pandas for exploration). Knowledge Base table removed (redundant with Before You Start). Format specs deduplicated (Agent Rules references Technical Conventions).</p>
+<h3 id="phase-5-readmemd-improvements">Phase 5: README.md improvements<a class="headerlink" href="#phase-5-readmemd-improvements" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Digital Edition section added</strong>: CLI commands, requirements (jinja2, markdown), output description (3,041 + 19,699 pages).</li>
+<li><strong><code>docs/</code> added</strong> to Folder Structure (~22,750 generated files).</li>
+<li><strong><code>data_export/</code> description updated</strong>: "SQL import" -&gt; "Legacy curated CSV exports".</li>
+<li><strong>Validation CLI</strong> added to Quality Assurance (<code>python -m pipeline.validate</code>).</li>
+<li><strong>XSLT diff reference</strong> added: link to pipeline.md Mapping table.</li>
+<li>Filler line removed ("Welcome to the GitHub repository...").</li>
+</ul>
+<p>Result: CLAUDE.md 89-&gt;93 lines (agent instructions added, KB table removed). README.md 83-&gt;94 lines (Digital Edition section added). All numbers verified, all cross-references valid.</p>
+    </div>
+    <footer class="vault-detail-footer">
+        <p>Quelle: <code>knowledge/journal.md</code> · Gebaut: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Vault: Journal</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/edition.js"></script>
+    
+</body>
+</html>

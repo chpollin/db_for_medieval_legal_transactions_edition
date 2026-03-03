@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Edition — Vault — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Research Preview via Promptotyping</span>
+            <div class="nav-links">
+                <a href="../index.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="../persons.html">Personen</a>
+                        <a href="../organisations.html">Organisationen</a>
+                        <a href="../places.html">Orte</a>
+                    </div>
+                </div>
+                <a href="../edition_guidelines.html">Editionsrichtlinien</a>
+                <a href="../statistics.html">Statistik</a>
+                <a href="../vault.html">Promptotyping Vault</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="vault-detail-page">
+    <div class="vault-detail-header">
+        <nav class="vault-breadcrumb" aria-label="Breadcrumb">
+            <a href="../vault.html">Vault</a>
+            <span class="vault-breadcrumb-sep">/</span>
+            <span>Digital Edition</span>
+        </nav>
+        <h1>Digital Edition</h1>
+        <p class="vault-detail-meta">
+            <span class="vault-detail-file">edition.md</span>
+            <span class="vault-detail-lines">277 Zeilen</span>
+        </p>
+    </div>
+    
+    <nav class="guidelines-toc" aria-label="Inhaltsverzeichnis">
+        <h2>Inhalt</h2>
+        <div class="toc">
+<ul>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#build-commands">Build Commands</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#build-architecture">Build Architecture</a><ul>
+<li><a href="#index-data-computed-at-build-time">Index Data (computed at build time)</a></li>
+</ul>
+</li>
+<li><a href="#performance">Performance</a></li>
+<li><a href="#tei-html-rendering">TEI → HTML Rendering</a><ul>
+<li><a href="#structural-mapping">Structural Mapping</a></li>
+<li><a href="#annotation-mapping-4-levels">Annotation Mapping (4 Levels)</a></li>
+<li><a href="#tooltips">Tooltips</a></li>
+</ul>
+</li>
+<li><a href="#ui-design-shneidermans-information-seeking-mantra">UI Design (Shneiderman's Information Seeking Mantra)</a><ul>
+<li><a href="#index-page-overview-filter">Index Page (overview + filter)</a></li>
+<li><a href="#document-page-text-bild-synopse">Document Page (Text-Bild-Synopse)</a></li>
+<li><a href="#register-pages">Register Pages</a></li>
+<li><a href="#jinja2-macros-macroshtml">Jinja2 Macros (macros.html)</a></li>
+<li><a href="#js-shared-infrastructure-editionjs">JS Shared Infrastructure (edition.js)</a></li>
+</ul>
+</li>
+<li><a href="#design-philosophy-edition-as-epistemic-infrastructure">Design Philosophy: Edition as Epistemic Infrastructure</a><ul>
+<li><a href="#principle-two-layer-ui">Principle: Two-Layer UI</a></li>
+<li><a href="#why-this-matters">Why This Matters</a></li>
+<li><a href="#concrete-ui-patterns">Concrete UI Patterns</a></li>
+<li><a href="#collection-label-mapping">Collection Label Mapping</a></li>
+</ul>
+</li>
+<li><a href="#output-path-logic">Output Path Logic</a></li>
+<li><a href="#document-count-note">Document Count Note</a></li>
+<li><a href="#github-pages-deployment">GitHub Pages Deployment</a></li>
+</ul>
+</div>
+
+    </nav>
+    
+    <div class="guidelines-body vault-body">
+        <h1 id="digital-edition-web-frontend">Digital Edition (Web Frontend)<a class="headerlink" href="#digital-edition-web-frontend" title="Permanent link">&para;</a></h1>
+<p>Static HTML edition of the 3,041 TEI-XML source documents, built as browsable, annotated web pages for GitHub Pages hosting.</p>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<p><strong>Static site generator</strong> approach: Python/lxml + Jinja2 builds HTML from TEI-XML sources. No server required — output is pure HTML/CSS/JS served from <code>docs/</code>.</p>
+<div class="highlight"><pre><span></span><code>edition/                    Source code (Python package)
+  __main__.py               CLI: python -m edition build [--single FILE]
+  config.py                 Paths (DOCS_DIR, TEMPLATES_DIR, STATIC_DIR)
+  register.py               Register lookup dicts (person/org/place by xml:id)
+  renderer.py               TEI element tree → HTML (recursive, dispatch table)
+  build.py                  Orchestrator: two-pass build, index, register pages
+  templates/
+    base.html               Jinja2 base layout (nav with register dropdown, footer)
+    macros.html             Reusable macros (7 macros, see below)
+    document.html           Single document page (toolbar, synopsis, sidebar, body)
+    index.html              Browse/search landing page (slider, chips, filters, table)
+    register_list.html      Register browse page (persons/orgs/places, shared template)
+    register_detail.html    Entity detail page (metadata + reverse index documents)
+    guidelines.html         Edition guidelines page
+    statistics.html         Statistics dashboard (corpus overview, charts)
+    vault.html              Knowledge vault index (Research Preview)
+    vault_detail.html       Single knowledge doc as HTML
+  static/
+    style.css               Design system with CSS custom properties (~2,200 lines)
+    edition.js              Shared table infra, tooltips, search, facs viewer (~880 lines)
+  tests/
+    test_renderer.py        30 unit tests (parametrized fn roles + 9 roleName types)
+    test_register.py        13 tests (tooltip builders + register loading)
+    test_build.py           9 integration tests (build file 100, verify HTML)
+    test_register_pages.py  10 tests (entity ref extraction, register search data)
+    test_guidelines.py      8 tests (guidelines page structure)
+    test_statistics.py      12 tests (statistics extraction + aggregation)
+
+docs/                       Generated output (GitHub Pages root)
+  .nojekyll                 Prevent Jekyll processing
+  index.html                Browse/search page with embedded JSON
+  persons.html              Person register (16,084 entries)
+  organisations.html        Organisation register (1,078 entries)
+  places.html               Place register (2,537 entries)
+  documents/                3,041 HTML files (mirrors sources/ without &quot;done/&quot;)
+  register/                 19,699 entity detail pages
+    persons/                ~16,084 pages (pe__*.html)
+    orgs/                   ~1,078 pages (org__*.html)
+    places/                 ~2,537 pages (pl__*.html)
+  static/                   Copied from edition/static/
+</code></pre></div>
+
+<h2 id="build-commands">Build Commands<a class="headerlink" href="#build-commands" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Full build (all documents + index)</span>
+python<span class="w"> </span>-m<span class="w"> </span>edition<span class="w"> </span>build
+
+<span class="c1"># Single file (for development/testing)</span>
+python<span class="w"> </span>-m<span class="w"> </span>edition<span class="w"> </span>build<span class="w"> </span>--single<span class="w"> </span>sources/QGW/Vienna_1177-1414_ready/done/100.xml
+
+<span class="c1"># Run tests</span>
+python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>edition/tests/<span class="w"> </span>-v
+</code></pre></div>
+
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>lxml&gt;=4.9</code> (already in pipeline)</li>
+<li><code>jinja2&gt;=3.1</code> (new dependency)</li>
+<li>Reuses: <code>pipeline.config</code>, <code>pipeline.utils.xml_loader</code>, <code>pipeline.utils.text_utils</code>, <code>pipeline.utils.date_parser</code></li>
+</ul>
+<h2 id="build-architecture">Build Architecture<a class="headerlink" href="#build-architecture" title="Permanent link">&para;</a></h2>
+<p><strong>Two-pass build</strong> to compute cross-document data (prev/next links + reverse index require all metadata first):</p>
+<ol>
+<li><strong>Parse pass</strong>: <code>_parse_file()</code> — extract metadata via <code>_xpath_text()</code> helper + render body HTML + extract entity refs</li>
+<li><strong>Compute</strong>: <code>_compute_prev_next()</code> — sort documents per collection, assign sequential links</li>
+<li><strong>Reverse index</strong>: <code>_extract_entity_refs(root)</code> scans <code>&lt;rs type="person|org|place" ref="..."&gt;</code> + <code>&lt;roleName corresp="..."&gt;</code> per document. Aggregated into <code>{entity_id → [doc_meta_list]}</code> after pass 1. Sorted by date.</li>
+<li><strong>Write pass</strong>: <code>_write_file()</code> — render Jinja2 templates with full context</li>
+<li><strong>Index</strong>: <code>_build_index()</code> — generate timeline data (decade buckets + <code>min_year</code>/<code>max_year</code>), place frequencies, search JSON</li>
+<li><strong>Register pages</strong>: <code>_build_register_list_pages()</code> — three list pages with embedded search JSON. <code>_build_register_detail_pages()</code> — one HTML page per entity (19,699 total) with reverse index data</li>
+</ol>
+<p>Helper functions: <code>_xpath_text(root, xpath, default)</code> consolidates repeated XPath→text extraction. <code>_load_registers()</code> deduplicates register loading (with timing) between <code>build_single()</code> and <code>build_all()</code>.</p>
+<h3 id="index-data-computed-at-build-time">Index Data (computed at build time)<a class="headerlink" href="#index-data-computed-at-build-time" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Source</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Timeline decade buckets</td>
+<td>Date field → <code>math.floor(year/10)*10</code></td>
+<td>Range slider histogram</td>
+</tr>
+<tr>
+<td>min_year / max_year</td>
+<td>Min/max of all date_iso values</td>
+<td>Range slider bounds</td>
+</tr>
+<tr>
+<td>Place frequency (top 15)</td>
+<td><code>Counter</code> on place field</td>
+<td>Place filter dropdown</td>
+</tr>
+<tr>
+<td>Facsimile count</td>
+<td><code>has_facsimile</code> flag</td>
+<td>Facs filter dropdown</td>
+</tr>
+<tr>
+<td>Register counts</td>
+<td>len(persons/orgs/places)</td>
+<td>Corpus summary line</td>
+</tr>
+<tr>
+<td>Search JSON</td>
+<td>Per-doc object with <code>id,d,di,p,t,u,cp,cl,tf,f,fu,pc</code></td>
+<td>Client-side search</td>
+</tr>
+</tbody>
+</table>
+<p>Search JSON fields: <code>id</code>=idno, <code>d</code>=date_display, <code>di</code>=date_iso, <code>p</code>=place, <code>t</code>=regest (200ch), <code>u</code>=url, <code>cp</code>=collection_path, <code>cl</code>=collection_label, <code>tf</code>=full regest (500ch), <code>f</code>=has_facsimile, <code>fu</code>=first facs URL, <code>pc</code>=person_count.</p>
+<h2 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>3,041 documents + 19,699 register detail pages in ~70s</strong></li>
+<li>Register loading: ~1.8s (16,084 persons, 1,078 orgs, 2,537 places)</li>
+<li>Reverse index: 10,339 entities linked to documents</li>
+<li>82 tests, all passing</li>
+</ul>
+<h2 id="tei-html-rendering">TEI → HTML Rendering<a class="headerlink" href="#tei-html-rendering" title="Permanent link">&para;</a></h2>
+<p>The renderer (<code>renderer.py</code>) walks the TEI element tree recursively using a dispatch table (<code>ELEMENT_HANDLERS</code>). Entity rendering (person/org/place) uses a shared <code>_ENTITY_MAP</code> dispatch to avoid triplication. Templates only handle page layout; the renderer builds the HTML string for the annotated document body.</p>
+<h3 id="structural-mapping">Structural Mapping<a class="headerlink" href="#structural-mapping" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>TEI</th>
+<th>HTML</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;div type="abstract"&gt;</code></td>
+<td><code>&lt;section class="tei-abstract"&gt;</code></td>
+</tr>
+<tr>
+<td><code>&lt;div type="entry"&gt;</code></td>
+<td><code>&lt;section class="tei-entry"&gt;</code></td>
+</tr>
+<tr>
+<td><code>&lt;div type="header"&gt;</code></td>
+<td><code>&lt;header class="tei-header"&gt;</code></td>
+</tr>
+<tr>
+<td><code>&lt;div type="seal"&gt;</code></td>
+<td><code>&lt;section class="tei-seal"&gt;</code></td>
+</tr>
+<tr>
+<td><code>&lt;div type="nota"&gt;</code></td>
+<td><code>&lt;section class="tei-nota"&gt;</code></td>
+</tr>
+<tr>
+<td><code>&lt;div type="lists"&gt;</code></td>
+<td>Skipped (XInclude references)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="annotation-mapping-4-levels">Annotation Mapping (4 Levels)<a class="headerlink" href="#annotation-mapping-4-levels" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>TEI</th>
+<th>CSS class</th>
+<th>Visual style</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;rs type="event"&gt;</code></td>
+<td><code>anno-event</code></td>
+<td>Transparent wrapper</td>
+</tr>
+<tr>
+<td><code>&lt;rs type="fn" role="issuer"&gt;</code></td>
+<td><code>anno-fn-issuer</code></td>
+<td>Left border (burnt orange)</td>
+</tr>
+<tr>
+<td><code>&lt;rs type="fn" role="recipient"&gt;</code></td>
+<td><code>anno-fn-recipient</code></td>
+<td>Left border (teal)</td>
+</tr>
+<tr>
+<td><code>&lt;rs type="fn" role="witness"&gt;</code></td>
+<td><code>anno-fn-witness</code></td>
+<td>Left border (olive)</td>
+</tr>
+<tr>
+<td><code>&lt;rs type="person"&gt;</code></td>
+<td><code>anno-person</code></td>
+<td>Blue underline + background</td>
+</tr>
+<tr>
+<td><code>&lt;rs type="org"&gt;</code></td>
+<td><code>anno-org</code></td>
+<td>Purple underline + background</td>
+</tr>
+<tr>
+<td><code>&lt;rs type="place"&gt;</code></td>
+<td><code>anno-place</code></td>
+<td>Green underline + background</td>
+</tr>
+<tr>
+<td><code>&lt;roleName type="kin\|occ\|title\|..."&gt;</code></td>
+<td><code>anno-attr-*</code></td>
+<td>Italic/small-caps by type</td>
+</tr>
+<tr>
+<td><code>&lt;triggerstring n="disp"&gt;</code></td>
+<td><code>anno-trigger-disp</code></td>
+<td>Bold, brown</td>
+</tr>
+<tr>
+<td><code>&lt;add&gt;</code></td>
+<td><code>tei-add</code></td>
+<td>Italic, brackets <code>[...]</code> via CSS</td>
+</tr>
+<tr>
+<td><code>&lt;unclear&gt;</code></td>
+<td><code>tei-unclear</code></td>
+<td>Wavy underline</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tooltips">Tooltips<a class="headerlink" href="#tooltips" title="Permanent link">&para;</a></h3>
+<p>Entity spans get <code>title</code> attributes from register lookup:
+- <strong>Person</strong>: <code>"Forename Surname (d. DeathDate) [pe__id]"</code>
+- <strong>Organisation</strong>: <code>"Name (Type) [org__id]"</code>
+- <strong>Place</strong>: <code>"Name (Type) [lat, lng] [pl__id]"</code>
+- <strong>Orphaned refs</strong>: Show raw ID gracefully (4,085 orphaned event refs)</p>
+<p>JavaScript enhances native tooltips with styled popups showing type badge and ID.</p>
+<h2 id="ui-design-shneidermans-information-seeking-mantra">UI Design (Shneiderman's Information Seeking Mantra)<a class="headerlink" href="#ui-design-shneidermans-information-seeking-mantra" title="Permanent link">&para;</a></h2>
+<p><strong>"Overview first, zoom and filter, then details-on-demand"</strong></p>
+<h3 id="index-page-overview-filter">Index Page (overview + filter)<a class="headerlink" href="#index-page-overview-filter" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Corpus summary line</strong>: document/person/org counts + date range</li>
+<li><strong>Dual-handle range slider</strong>: histogram background (decade bars) + two overlaid <code>&lt;input type="range"&gt;</code> for min/max year filtering. Labels track handle positions dynamically</li>
+<li><strong>Collection chips</strong>: inline pills replacing large cards, click to toggle filter</li>
+<li><strong>Faceted filters</strong>: place dropdown (top 15), facsimile (with/without), text search (multi-word AND)</li>
+<li><strong>Active filter chips</strong>: removable pills showing current filters</li>
+<li><strong>Progressive table rendering</strong>: IntersectionObserver loads 100 rows at a time (no hard cap)</li>
+<li><strong>Row preview (details-on-demand)</strong>: click row to expand inline preview with full regest + facsimile thumbnail</li>
+</ul>
+<h3 id="document-page-text-bild-synopse">Document Page (Text-Bild-Synopse)<a class="headerlink" href="#document-page-text-bild-synopse" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Synopsis layout</strong>: text + facsimile side by side as default view (CSS grid <code>1fr 1fr</code>), no tab switching needed</li>
+<li><strong>Compact toolbar</strong> (sticky below nav): breadcrumb, Nr. + date + place, inline prev/next, metadata [i] and legend [?] buttons</li>
+<li><strong>Facsimile panel</strong>: always visible for documents with facsimile URLs (79%), sticky position, lazy-loaded images, page navigation, zoom/pan</li>
+<li><strong>Off-canvas sidebar</strong>: overlay from right, triggered by toolbar buttons. Contains: metadata (<code>&lt;dl&gt;</code>), annotation legend, provenance/data lineage</li>
+<li><strong>No-facsimile fallback</strong> (21%): single column, text body centred at <code>max-width: 52rem</code></li>
+<li><strong>Prev/next navigation</strong>: inline in toolbar + bottom of page</li>
+<li><strong>Print metadata</strong>: hidden <code>&lt;div class="doc-print-meta"&gt;</code> block, shown only in <code>@media print</code></li>
+</ul>
+<h3 id="register-pages">Register Pages<a class="headerlink" href="#register-pages" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>List pages</strong> (<code>persons.html</code>, <code>organisations.html</code>, <code>places.html</code>): alphabet bar, search, type/docs filter, sortable table, progressive rendering. JSON data embedded, same client-side pattern as index page.</li>
+<li><strong>Detail pages</strong> (~19,699 under <code>docs/register/</code>): entity metadata + reverse-index document table. One page per entity.</li>
+</ul>
+<h3 id="jinja2-macros-macroshtml">Jinja2 Macros (<code>macros.html</code>)<a class="headerlink" href="#jinja2-macros-macroshtml" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Macro</th>
+<th>Parameters</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>doc_nav(meta, root_path, extra_class)</code></td>
+<td>prev/next links</td>
+<td>Toolbar inline + bottom navigation</td>
+</tr>
+<tr>
+<td><code>external_icon()</code></td>
+<td>—</td>
+<td>SVG icon for external links (sidebar)</td>
+</tr>
+<tr>
+<td><code>search_box(placeholder)</code></td>
+<td>Placeholder text</td>
+<td>Search input + icon + clear button (index + register)</td>
+</tr>
+<tr>
+<td><code>result_count(count, label)</code></td>
+<td>Count + label text</td>
+<td>Result counter display (index + register)</td>
+</tr>
+<tr>
+<td><code>active_filters()</code></td>
+<td>—</td>
+<td>Active filters container (JS-managed)</td>
+</tr>
+<tr>
+<td><code>no_results(message)</code></td>
+<td>Message text</td>
+<td>No-results fallback (index + register)</td>
+</tr>
+<tr>
+<td><code>json_data(script_id, data_json)</code></td>
+<td>Script ID + JSON</td>
+<td>Embedded search data script tag</td>
+</tr>
+</tbody>
+</table>
+<h3 id="js-shared-infrastructure-editionjs">JS Shared Infrastructure (<code>edition.js</code>)<a class="headerlink" href="#js-shared-infrastructure-editionjs" title="Permanent link">&para;</a></h3>
+<p>Extracted from duplicated code in <code>initIndex()</code> and <code>initRegister()</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setupSearch(state, applyFilters)</code></td>
+<td>Debounced search input + clear button</td>
+</tr>
+<tr>
+<td><code>setupSortHeaders(tableId, state, applyFilters)</code></td>
+<td>Sortable column header click handlers</td>
+</tr>
+<tr>
+<td><code>createTableRenderer(config)</code></td>
+<td>Progressive rendering engine (tbody, batching, IntersectionObserver)</td>
+</tr>
+<tr>
+<td><code>addFilterChip(container, label, onRemove)</code></td>
+<td>Filter chip creation with dismiss button</td>
+</tr>
+</tbody>
+</table>
+<p>See <code>knowledge/design.md</code> for the full design system (colours, typography, components).</p>
+<h2 id="design-philosophy-edition-as-epistemic-infrastructure">Design Philosophy: Edition as Epistemic Infrastructure<a class="headerlink" href="#design-philosophy-edition-as-epistemic-infrastructure" title="Permanent link">&para;</a></h2>
+<p>The edition is not a polished end-product that hides its construction. It is a <strong>transparent research tool</strong> that makes the entire data pipeline visible and traceable.</p>
+<h3 id="principle-two-layer-ui">Principle: Two-Layer UI<a class="headerlink" href="#principle-two-layer-ui" title="Permanent link">&para;</a></h3>
+<p>Every data point in the UI has two layers:</p>
+<ol>
+<li><strong>Reading layer</strong> (primary): Human-readable, scholarly labels for external researchers</li>
+<li><strong>Data layer</strong> (secondary): Technical identifiers, file paths, pipeline provenance for traceability</li>
+</ol>
+<p>Both layers are always present. The data layer is visually subordinate (smaller, monospace) but never hidden. There is no toggle — both layers are always visible by design.</p>
+<h3 id="why-this-matters">Why This Matters<a class="headerlink" href="#why-this-matters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Reproducibility</strong>: Any annotation, entity reference, or structural element can be traced back to its TEI-XML source and the pipeline step that produced it</li>
+<li><strong>Quality control</strong>: The contractor (DHCraft) and the client can verify data processing by inspecting provenance directly in the edition</li>
+<li><strong>Methodological transparency</strong>: The edition documents not just <em>what</em> was found, but <em>how</em> it was processed — making the "vibe coding / promptotyping" workflow auditable</li>
+<li><strong>DH best practice</strong>: Aligns with FAIR principles (Findable, Accessible, Interoperable, Reusable) by exposing data lineage</li>
+</ul>
+<h3 id="concrete-ui-patterns">Concrete UI Patterns<a class="headerlink" href="#concrete-ui-patterns" title="Permanent link">&para;</a></h3>
+<p><strong>Collection chips</strong> (index page):</p>
+<div class="highlight"><pre><span></span><code>QGW II/1 (1177–1414) 2.023                ← scholarly label + count, pill shape
+</code></pre></div>
+
+<p><strong>Table — Nr. column</strong> (collection path as data-trail below the document link):</p>
+<div class="highlight"><pre><span></span><code>Nr. 100
+QGW/Vienna_1177-1414_ready                 ← path fragment, monospace, muted
+</code></pre></div>
+
+<p><strong>Document page — provenance block</strong>:</p>
+<div class="highlight"><pre><span></span><code>┌─ Datenherkunft ─────────────────────────────────────────────┐
+│ Source file     sources/QGW/Vienna_…/done/100.xml           │
+│ Registers       personList.xml (5 persons resolved)         │
+│ Pipeline        edition/renderer.py → Jinja2                │
+│ Build           2026-02-27T14:32                            │
+└─────────────────────────────────────────────────────────────┘
+</code></pre></div>
+
+<p><strong>Entity tooltips</strong> (already implemented):</p>
+<div class="highlight"><pre><span></span><code>Reading:    Konrad Goldstein (d. 1350-06-23)
+Data:       [pe__konrad_goldstein]          ← xml:id, monospace
+</code></pre></div>
+
+<h3 id="collection-label-mapping">Collection Label Mapping<a class="headerlink" href="#collection-label-mapping" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Path fragment</th>
+<th>Scholarly label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>QGW/Vienna_1177-1414_ready</code></td>
+<td>QGW II/1 (1177–1414)</td>
+</tr>
+<tr>
+<td><code>QGW/Vienna_1415-1417</code></td>
+<td>QGW II/2 (1415–1417)</td>
+</tr>
+<tr>
+<td><code>QGW/Vienna_1458-66</code></td>
+<td>QGW II/3 (1458–1466)</td>
+</tr>
+<tr>
+<td><code>QGW/Vienna_1493-1500</code></td>
+<td>QGW II/4 (1493–1500)</td>
+</tr>
+<tr>
+<td><code>QGW/Vienna_1524</code></td>
+<td>QGW II/5 (1524)</td>
+</tr>
+<tr>
+<td><code>Stadtbuecher/Band_1_1395-1400_ready</code></td>
+<td>Stadtbücher Bd. 1 (1395–1400)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="output-path-logic">Output Path Logic<a class="headerlink" href="#output-path-logic" title="Permanent link">&para;</a></h2>
+<p>Source paths are mirrored to <code>docs/documents/</code>, dropping the <code>done/</code> workflow directory:</p>
+<div class="highlight"><pre><span></span><code>sources/QGW/Vienna_1177-1414_ready/done/100.xml
+  → docs/documents/QGW/Vienna_1177-1414_ready/100.html
+</code></pre></div>
+
+<h2 id="document-count-note">Document Count Note<a class="headerlink" href="#document-count-note" title="Permanent link">&para;</a></h2>
+<p>The plan mentions 3,530 source files but only <strong>3,041</strong> have the <code>done/</code> marker. The remaining ~489 files are not in <code>done/</code> directories and are excluded from the edition build (no <code>done/</code> directory in their path).</p>
+<h2 id="github-pages-deployment">GitHub Pages Deployment<a class="headerlink" href="#github-pages-deployment" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Run <code>python -m edition build</code></li>
+<li>Commit <code>docs/</code> to the repository</li>
+<li>In GitHub repo settings → Pages → Source: <code>main</code> branch, <code>/docs</code> folder</li>
+<li>The site is served at <code>https://&lt;user&gt;.github.io/&lt;repo&gt;/</code></li>
+</ol>
+    </div>
+    <footer class="vault-detail-footer">
+        <p>Quelle: <code>knowledge/edition.md</code> · Gebaut: 2026-03-02</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p class="footer-source">Datengrundlage: »Im Netz der Stadt« (Gruenwald) · »Stadt und Gemeinschaft« (Lutter, Universität Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p class="footer-tech">Digitale Aufbereitung: Digital Humanities Craft OG</p>
+                <p class="footer-count">Vault: Digital Edition</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/edition.js"></script>
+    
+</body>
+</html>
