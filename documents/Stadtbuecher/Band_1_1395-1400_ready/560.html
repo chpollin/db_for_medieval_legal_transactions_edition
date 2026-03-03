@@ -20,7 +20,10 @@
                 <span class="nav-brand-sub">Digital Edition</span>
             </a>
             <span class="nav-badge">Research Preview via Promptotyping</span>
-            <div class="nav-links">
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
                 <a href="../../../index.html">Dokumente</a>
                 <div class="nav-dropdown">
                     <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
@@ -70,12 +73,6 @@
     
 </nav>
 
-                <button class="toolbar-btn" id="sidebar-toggle-meta" aria-label="Metadaten anzeigen" title="Metadaten">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7V11M8 5.5V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                </button>
-                <button class="toolbar-btn" id="sidebar-toggle-legend" aria-label="Annotationslegende anzeigen" title="Legende">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="13" cy="8" r="1.5" fill="currentColor"/></svg>
-                </button>
             </div>
         </div>
     </div>
@@ -125,6 +122,77 @@
         
     </div>
 
+    <!-- Details: metadata + annotation legend (compact, below content) -->
+    <section class="doc-details">
+        <div class="doc-details-meta">
+            
+            <dl class="details-dl">
+                
+                
+                
+                
+                
+                
+                <dt>Quelle</dt>
+                <dd>Die Wiener Stadtbücher 1395 - 1430Teil 1: 1395 - 1400 Wilhelm Brauneder Gerhard Jaritz Wien Köln Böhlau Verlag</dd>
+                
+                
+                
+            </dl>
+        </div>
+        <div class="doc-details-legend">
+            
+            <div class="legend-grid legend-grid-compact">
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-person"></span>
+                    <span>Person</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-org"></span>
+                    <span>Organisation</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-place"></span>
+                    <span>Ort</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-fn-issuer"></span>
+                    <span>Aussteller</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-fn-recipient"></span>
+                    <span>Empfänger</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-fn-witness"></span>
+                    <span>Zeuge</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-trigger"></span>
+                    <span>Dispositivformel</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-add"></span>
+                    <span>Editorische Ergänzung</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-attr"></span>
+                    <span>Attribut / Rolle</span>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
     <!-- Bottom navigation -->
     
 <nav class="doc-paging doc-paging-bottom">
@@ -136,110 +204,6 @@
     
 </nav>
 
-
-    <!-- Sidebar overlay (off-canvas from right) -->
-    <div class="doc-sidebar-overlay" id="sidebar-overlay"></div>
-    <aside class="doc-sidebar" id="doc-sidebar">
-        <div class="sidebar-header">
-            <h2 class="sidebar-title">Metadaten</h2>
-            <button class="sidebar-close" id="sidebar-close" aria-label="Schließen">&times;</button>
-        </div>
-        <div class="sidebar-body">
-            <!-- Metadata -->
-            <section class="sidebar-section" id="sidebar-meta">
-                
-                <dl class="sidebar-dl sidebar-meta-list">
-                    
-                    
-                    <dt>Datum</dt>
-                    <dd>1400 April 27</dd>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    <dt>Quelle</dt>
-                    <dd class="meta-value-cite">Die Wiener Stadtbücher 1395 - 1430Teil 1: 1395 - 1400 Wilhelm Brauneder Gerhard Jaritz Wien Köln Böhlau Verlag</dd>
-                    
-                    
-                    
-                </dl>
-            </section>
-
-            <!-- Annotation legend -->
-            <section class="sidebar-section" id="sidebar-legend">
-                <h3 class="sidebar-section-title">Annotationslegende</h3>
-                
-                <div class="legend-grid">
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-person"></span>
-                        <span>Person</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-org"></span>
-                        <span>Organisation</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-place"></span>
-                        <span>Ort</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-fn-issuer"></span>
-                        <span>Aussteller</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-fn-recipient"></span>
-                        <span>Empfänger</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-fn-witness"></span>
-                        <span>Zeuge</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-trigger"></span>
-                        <span>Dispositivformel</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-add"></span>
-                        <span>Editorische Ergänzung</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-attr"></span>
-                        <span>Attribut / Rollenbezeichnung</span>
-                    </div>
-                    
-                </div>
-            </section>
-
-            <!-- Provenance -->
-            <section class="sidebar-section" id="sidebar-provenance">
-                <h3 class="sidebar-section-title">Datenherkunft</h3>
-                <dl class="sidebar-dl provenance-list">
-                    <dt>Quelldatei</dt>
-                    <dd><code>sources/Stadtbuecher/Band_1_1395-1400_ready/done/560.xml</code></dd>
-                    <dt>Sammlung</dt>
-                    <dd>Stadtbücher Bd. 1 (1395–1400) <code class="prov-path">Stadtbuecher/Band_1_1395-1400_ready</code></dd>
-                    <dt>Register</dt>
-                    <dd><code>indices/personList.xml</code>, <code>orgList.xml</code>, <code>placeList.xml</code></dd>
-                    <dt>Renderer</dt>
-                    <dd><code>edition/renderer.py</code> &rarr; Jinja2</dd>
-                </dl>
-            </section>
-        </div>
-    </aside>
 
     <!-- Print-only metadata (hidden on screen, shown in print) -->
     <div class="doc-print-meta">

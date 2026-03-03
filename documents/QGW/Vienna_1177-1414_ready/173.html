@@ -20,7 +20,10 @@
                 <span class="nav-brand-sub">Digital Edition</span>
             </a>
             <span class="nav-badge">Research Preview via Promptotyping</span>
-            <div class="nav-links">
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
                 <a href="../../../index.html">Dokumente</a>
                 <div class="nav-dropdown">
                     <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
@@ -73,12 +76,6 @@
     
 </nav>
 
-                <button class="toolbar-btn" id="sidebar-toggle-meta" aria-label="Metadaten anzeigen" title="Metadaten">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7V11M8 5.5V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                </button>
-                <button class="toolbar-btn" id="sidebar-toggle-legend" aria-label="Annotationslegende anzeigen" title="Legende">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="13" cy="8" r="1.5" fill="currentColor"/></svg>
-                </button>
             </div>
         </div>
     </div>
@@ -157,6 +154,88 @@
         
     </div>
 
+    <!-- Details: metadata + annotation legend (compact, below content) -->
+    <section class="doc-details">
+        <div class="doc-details-meta">
+            
+            <dl class="details-dl">
+                
+                
+                <dt>Archiv</dt>
+                <dd>Wiener Stadt- und Landesarchiv</dd>
+                
+                
+                
+                <dt>Originaldatierung</dt>
+                <dd>ze Wienne, des naesten suntages vor Unser Vrowen tag ze der schidung.</dd>
+                
+                
+                
+                <dt>Quelle</dt>
+                <dd>Quellen zur Geschichte der Stadt Wien, Bd. II/1, Nr. 173 As published in HAUrk by Wiener Stadt- und Landesarchiv</dd>
+                
+                
+                
+                <dt>Digitalisat</dt>
+                <dd><a href="https://www.monasterium.net/mom/AT-WStLA/HAUrk/173/charter" target="_blank" rel="noopener" class="details-ext-link">Monasterium.net 
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.5 1.5H2C1.72 1.5 1.5 1.72 1.5 2V10C1.5 10.28 1.72 10.5 2 10.5H10C10.28 10.5 10.5 10.28 10.5 10V8.5M7 1.5H10.5V5M10.25 1.75L5.5 6.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a></dd>
+                
+            </dl>
+        </div>
+        <div class="doc-details-legend">
+            
+            <div class="legend-grid legend-grid-compact">
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-person"></span>
+                    <span>Person</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-org"></span>
+                    <span>Organisation</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-place"></span>
+                    <span>Ort</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-fn-issuer"></span>
+                    <span>Aussteller</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-fn-recipient"></span>
+                    <span>Empfänger</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-fn-witness"></span>
+                    <span>Zeuge</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-trigger"></span>
+                    <span>Dispositivformel</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-add"></span>
+                    <span>Editorische Ergänzung</span>
+                </div>
+                
+                <div class="legend-item">
+                    <span class="legend-swatch swatch-attr"></span>
+                    <span>Attribut / Rolle</span>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
     <!-- Bottom navigation -->
     
 <nav class="doc-paging doc-paging-bottom">
@@ -168,128 +247,6 @@
     
 </nav>
 
-
-    <!-- Sidebar overlay (off-canvas from right) -->
-    <div class="doc-sidebar-overlay" id="sidebar-overlay"></div>
-    <aside class="doc-sidebar" id="doc-sidebar">
-        <div class="sidebar-header">
-            <h2 class="sidebar-title">Metadaten</h2>
-            <button class="sidebar-close" id="sidebar-close" aria-label="Schließen">&times;</button>
-        </div>
-        <div class="sidebar-body">
-            <!-- Metadata -->
-            <section class="sidebar-section" id="sidebar-meta">
-                
-                <dl class="sidebar-dl sidebar-meta-list">
-                    
-                    
-                    <dt>Datum</dt>
-                    <dd>1336 VIII 11</dd>
-                    
-                    
-                    
-                    <dt>Ort</dt>
-                    <dd>Wien</dd>
-                    
-                    
-                    
-                    <dt>Archiv</dt>
-                    <dd>Wiener Stadt- und Landesarchiv</dd>
-                    
-                    
-                    
-                    <dt>Originaldatierung</dt>
-                    <dd class="meta-value-orig">ze Wienne, des naesten suntages vor Unser Vrowen tag ze der schidung.</dd>
-                    
-                    
-                    
-                    <dt>Quelle</dt>
-                    <dd class="meta-value-cite">Quellen zur Geschichte der Stadt Wien, Bd. II/1, Nr. 173 As published in HAUrk by Wiener Stadt- und Landesarchiv</dd>
-                    
-                    
-                    
-                    <dt>Digitalisat</dt>
-                    <dd>
-                        <a href="https://www.monasterium.net/mom/AT-WStLA/HAUrk/173/charter" target="_blank" rel="noopener" class="sidebar-ext-link">
-                            Monasterium.net 
-<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.5 1.5H2C1.72 1.5 1.5 1.72 1.5 2V10C1.5 10.28 1.72 10.5 2 10.5H10C10.28 10.5 10.5 10.28 10.5 10V8.5M7 1.5H10.5V5M10.25 1.75L5.5 6.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
-
-                        </a>
-                    </dd>
-                    
-                </dl>
-            </section>
-
-            <!-- Annotation legend -->
-            <section class="sidebar-section" id="sidebar-legend">
-                <h3 class="sidebar-section-title">Annotationslegende</h3>
-                
-                <div class="legend-grid">
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-person"></span>
-                        <span>Person</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-org"></span>
-                        <span>Organisation</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-place"></span>
-                        <span>Ort</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-fn-issuer"></span>
-                        <span>Aussteller</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-fn-recipient"></span>
-                        <span>Empfänger</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-fn-witness"></span>
-                        <span>Zeuge</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-trigger"></span>
-                        <span>Dispositivformel</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-add"></span>
-                        <span>Editorische Ergänzung</span>
-                    </div>
-                    
-                    <div class="legend-item">
-                        <span class="legend-swatch swatch-attr"></span>
-                        <span>Attribut / Rollenbezeichnung</span>
-                    </div>
-                    
-                </div>
-            </section>
-
-            <!-- Provenance -->
-            <section class="sidebar-section" id="sidebar-provenance">
-                <h3 class="sidebar-section-title">Datenherkunft</h3>
-                <dl class="sidebar-dl provenance-list">
-                    <dt>Quelldatei</dt>
-                    <dd><code>sources/QGW/Vienna_1177-1414_ready/done/173.xml</code></dd>
-                    <dt>Sammlung</dt>
-                    <dd>QGW II/1 (1177–1414) <code class="prov-path">QGW/Vienna_1177-1414_ready</code></dd>
-                    <dt>Register</dt>
-                    <dd><code>indices/personList.xml</code>, <code>orgList.xml</code>, <code>placeList.xml</code></dd>
-                    <dt>Renderer</dt>
-                    <dd><code>edition/renderer.py</code> &rarr; Jinja2</dd>
-                </dl>
-            </section>
-        </div>
-    </aside>
 
     <!-- Print-only metadata (hidden on screen, shown in print) -->
     <div class="doc-print-meta">

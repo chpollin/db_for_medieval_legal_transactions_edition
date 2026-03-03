@@ -20,7 +20,10 @@
                 <span class="nav-brand-sub">Digital Edition</span>
             </a>
             <span class="nav-badge">Research Preview via Promptotyping</span>
-            <div class="nav-links">
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
                 <a href="../index.html">Dokumente</a>
                 <div class="nav-dropdown">
                     <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
@@ -345,9 +348,9 @@ python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> <
 <h3 id="document-page-text-bild-synopse">Document Page (Text-Bild-Synopse)<a class="headerlink" href="#document-page-text-bild-synopse" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Synopsis layout</strong>: text + facsimile side by side as default view (CSS grid <code>1fr 1fr</code>), no tab switching needed</li>
-<li><strong>Compact toolbar</strong> (sticky below nav): breadcrumb, Nr. + date + place, inline prev/next, metadata [i] and legend [?] buttons</li>
+<li><strong>Compact toolbar</strong> (sticky below nav): breadcrumb, Nr. + date + place, inline prev/next</li>
 <li><strong>Facsimile panel</strong>: always visible for documents with facsimile URLs (79%), sticky position, lazy-loaded images, page navigation, zoom/pan</li>
-<li><strong>Off-canvas sidebar</strong>: overlay from right, triggered by toolbar buttons. Contains: metadata (<code>&lt;dl&gt;</code>), annotation legend, provenance/data lineage</li>
+<li><strong>Compact details section</strong> (below content): metadata (Archiv, Originaldatierung, Quelle, Digitalisat link) + annotation legend in two-column grid</li>
 <li><strong>No-facsimile fallback</strong> (21%): single column, text body centred at <code>max-width: 52rem</code></li>
 <li><strong>Prev/next navigation</strong>: inline in toolbar + bottom of page</li>
 <li><strong>Print metadata</strong>: hidden <code>&lt;div class="doc-print-meta"&gt;</code> block, shown only in <code>@media print</code></li>
@@ -375,7 +378,7 @@ python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> <
 <tr>
 <td><code>external_icon()</code></td>
 <td>—</td>
-<td>SVG icon for external links (sidebar)</td>
+<td>SVG icon for external links (details section)</td>
 </tr>
 <tr>
 <td><code>search_box(placeholder)</code></td>
@@ -525,7 +528,7 @@ Data:       [pe__konrad_goldstein]          ← xml:id, monospace
 </ol>
     </div>
     <footer class="vault-detail-footer">
-        <p>Quelle: <code>knowledge/edition.md</code> · Gebaut: 2026-03-02</p>
+        <p>Quelle: <code>knowledge/edition.md</code> · Gebaut: 2026-03-03</p>
     </footer>
 </article>
 
