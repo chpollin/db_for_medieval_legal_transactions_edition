@@ -12,6 +12,12 @@
         initTooltips();
         initFacsimileViewer();
 
+        // Document page — scholarly tools
+        if (document.querySelector('.doc-body')) {
+            initFactoidView();
+            initCitationHelper();
+        }
+
         // Index page
         if (document.getElementById('doc-table')) {
             initIndex();
@@ -26,12 +32,31 @@
         if (document.getElementById('stats-data')) {
             initStatistics();
         }
+
+        // Test documentation page
+        if (document.getElementById('tests-data')) {
+            initTests();
+        }
+
+        // Guidelines page
+        if (document.getElementById('guidelines-sidebar')) {
+            initGuidelines();
+        }
+
     });
 
 
     /* ======================================================================
        Navigation dropdown
        ====================================================================== */
+
+    function closeAllDropdowns(dropdowns) {
+        dropdowns.forEach(function(d) {
+            d.classList.remove('open');
+            var t = d.querySelector('.nav-dropdown-trigger');
+            if (t) t.setAttribute('aria-expanded', 'false');
+        });
+    }
 
     function initNavDropdown() {
         var dropdowns = document.querySelectorAll('.nav-dropdown');
@@ -42,32 +67,21 @@
             trigger.addEventListener('click', function(e) {
                 e.stopPropagation();
                 var isOpen = dd.classList.contains('open');
-                // Close all
-                dropdowns.forEach(function(d) { d.classList.remove('open'); });
+                closeAllDropdowns(dropdowns);
                 if (!isOpen) {
                     dd.classList.add('open');
                     trigger.setAttribute('aria-expanded', 'true');
-                } else {
-                    trigger.setAttribute('aria-expanded', 'false');
                 }
             });
         });
 
         document.addEventListener('click', function() {
-            dropdowns.forEach(function(d) {
-                d.classList.remove('open');
-                var t = d.querySelector('.nav-dropdown-trigger');
-                if (t) t.setAttribute('aria-expanded', 'false');
-            });
+            closeAllDropdowns(dropdowns);
         });
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                dropdowns.forEach(function(d) {
-                    d.classList.remove('open');
-                    var t = d.querySelector('.nav-dropdown-trigger');
-                    if (t) t.setAttribute('aria-expanded', 'false');
-                });
+                closeAllDropdowns(dropdowns);
             }
         });
     }
@@ -689,6 +703,7 @@
         var regType = table.dataset.type;
         var filterType = document.getElementById('filter-type');
         var filterDocs = document.getElementById('filter-docs');
+        var filterQuality = document.getElementById('filter-quality');
         var resultCount = document.getElementById('result-count');
         var activeFiltersEl = document.getElementById('active-filters');
 
@@ -697,6 +712,7 @@
             letter: '',
             typeFilter: '',
             docsFilter: '',
+            qualityFilter: '',
             sortKey: 'n',
             sortDir: 1
         };
@@ -708,7 +724,59 @@
         });
 
         var filteredEntries = allEntries.slice();
-        var colCount = regType === 'persons' ? 5 : 4;
+        var colCount = regType === 'persons' ? 6 : 5;
+
+        // --- Detail JSON cache ---
+        var detailCache = null;  // lazy-loaded JSON { entityId: [{u,i,d,c,r},...] }
+        var jsonFile = 'register/' + regType + '.json';
+
+        function loadDetailJSON(cb) {
+            if (detailCache) { cb(detailCache); return; }
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', jsonFile, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try { detailCache = JSON.parse(xhr.responseText); } catch(e) { detailCache = {}; }
+                } else { detailCache = {}; }
+                cb(detailCache);
+            };
+            xhr.onerror = function() { detailCache = {}; cb(detailCache); };
+            xhr.send();
+        }
+
+        function renderDetailRow(entry, parentTr) {
+            var existing = parentTr.nextElementSibling;
+            if (existing && existing.classList.contains('detail-row')) {
+                existing.remove();
+                parentTr.classList.remove('expanded');
+                return;
+            }
+            loadDetailJSON(function(cache) {
+                var docs = cache[entry.id] || [];
+                var detailTr = document.createElement('tr');
+                detailTr.className = 'detail-row';
+                var td = document.createElement('td');
+                td.colSpan = colCount;
+                if (docs.length === 0) {
+                    td.innerHTML = '<div class="detail-content"><p class="no-docs-note">Keine Dokumente verkn\u00fcpft.</p></div>';
+                } else {
+                    var html = '<div class="detail-content"><table class="detail-doc-table"><thead><tr>'
+                        + '<th>Nr.</th><th>Datum</th><th>Sammlung</th><th>Regest</th></tr></thead><tbody>';
+                    for (var i = 0; i < docs.length; i++) {
+                        var d = docs[i];
+                        html += '<tr><td><a href="' + esc(d.u) + '">' + esc(d.i) + '</a></td>'
+                            + '<td>' + esc(d.d) + '</td>'
+                            + '<td>' + esc(d.c) + '</td>'
+                            + '<td>' + esc(d.r) + '</td></tr>';
+                    }
+                    html += '</tbody></table></div>';
+                    td.innerHTML = html;
+                }
+                detailTr.appendChild(td);
+                parentTr.classList.add('expanded');
+                parentTr.parentNode.insertBefore(detailTr, parentTr.nextSibling);
+            });
+        }
 
         // --- Table renderer ---
         var renderer = createTableRenderer({
@@ -716,7 +784,12 @@
             noResultsId: 'no-results',
             colCount: colCount,
             renderRow: function(entry, i, tr) {
-                var html = '<td class="col-name"><span class="register-name">' + esc(entry.n) + '</span></td>';
+                tr.dataset.entityId = entry.id;
+                var dcClass = entry.dc === 0 ? 'doc-count-badge doc-count-zero' : 'doc-count-badge';
+                var nameBtn = entry.dc > 0
+                    ? '<button class="register-name register-name-linked" data-idx="' + i + '">' + esc(entry.n) + '</button>'
+                    : '<span class="register-name">' + esc(entry.n) + '</span>';
+                var html = '<td class="col-name">' + nameBtn + '</td>';
 
                 if (regType === 'persons') {
                     var sexLabel = entry.sex === 'm' ? 'm' : entry.sex === 'f' ? 'w' : '\u2013';
@@ -726,12 +799,36 @@
                     html += '<td class="col-type">' + esc(entry.tp) + '</td>';
                 }
 
-                var dcClass = entry.dc === 0 ? 'doc-count-badge doc-count-zero' : 'doc-count-badge';
-                html += '<td class="col-docs"><span class="' + dcClass + '">' + entry.dc + '</span></td>';
+                if (entry.dc > 0) {
+                    html += '<td class="col-docs"><button class="doc-count-link"><span class="' + dcClass + '">' + entry.dc + '</span></button></td>';
+                } else {
+                    html += '<td class="col-docs"><span class="' + dcClass + '">' + entry.dc + '</span></td>';
+                }
+
+                // Quality indicator (worst score across linked documents)
+                var qLabel = entry.qw === 2 ? '\u26a0' : entry.qw === 1 ? '\u2139' : entry.qw === 0 ? '\u2713' : '\u2013';
+                var qClass = 'quality-dot quality-' + (entry.qw === 2 ? 'warning' : entry.qw === 1 ? 'notice' : entry.qw === 0 ? 'ok' : 'na');
+                html += '<td class="col-quality"><span class="' + qClass + '" title="' + (entry.qw === 2 ? 'Warnungen' : entry.qw === 1 ? 'Hinweise' : entry.qw === 0 ? 'Fehlerfrei' : 'Keine Dokumente') + '">' + qLabel + '</span></td>';
+
                 html += '<td class="col-id"><span class="cell-id">' + esc(entry.id) + '</span></td>';
 
                 tr.innerHTML = html;
             }
+        });
+
+        // --- Click handler for inline detail expansion ---
+        var tbody = document.getElementById('register-tbody');
+        tbody.addEventListener('click', function(e) {
+            // Clickable: name button OR doc-count badge (when dc > 0)
+            var trigger = e.target.closest('.register-name-linked, .doc-count-link');
+            if (!trigger) return;
+            var tr = trigger.closest('tr');
+            var entityId = tr.dataset.entityId;
+            var entry = null;
+            for (var i = 0; i < allEntries.length; i++) {
+                if (allEntries[i].id === entityId) { entry = allEntries[i]; break; }
+            }
+            if (entry && entry.dc > 0) renderDetailRow(entry, tr);
         });
 
         // --- Shared infrastructure ---
@@ -774,6 +871,14 @@
             });
         }
 
+        // --- Quality filter ---
+        if (filterQuality) {
+            filterQuality.addEventListener('change', function() {
+                state.qualityFilter = filterQuality.value;
+                applyFilters();
+            });
+        }
+
         // --- Core filter ---
         function applyFilters() {
             filteredEntries = allEntries.filter(function(entry) {
@@ -786,6 +891,11 @@
 
                 if (state.docsFilter === '1' && entry.dc === 0) return false;
                 if (state.docsFilter === '0' && entry.dc > 0) return false;
+
+                if (state.qualityFilter !== '') {
+                    var qVal = parseInt(state.qualityFilter);
+                    if (entry.qw !== qVal) return false;
+                }
 
                 if (state.query) {
                     var words = state.query.split(/\s+/);
@@ -800,8 +910,8 @@
             // Sort
             filteredEntries.sort(function(a, b) {
                 var va, vb;
-                if (state.sortKey === 'dc') {
-                    va = a.dc; vb = b.dc;
+                if (state.sortKey === 'dc' || state.sortKey === 'qw') {
+                    va = a[state.sortKey]; vb = b[state.sortKey];
                 } else {
                     va = (a[state.sortKey] || '').toLowerCase();
                     vb = (b[state.sortKey] || '').toLowerCase();
@@ -846,6 +956,23 @@
 
         // Initial render
         applyFilters();
+
+        // Deep-link: auto-expand entity from URL hash (e.g. persons.html#pe__123)
+        function openFromHash() {
+            var hash = window.location.hash;
+            if (!hash || hash.length < 2) return;
+            var targetId = decodeURIComponent(hash.substring(1));
+            var row = tbody.querySelector('tr[data-entity-id="' + CSS.escape(targetId) + '"]');
+            if (!row) return;
+            row.scrollIntoView({ block: 'center' });
+            var entry = null;
+            for (var i = 0; i < allEntries.length; i++) {
+                if (allEntries[i].id === targetId) { entry = allEntries[i]; break; }
+            }
+            if (entry) renderDetailRow(entry, row);
+        }
+        openFromHash();
+        window.addEventListener('hashchange', openFromHash);
     }
 
 
@@ -1677,4 +1804,387 @@
         };
     })();
 
+
+    /* ======================================================================
+       Test documentation page
+       ====================================================================== */
+
+    function initTests() {
+        var dataScript = document.getElementById('tests-data');
+        if (!dataScript) return;
+
+        var data;
+        try { data = JSON.parse(dataScript.textContent); } catch (e) { return; }
+
+        // Render cards for both groups
+        renderTestPanel('panel-pipeline', data.pipeline || []);
+        renderTestPanel('panel-edition', data.edition || []);
+
+        // Tab switching
+        var tabs = document.querySelectorAll('.tests-tab');
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].addEventListener('click', function() {
+                var target = this.getAttribute('data-tab');
+                for (var j = 0; j < tabs.length; j++) {
+                    tabs[j].classList.toggle('active', tabs[j] === this);
+                }
+                var panels = document.querySelectorAll('.tests-panel');
+                for (var k = 0; k < panels.length; k++) {
+                    panels[k].classList.toggle('active', panels[k].id === 'panel-' + target);
+                }
+            });
+        }
+    }
+
+    function renderTestPanel(panelId, files) {
+        var panel = document.getElementById(panelId);
+        if (!panel) return;
+
+        var html = '';
+        for (var i = 0; i < files.length; i++) {
+            var f = files[i];
+            html += '<div class="tests-card">';
+            html += '<div class="tests-card-header" onclick="this.parentElement.classList.toggle(\'open\')">';
+            html += '<div>';
+            html += '<span class="tests-card-title">' + esc(f.title) + '</span>';
+            html += '<span class="tests-card-meta">' + f.test_count + ' Tests</span>';
+            html += '</div>';
+            html += '<span class="tests-card-arrow">&#x25B6;</span>';
+            html += '</div>';
+
+            if (f.description) {
+                html += '<div class="tests-card-desc">' + esc(f.description) + '</div>';
+            }
+            html += '<div class="tests-card-file">' + esc(f.file) + '</div>';
+
+            html += '<div class="tests-card-body">';
+            for (var j = 0; j < f.tests.length; j++) {
+                var t = f.tests[j];
+                html += '<div class="tests-test-item">';
+                html += '<span class="tests-test-name">' + esc(t.name) + '</span>';
+                if (t.doc) {
+                    html += '<span class="tests-test-doc">' + esc(t.doc) + '</span>';
+                }
+                html += '</div>';
+            }
+            html += '</div>';
+            html += '</div>';
+        }
+        panel.innerHTML = html;
+    }
+
+
+    /* ======================================================================
+       Guidelines page — scroll-spy + collapsible code blocks
+       ====================================================================== */
+
+    function initGuidelines() {
+        var sidebar = document.getElementById('guidelines-sidebar');
+        var body = document.querySelector('.guidelines-body');
+        if (!sidebar || !body) return;
+
+        // --- Collapsible code blocks: wrap long <pre> (>10 lines) in <details> ---
+        var pres = body.querySelectorAll('pre');
+        for (var i = 0; i < pres.length; i++) {
+            var pre = pres[i];
+            var lines = pre.textContent.split('\n').length;
+            if (lines <= 10) continue;
+
+            // Skip if already inside a <details>
+            if (pre.closest('details')) continue;
+
+            var details = document.createElement('details');
+            var summary = document.createElement('summary');
+            summary.textContent = 'XML-Beispiel anzeigen (' + lines + ' Zeilen)';
+            details.appendChild(summary);
+
+            // If pre is inside a .highlight div, wrap the whole .highlight
+            var wrapper = pre.closest('.highlight') || pre;
+            wrapper.parentNode.insertBefore(details, wrapper);
+            details.appendChild(wrapper);
+        }
+
+        // --- Scroll-spy: highlight active TOC link ---
+        var tocLinks = sidebar.querySelectorAll('a[href^="#"]');
+        if (!tocLinks.length) return;
+
+        // Build map of anchor → TOC link
+        var headings = [];
+        for (var j = 0; j < tocLinks.length; j++) {
+            var href = tocLinks[j].getAttribute('href');
+            if (!href) continue;
+            var target = document.getElementById(href.slice(1));
+            if (target) {
+                headings.push({ el: target, link: tocLinks[j] });
+            }
+        }
+
+        if (!headings.length) return;
+
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+                // Remove active from all
+                for (var k = 0; k < headings.length; k++) {
+                    headings[k].link.classList.remove('active');
+                }
+                // Set active on the intersecting heading's link
+                for (var m = 0; m < headings.length; m++) {
+                    if (headings[m].el === entry.target) {
+                        headings[m].link.classList.add('active');
+                        break;
+                    }
+                }
+            });
+        }, {
+            rootMargin: '-80px 0px -70% 0px',
+            threshold: 0
+        });
+
+        for (var n = 0; n < headings.length; n++) {
+            observer.observe(headings[n].el);
+        }
+    }
+
+
+    /* ======================================================================
+       Factoid View — extract atomic assertions from annotation spans
+       ====================================================================== */
+
+    function initFactoidView() {
+        var toggleBtn = document.getElementById('factoid-toggle');
+        var container = document.getElementById('factoid-view');
+        if (!toggleBtn || !container) return;
+
+        var built = false;
+
+        toggleBtn.addEventListener('click', function() {
+            var isVisible = !container.classList.contains('hidden');
+            if (isVisible) {
+                container.classList.add('hidden');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+                return;
+            }
+            if (!built) {
+                buildFactoidTable(container);
+                built = true;
+            }
+            container.classList.remove('hidden');
+            toggleBtn.setAttribute('aria-expanded', 'true');
+        });
+    }
+
+    function buildFactoidTable(container) {
+        var body = document.querySelector('.doc-body');
+        if (!body) return;
+
+        var factoids = [];
+
+        // Walk all function role spans — each is a factoid context
+        var fnSpans = body.querySelectorAll('.anno-fn');
+        for (var i = 0; i < fnSpans.length; i++) {
+            var fnSpan = fnSpans[i];
+            var role = fnSpan.getAttribute('data-role') || '';
+            var roleLabel = {
+                'issuer': 'Aussteller*in',
+                'recipient': 'Empfänger*in',
+                'witness': 'Zeug*in',
+                'other': 'Sonstige'
+            }[role] || role;
+
+            // Find entities within this function span
+            var entities = fnSpan.querySelectorAll('.anno-person, .anno-org, .anno-place');
+            for (var j = 0; j < entities.length; j++) {
+                var entity = entities[j];
+                var type = entity.classList.contains('anno-person') ? 'Person' :
+                           entity.classList.contains('anno-org') ? 'Organisation' : 'Ort';
+                var ref = entity.getAttribute('data-ref') || '';
+                var name = entity.textContent.trim();
+                var title = entity.getAttribute('title') || entity.getAttribute('data-title') || '';
+                if (title) name = title.replace(/\s*\[.*\]\s*$/, '') || name;
+
+                // Collect attributes (roleName) within or near this entity
+                var attrs = [];
+                var attrSpans = entity.querySelectorAll('.anno-attr');
+                for (var k = 0; k < attrSpans.length; k++) {
+                    attrs.push(attrSpans[k].textContent.trim());
+                }
+
+                // Find event context (closest parent anno-event)
+                var eventSpan = entity.closest('.anno-event');
+                var eventRef = eventSpan ? (eventSpan.getAttribute('data-ref') || '') : '';
+
+                factoids.push({
+                    entity: name,
+                    type: type,
+                    ref: ref,
+                    role: roleLabel,
+                    attributes: attrs.join(', '),
+                    event: eventRef
+                });
+            }
+        }
+
+        // Also find entities NOT inside any function span (standalone annotations)
+        var allEntities = body.querySelectorAll('.anno-person, .anno-org, .anno-place');
+        for (var m = 0; m < allEntities.length; m++) {
+            var el = allEntities[m];
+            if (el.closest('.anno-fn')) continue; // already captured above
+            var elType = el.classList.contains('anno-person') ? 'Person' :
+                         el.classList.contains('anno-org') ? 'Organisation' : 'Ort';
+            var elRef = el.getAttribute('data-ref') || '';
+            var elName = el.textContent.trim();
+            var elTitle = el.getAttribute('title') || el.getAttribute('data-title') || '';
+            if (elTitle) elName = elTitle.replace(/\s*\[.*\]\s*$/, '') || elName;
+
+            var elAttrs = [];
+            var elAttrSpans = el.querySelectorAll('.anno-attr');
+            for (var n = 0; n < elAttrSpans.length; n++) {
+                elAttrs.push(elAttrSpans[n].textContent.trim());
+            }
+
+            var elEvent = el.closest('.anno-event');
+            var elEventRef = elEvent ? (elEvent.getAttribute('data-ref') || '') : '';
+
+            factoids.push({
+                entity: elName,
+                type: elType,
+                ref: elRef,
+                role: '\u2013',
+                attributes: elAttrs.join(', '),
+                event: elEventRef
+            });
+        }
+
+        if (factoids.length === 0) {
+            container.innerHTML = '<p class="factoid-empty">Keine annotierten Entit\u00e4ten in diesem Dokument.</p>';
+            return;
+        }
+
+        var html = '<table class="factoid-table"><thead><tr>'
+            + '<th>Entit\u00e4t</th><th>Typ</th><th>Rolle</th><th>Attribute</th><th>Event</th><th>ID</th>'
+            + '</tr></thead><tbody>';
+        for (var p = 0; p < factoids.length; p++) {
+            var f = factoids[p];
+            html += '<tr>'
+                + '<td>' + esc(f.entity) + '</td>'
+                + '<td><span class="factoid-type factoid-type-' + f.type.toLowerCase() + '">' + esc(f.type) + '</span></td>'
+                + '<td>' + esc(f.role) + '</td>'
+                + '<td>' + esc(f.attributes || '\u2013') + '</td>'
+                + '<td><span class="cell-id">' + esc(f.event || '\u2013') + '</span></td>'
+                + '<td><span class="cell-id">' + esc(f.ref) + '</span></td>'
+                + '</tr>';
+        }
+        html += '</tbody></table>';
+
+        container.innerHTML = '<div class="factoid-header">'
+            + '<span class="factoid-count">' + factoids.length + ' Faktoid' + (factoids.length !== 1 ? 'e' : '') + '</span>'
+            + '</div>' + html;
+    }
+
+
+    /* ======================================================================
+       Citation Helper — formatted citation with copy-to-clipboard
+       ====================================================================== */
+
+    function initCitationHelper() {
+        var btn = document.getElementById('cite-toggle');
+        var popover = document.getElementById('cite-popover');
+        if (!btn || !popover) return;
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var isVisible = !popover.classList.contains('hidden');
+            if (isVisible) {
+                popover.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                buildCitations(popover);
+                popover.classList.remove('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!popover.contains(e.target) && e.target !== btn) {
+                popover.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                popover.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    function buildCitations(popover) {
+        // Read metadata from the page DOM
+        var metaScript = document.getElementById('doc-meta');
+        if (!metaScript) return;
+        var meta;
+        try { meta = JSON.parse(metaScript.textContent); } catch(e) { return; }
+
+        var idno = meta.idno || '';
+        var dateDisplay = meta.date_display || '';
+        var citation = meta.citation || '';
+        var collection = meta.collection_label || '';
+        var url = window.location.href;
+        var today = new Date().toISOString().slice(0, 10);
+
+        // Chicago style
+        var chicago = '';
+        if (citation) {
+            chicago = citation + '.';
+        } else {
+            chicago = 'Nr. ' + idno;
+            if (dateDisplay) chicago += ' (' + dateDisplay + ')';
+            chicago += '.';
+        }
+        chicago += ' In: Wiener Urkundenbuch Digital. Universität Wien.';
+        chicago += ' ' + url + ' (Zugriff: ' + today + ').';
+
+        // BibTeX
+        var bibKey = 'WUB_' + idno.replace(/[^a-zA-Z0-9_]/g, '_');
+        var bibtex = '@misc{' + bibKey + ',\n'
+            + '  title     = {Nr. ' + idno + (dateDisplay ? ' (' + dateDisplay + ')' : '') + '},\n'
+            + '  author    = {{Wiener Urkundenbuch Digital}},\n'
+            + '  publisher = {Universität Wien},\n'
+            + '  year      = {' + (dateDisplay.match(/\d{4}/) || ['s.d.'])[0] + '},\n'
+            + '  howpublished = {\\url{' + url + '}},\n'
+            + '  note      = {' + collection + '. Zugriff: ' + today + '}\n'
+            + '}';
+
+        popover.innerHTML = '<div class="cite-section">'
+            + '<div class="cite-label">Chicago</div>'
+            + '<div class="cite-text" id="cite-chicago">' + esc(chicago) + '</div>'
+            + '<button class="cite-copy-btn" data-target="cite-chicago" title="Kopieren">&#x2398;</button>'
+            + '</div>'
+            + '<div class="cite-section">'
+            + '<div class="cite-label">BibTeX</div>'
+            + '<pre class="cite-text cite-bibtex" id="cite-bibtex">' + esc(bibtex) + '</pre>'
+            + '<button class="cite-copy-btn" data-target="cite-bibtex" title="Kopieren">&#x2398;</button>'
+            + '</div>';
+
+        // Wire up copy buttons
+        var copyBtns = popover.querySelectorAll('.cite-copy-btn');
+        for (var i = 0; i < copyBtns.length; i++) {
+            copyBtns[i].addEventListener('click', function(e) {
+                e.stopPropagation();
+                var targetId = this.getAttribute('data-target');
+                var textEl = document.getElementById(targetId);
+                if (!textEl) return;
+                var text = textEl.textContent;
+                navigator.clipboard.writeText(text).then(function() {
+                    e.target.textContent = '\u2713';
+                    setTimeout(function() { e.target.textContent = '\u2398'; }, 1500);
+                });
+            });
+        }
+    }
+
+
 })();
+

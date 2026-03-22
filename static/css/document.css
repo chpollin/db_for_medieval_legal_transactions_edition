@@ -1,0 +1,803 @@
+/* === Wiener Urkundenbuch — Document Page === */
+/* ==========================================================================
+   Document page
+   ========================================================================== */
+
+.document {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+}
+
+/* No-facsimile: centre the text at readable width */
+.document:not(.has-facsimile) .doc-content {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+
+/* --- Document toolbar (sticky below nav) --- */
+.doc-toolbar {
+    position: sticky;
+    top: 3.5rem;    /* below site-nav */
+    z-index: calc(var(--z-nav) - 1);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    margin: calc(-1 * var(--space-xl)) calc(-1 * var(--space-lg)) 0;
+    padding: 0 var(--space-lg);
+}
+
+.doc-toolbar-inner {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: 3rem;
+}
+
+.doc-toolbar-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+}
+
+.doc-breadcrumb {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    line-height: 1.3;
+}
+
+.doc-breadcrumb a {
+    color: var(--anno-person);
+    text-decoration: none;
+}
+
+.doc-breadcrumb a:hover { text-decoration: underline; }
+
+.bc-sep {
+    margin: 0 var(--space-xs);
+    opacity: 0.4;
+}
+
+.doc-toolbar-title {
+    font-family: var(--font-serif);
+    font-size: var(--text-base);
+    line-height: var(--leading-tight);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.toolbar-sep {
+    margin: 0 var(--space-sm);
+    color: var(--color-text-light);
+}
+
+.toolbar-date,
+.toolbar-place {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.doc-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+}
+
+/* Toolbar action buttons (factoid, cite) */
+.toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm, 4px);
+    background: var(--color-bg-card);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+    position: relative;
+}
+
+.toolbar-btn:hover {
+    border-color: var(--anno-person);
+    color: var(--anno-person);
+}
+
+.toolbar-btn[aria-expanded="true"] {
+    border-color: var(--anno-person);
+    color: var(--anno-person);
+    background: var(--color-bg-warm);
+}
+
+/* Citation popover */
+.cite-popover {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: var(--space-xs);
+    width: 28rem;
+    max-width: 90vw;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg, 8px);
+    box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.1));
+    padding: var(--space-md);
+    z-index: var(--z-tooltip);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.cite-section {
+    position: relative;
+    margin-bottom: var(--space-md);
+}
+
+.cite-section:last-child { margin-bottom: 0; }
+
+.cite-label {
+    font-weight: 600;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
+}
+
+.cite-text {
+    background: var(--color-bg-warm);
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm, 4px);
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.cite-bibtex {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+.cite-copy-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: var(--text-base);
+    color: var(--color-text-light);
+    cursor: pointer;
+    padding: 2px var(--space-xs);
+}
+
+.cite-copy-btn:hover { color: var(--anno-person); }
+
+/* Factoid view */
+.factoid-view {
+    max-width: var(--max-width-wide);
+    margin: var(--space-lg) auto;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg, 8px);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-lg);
+    overflow-x: auto;
+}
+
+.factoid-header {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+}
+
+.factoid-count {
+    font-weight: 600;
+}
+
+.factoid-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.factoid-table th {
+    text-align: left;
+    font-weight: 600;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    border-bottom: 2px solid var(--color-border);
+    padding: var(--space-xs) var(--space-sm);
+}
+
+.factoid-table td {
+    padding: var(--space-xs) var(--space-sm);
+    border-bottom: 1px solid var(--color-border-light);
+    vertical-align: top;
+}
+
+.factoid-table tr:hover td { background: var(--color-bg-warm); }
+
+.factoid-type {
+    display: inline-block;
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    padding: 1px var(--space-xs);
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.factoid-type-person { background: #e8f0f8; color: #2e5a88; }
+.factoid-type-organisation { background: #f2eaf6; color: #7b4d8e; }
+.factoid-type-ort { background: #e6f3ed; color: #3a7a5c; }
+
+.factoid-empty {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+    text-align: center;
+    padding: var(--space-lg);
+}
+
+/* Inline prev/next in toolbar */
+.doc-paging-inline {
+    display: inline-flex;
+    justify-content: flex-end;
+    margin: 0;
+    gap: var(--space-xs);
+}
+
+.doc-paging-inline .doc-paging-prev,
+.doc-paging-inline .doc-paging-next {
+    font-size: var(--text-xs);
+    padding: 2px var(--space-sm);
+    white-space: nowrap;
+}
+
+
+/* --- Document content area (synopsis grid) --- */
+.doc-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+    align-items: start;
+}
+
+/* Synopsis: text + facsimile side by side */
+.has-facsimile .doc-content {
+    grid-template-columns: 1fr 1fr;
+}
+
+
+/* Card surface: base in components.css */
+
+/* --- Document body (rendered TEI) --- */
+.doc-body {
+    padding: var(--space-xl) var(--space-2xl);
+    line-height: var(--leading-body);
+}
+
+.doc-body p {
+    margin: 0 0 var(--space-lg);
+    text-align: justify;
+    hyphens: auto;
+}
+
+.doc-body p:last-child { margin-bottom: 0; }
+
+
+/* --- Facsimile panel (always visible in synopsis) --- */
+.doc-facs-panel {
+    position: sticky;
+    top: 7rem;      /* below nav + toolbar */
+    max-height: calc(100vh - 8rem);
+    overflow: auto;
+}
+
+.facs-viewer {
+    overflow: hidden;
+}
+
+.facs-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-warm);
+    border-bottom: 1px solid var(--color-border-light);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* Shared facsimile button base */
+.facs-controls button,
+.facs-zoom-controls button {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: all var(--transition-fast);
+}
+
+.facs-controls button:hover:not(:disabled),
+.facs-zoom-controls button:hover {
+    border-color: var(--anno-person);
+    color: var(--color-text);
+}
+
+.facs-controls button {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.facs-controls button:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.facs-image-wrap {
+    overflow: hidden;
+    cursor: grab;
+    background: var(--color-bg-warm);
+    min-height: 20rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.facs-image-wrap:active { cursor: grabbing; }
+
+.facs-image {
+    width: 100%;
+    height: auto;
+    transition: transform var(--transition-fast);
+    transform-origin: center center;
+    display: block;
+}
+
+.facs-image.loading {
+    opacity: 0.3;
+}
+
+.facs-zoom-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-warm);
+    border-top: 1px solid var(--color-border-light);
+}
+
+.facs-zoom-controls button {
+    padding: var(--space-xs) var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.facs-attribution {
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+    margin: 0;
+    padding: var(--space-xs) var(--space-md);
+}
+
+.facs-attribution a {
+    color: var(--anno-person);
+    text-decoration: none;
+}
+
+.facs-attribution a:hover { text-decoration: underline; }
+
+
+/* --- Document paging (prev/next) --- */
+.doc-paging {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.doc-paging-bottom {
+    margin-top: var(--space-xl);
+    margin-bottom: 0;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border-light);
+}
+
+.doc-paging a {
+    color: var(--anno-person);
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    transition: all var(--transition-fast);
+}
+
+.doc-paging a:hover {
+    background: var(--color-bg-warm);
+    border-color: var(--anno-person);
+}
+
+
+/* --- Document details (compact info block below content) --- */
+.doc-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg) var(--space-xl);
+    margin-top: var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--color-bg-warm);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.details-dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-xs) var(--space-md);
+    margin: 0;
+}
+
+.details-dl dt {
+    font-weight: 600;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-light);
+    padding-top: 2px;
+}
+
+.details-dl dd {
+    margin: 0;
+    color: var(--color-text-muted);
+}
+
+.details-ext-link {
+    color: var(--anno-person);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.details-ext-link:hover { text-decoration: underline; }
+
+.legend-grid-compact {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xs) var(--space-sm);
+}
+
+/* Provenance list: muted text color */
+.provenance-list dd { color: var(--color-text-muted); }
+
+.prov-path {
+    font-size: var(--text-2xs);
+    opacity: 0.7;
+    margin-left: var(--space-xs);
+}
+
+/* Legend grid (reused in sidebar) */
+.legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: var(--space-sm) var(--space-lg);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+.legend-swatch {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.swatch-person       { background: var(--anno-person-bg); border: 1px solid var(--anno-person-border); border-bottom: 2px solid var(--anno-person); }
+.swatch-org          { background: var(--anno-org-bg); border: 1px solid var(--anno-org-border); border-bottom: 2px solid var(--anno-org); }
+.swatch-place        { background: var(--anno-place-bg); border: 1px solid var(--anno-place-border); border-bottom: 2px solid var(--anno-place); }
+.swatch-fn-issuer    { background: var(--anno-fn-issuer-bg); border-left: 3px solid var(--anno-fn-issuer); }
+.swatch-fn-recipient { background: var(--anno-fn-recipient-bg); border-left: 3px solid var(--anno-fn-recipient); }
+.swatch-fn-witness   { background: var(--anno-fn-witness-bg); border-left: 3px solid var(--anno-fn-witness); }
+.swatch-trigger      { background: transparent; font-weight: 700; color: var(--anno-trigger); border: 1px dashed var(--anno-trigger); }
+.swatch-add          { background: transparent; font-style: italic; color: var(--anno-add); border: 1px solid var(--anno-add); }
+.swatch-attr         { background: var(--color-bg-warm); border: 1px solid var(--color-border-dark); border-bottom: 1px dashed var(--anno-attr); }
+
+
+/* Always-visible provenance strip (Two-Layer UI: data layer) */
+.doc-provenance {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border-light);
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-light);
+    line-height: 1.6;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-xs);
+}
+
+.doc-provenance code {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+}
+
+.prov-label {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-right: var(--space-xs);
+}
+
+.prov-sep {
+    color: var(--color-border);
+}
+
+/* Print-only metadata block */
+.doc-print-meta {
+    display: none;
+}
+
+
+/* Structural sections */
+.tei-abstract { margin-bottom: var(--space-xl); }
+
+.tei-entry { margin-bottom: var(--space-xl); }
+
+.tei-header {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.tei-header p { text-align: left; }
+
+.tei-seal {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border-light);
+}
+
+.tei-nota {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* Shared section label pseudo-element */
+.tei-seal::before,
+.tei-nota::before {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-light);
+    margin-bottom: var(--space-sm);
+}
+
+.tei-seal::before { content: 'Siegel'; }
+.tei-nota::before { content: 'Vermerk'; }
+
+
+/* --- Annotation highlighting --- */
+
+/* Level 3: Entity highlights (shared base) */
+.anno-person,
+.anno-org,
+.anno-place {
+    border-bottom: 2px solid;
+    border-radius: 2px;
+    padding: 1px 2px;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+/* Entity annotation links: inherit text colour, no underline */
+a.anno-person,
+a.anno-org,
+a.anno-place {
+    color: inherit;
+    text-decoration: none;
+}
+
+.anno-person { background: var(--anno-person-bg); border-bottom-color: var(--anno-person); }
+.anno-org    { background: var(--anno-org-bg);    border-bottom-color: var(--anno-org); }
+.anno-place  { background: var(--anno-place-bg);  border-bottom-color: var(--anno-place); }
+
+.anno-person:hover { background: var(--anno-person-border); }
+.anno-org:hover    { background: var(--anno-org-border); }
+.anno-place:hover  { background: var(--anno-place-border); }
+
+
+/* Level 2: Function roles — left-border accents (shared base) */
+.anno-fn {
+    position: relative;
+    border-left: 3px solid;
+    padding-left: var(--space-sm);
+}
+
+.fn-label {
+    display: none;  /* shown by JS tooltip on hover */
+}
+
+.anno-fn-issuer   { border-left-color: var(--anno-fn-issuer);    background: var(--anno-fn-issuer-bg); }
+.anno-fn-recipient { border-left-color: var(--anno-fn-recipient); background: var(--anno-fn-recipient-bg); }
+.anno-fn-witness  { border-left-color: var(--anno-fn-witness);   background: var(--anno-fn-witness-bg); }
+.anno-fn-other    { border-left-color: var(--anno-fn-other);     background: var(--anno-fn-other-bg); }
+
+
+/* Level 1: Events — subtle wrapper */
+.anno-event {
+    display: inline;
+}
+
+
+/* Level 4: Attributes */
+.anno-attr {
+    font-size: 0.9375em;
+    color: var(--color-text-muted);
+}
+
+.anno-attr-kin {
+    font-style: italic;
+}
+
+.anno-attr-title {
+    font-variant: small-caps;
+}
+
+.anno-attr-prof {
+    font-style: italic;
+    color: var(--anno-org);
+}
+
+.anno-attr-dead::after {
+    content: ' \2020';
+    color: var(--color-text-light);
+}
+
+.anno-attr-occ {
+    font-style: italic;
+}
+
+
+/* Triggerstrings */
+.anno-trigger {
+    font-weight: 600;
+    color: var(--anno-trigger);
+}
+
+.anno-trigger-fn {
+    font-weight: 500;
+    color: var(--color-text-muted);
+}
+
+.anno-trigger-disp {
+    font-weight: 700;
+}
+
+
+/* Editorial additions */
+.tei-add {
+    font-style: italic;
+    color: var(--anno-add);
+}
+
+.tei-add::before { content: '['; color: var(--color-text-light); }
+.tei-add::after  { content: ']'; color: var(--color-text-light); }
+
+
+/* Unclear text */
+.tei-unclear {
+    text-decoration: underline wavy var(--color-text-light);
+    text-underline-offset: 3px;
+}
+
+
+/* Notes */
+.tei-note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+
+/* Page/line breaks */
+.tei-pb {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+    margin: 0 var(--space-xs);
+}
+
+.tei-gap {
+    color: var(--color-text-light);
+    font-style: italic;
+}
+
+.tei-sic {
+    border-bottom: 1px dotted var(--color-text-light);
+}
+
+
+/* --- Tooltip (JS-enhanced) --- */
+/* Base in components.css; extras here */
+.edition-tooltip {
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    padding: var(--space-sm) var(--space-md);
+    max-width: 28rem;
+    transform: translateY(4px);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.edition-tooltip.visible {
+    transform: translateY(0);
+}
+
+.tooltip-id {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    opacity: 0.5;
+    margin-top: 2px;
+}
+
+.tooltip-type {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1px 6px;
+    border-radius: 2px;
+    margin-right: var(--space-xs);
+}
+
+.tooltip-type-person   { background: var(--anno-person); }
+.tooltip-type-org      { background: var(--anno-org); }
+.tooltip-type-place    { background: var(--anno-place); }
+.tooltip-type-fn       { background: var(--anno-fn-issuer); }
+
+

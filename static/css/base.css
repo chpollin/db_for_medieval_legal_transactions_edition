@@ -1,0 +1,271 @@
+/* === Wiener Urkundenbuch — Base (Reset, Navigation, Layout, Footer) === */
+
+
+/* --- Reset & base --- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    color: var(--color-text);
+    background: var(--color-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Utility classes --- */
+.hidden { display: none !important; }
+tr[role="button"] { cursor: pointer; }
+
+/* --- Skip-link (accessibility) --- */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: 1000;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-nav);
+    color: var(--color-text-inverse);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    position: fixed;
+    left: var(--space-md);
+    top: var(--space-md);
+    width: auto;
+    height: auto;
+    z-index: 10000;
+    border-radius: var(--radius);
+}
+
+
+/* --- Navigation --- */
+.site-nav {
+    background: var(--color-bg-nav);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+}
+
+.nav-inner {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.5rem;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    text-decoration: none;
+    color: var(--color-text-inverse);
+}
+
+.nav-brand-sigil {
+    font-size: 1.25rem;
+    opacity: 0.7;
+}
+
+.nav-brand-text {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    letter-spacing: 0.01em;
+}
+
+.nav-brand-sub {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 400;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.nav-badge {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--anno-fn-recipient);
+    border: 1px solid rgba(46, 122, 136, 0.4);
+    padding: 0.15em 0.6em;
+    border-radius: 1rem;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+    align-self: center;
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--space-lg);
+}
+
+.nav-links a {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-inverse);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast);
+}
+
+.nav-links a:hover { opacity: 1; }
+
+/* Nav dropdown */
+.nav-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-dropdown-trigger {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-inverse);
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast);
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+}
+
+.nav-dropdown-trigger:hover,
+.nav-dropdown.open .nav-dropdown-trigger { opacity: 1; }
+
+.nav-dropdown-arrow {
+    font-size: 0.7em;
+    line-height: 1;
+}
+
+.nav-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-bg-nav);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xs) 0;
+    min-width: 10rem;
+    box-shadow: var(--shadow-lg);
+    z-index: calc(var(--z-nav) + 1);
+}
+
+.nav-dropdown.open .nav-dropdown-menu { display: block; }
+
+.nav-dropdown-menu a {
+    display: block;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-inverse);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast), background var(--transition-fast);
+}
+
+.nav-dropdown-menu a:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Nav hamburger (hidden on desktop) */
+.nav-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--color-text-inverse);
+    border-radius: 1px;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+
+/* --- Main content --- */
+.site-main {
+    flex: 1;
+    max-width: var(--max-width-wide);
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-lg) var(--space-2xl);
+}
+
+
+/* --- Footer --- */
+.site-footer {
+    background: var(--color-bg-footer);
+    color: var(--color-text-inverse);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    margin-top: auto;
+}
+
+.footer-inner {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+    padding: var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+}
+
+.footer-col p {
+    margin: 0 0 var(--space-xs);
+    opacity: 0.6;
+}
+
+.footer-project {
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+.footer-col-right { text-align: right; }
+
+.footer-link {
+    color: inherit;
+    opacity: 1;
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.3);
+    text-underline-offset: 2px;
+    transition: text-decoration-color var(--transition-fast);
+}
+
+.footer-link:hover {
+    text-decoration-color: rgba(255,255,255,0.8);
+}
+
+

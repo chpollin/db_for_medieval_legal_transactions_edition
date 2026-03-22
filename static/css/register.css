@@ -1,0 +1,247 @@
+/* === Wiener Urkundenbuch — Register Pages === */
+/* ==========================================================================
+   Register pages
+   ========================================================================== */
+
+/* Alphabet bar */
+.alphabet-bar {
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: var(--space-lg);
+}
+
+.alpha-btn {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: none;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius);
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-width: 1.8rem;
+    text-align: center;
+}
+
+.alpha-btn:hover {
+    border-color: var(--anno-person);
+    color: var(--anno-person);
+}
+
+.alpha-btn.active {
+    background: var(--anno-person);
+    color: var(--color-text-inverse);
+    border-color: var(--anno-person);
+}
+
+.alpha-btn-all {
+    padding: 0.2rem 0.75rem;
+}
+
+/* Entity type badges */
+.entity-type-badge {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+    vertical-align: middle;
+    margin-left: var(--space-sm);
+}
+
+.entity-type-person {
+    background: var(--anno-person-bg);
+    color: var(--anno-person);
+}
+
+.entity-type-org {
+    background: var(--anno-org-bg);
+    color: var(--anno-org);
+}
+
+.entity-type-place {
+    background: var(--anno-place-bg);
+    color: var(--anno-place);
+}
+
+/* Register detail */
+.register-detail {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.register-breadcrumb {
+    margin-bottom: var(--space-lg);
+}
+
+.register-detail-header {
+    margin-bottom: var(--space-xl);
+}
+
+.register-detail-header h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    color: var(--color-text);
+    display: inline;
+}
+
+.register-detail-meta {
+    margin-bottom: var(--space-xl);
+}
+
+.detail-dl {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: var(--space-xs) var(--space-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.detail-dl dt {
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-light);
+    padding-top: 0.15rem;
+}
+
+.detail-dl dd {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.detail-dl dd code {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+}
+
+.register-detail-docs {
+    margin-bottom: var(--space-xl);
+}
+
+.register-detail-docs h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    margin-bottom: var(--space-md);
+    color: var(--color-text);
+}
+
+.section-count {
+    font-weight: 400;
+    color: var(--color-text-muted);
+}
+
+.detail-doc-table {
+    font-size: var(--text-sm);
+}
+
+.no-docs-note {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* Register name (clickable for entities with documents) */
+button.register-name-linked {
+    all: unset;
+    cursor: pointer;
+    color: var(--anno-person);
+    font: inherit;
+    font-weight: 500;
+}
+
+button.register-name-linked:hover {
+    text-decoration: underline;
+}
+
+/* Non-linked names (0 documents) — visually muted */
+span.register-name {
+    color: var(--color-text-muted);
+}
+
+/* Clickable doc-count badge */
+button.doc-count-link {
+    all: unset;
+    cursor: pointer;
+    font: inherit;
+}
+
+button.doc-count-link:hover .doc-count-badge {
+    color: var(--anno-person);
+    text-decoration: underline;
+}
+
+/* Inline detail expansion row */
+.detail-row > td {
+    padding: 0 !important;
+    border-top: none !important;
+    background: var(--color-bg-alt, #f9f9f9);
+}
+
+.detail-content {
+    padding: var(--space-sm) var(--space-md) var(--space-md);
+    animation: detailSlide 0.15s ease-out;
+}
+
+@keyframes detailSlide {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+tr.expanded {
+    background: var(--color-bg-alt, #f9f9f9);
+}
+
+/* Register table columns */
+.col-name { width: 28%; }
+.col-sex { width: 6%; text-align: center; }
+.col-death { width: 12%; }
+.col-type { width: 15%; }
+.col-docs { width: 6%; text-align: right; }
+.col-quality { width: 4%; text-align: center; }
+.col-id { width: 18%; }
+
+/* Quality indicators on register pages */
+.quality-dot {
+    display: inline-block;
+    font-size: var(--text-sm);
+    line-height: 1;
+}
+
+.quality-ok { color: var(--color-quality-ok); }
+.quality-notice { color: var(--color-quality-notice); }
+.quality-warning { color: var(--color-quality-warning); }
+.quality-na { color: var(--color-text-light); }
+
+.cell-id {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    word-break: break-all;
+}
+
+.doc-count-badge {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.doc-count-zero {
+    color: var(--color-text-light);
+}
+
+

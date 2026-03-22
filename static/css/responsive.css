@@ -1,0 +1,167 @@
+/* === Wiener Urkundenbuch — Responsive Breakpoints === */
+/* ==========================================================================
+   Responsive — Canonical Breakpoints
+   --------------------------------------------------------------------------
+   1200px — Exploration panels: multi-column → single-column (exploration.css)
+   1024px — Synopsis: 2-column → stacked; stats collection grid 2-col
+    900px — Navigation: hamburger menu
+    768px — General mobile layout: KPIs 2-col, stats single-col, stacked footer
+    480px — Ultra-narrow: single-col legends, stacked chips
+   --------------------------------------------------------------------------
+   Co-located breakpoints in exploration.css and startseite.css use these
+   same values. Keep all breakpoints aligned to this canonical set.
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    /* Synopsis → stacked on tablets */
+    .has-facsimile .doc-content {
+        grid-template-columns: 1fr;
+    }
+
+    .doc-facs-panel {
+        position: static;
+        max-height: none;
+    }
+
+    .stats-collection-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* doc-details stacks on tablets */
+    .doc-details { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+    /* Collapse nav into hamburger menu */
+    .nav-hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--color-bg-nav);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding: var(--space-sm) 0;
+        gap: 0;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a,
+    .nav-links .nav-dropdown-trigger {
+        padding: var(--space-sm) var(--space-lg);
+        width: 100%;
+        text-align: left;
+    }
+
+    .nav-inner {
+        position: relative;
+    }
+
+    .nav-badge { display: none; }
+}
+
+@media (max-width: 768px) {
+    .stats-kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .stats-two-col { grid-template-columns: 1fr; }
+    .stats-three-col { grid-template-columns: 1fr; }
+    .stats-gender-row { grid-template-columns: 6rem 1fr 5rem; }
+    .stats-collection-grid { grid-template-columns: 1fr; }
+    .stats-coverage-rings { flex-direction: column; align-items: center; gap: var(--space-lg); }
+    .stats-role-metrics { flex-direction: column; gap: var(--space-sm); }
+
+    .nav-brand-sub, .nav-badge { display: none; }
+
+    .site-main {
+        padding: var(--space-lg) var(--space-md);
+    }
+
+    .doc-body {
+        padding: var(--space-lg) var(--space-md);
+    }
+
+    /* Toolbar: not sticky on mobile, stacked */
+    .doc-toolbar {
+        position: static;
+        margin: calc(-1 * var(--space-lg)) calc(-1 * var(--space-md)) 0;
+        padding: 0 var(--space-md);
+    }
+
+    .doc-toolbar-inner {
+        flex-wrap: wrap;
+        min-height: auto;
+        padding: var(--space-sm) 0;
+    }
+
+    .doc-toolbar-title {
+        white-space: normal;
+    }
+
+    /* Inline paging hidden on mobile (bottom paging used) */
+    .doc-paging-inline {
+        display: none;
+    }
+
+    .legend-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .index-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .result-count {
+        text-align: center;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+    }
+
+    .footer-col-right { text-align: left; }
+
+    /* Horizontal scroll for table on small screens */
+    .index-table-wrap {
+        overflow-x: auto;
+    }
+
+    .index-table {
+        min-width: 40rem;
+    }
+
+    /* Preview thumb hidden on mobile */
+    .preview-thumb {
+        display: none;
+    }
+
+    .legend-grid-compact {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .stats-hbar-row { grid-template-columns: 4.5rem 1fr 3rem; }
+
+    .legend-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .collection-chips {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .chip {
+        justify-content: center;
+    }
+}
+
+

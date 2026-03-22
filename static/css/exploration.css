@@ -1,0 +1,1013 @@
+/* === Wiener Urkundenbuch — Exploration Pages === */
+/* ==========================================================================
+   Exploration page (V1 shared + V2 Epic A)
+   ========================================================================== */
+
+.explore-page {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+    padding: var(--space-md) var(--space-lg) var(--space-xl);
+}
+
+.explore-header { margin-bottom: var(--space-lg); }
+.explore-header h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--space-sm);
+}
+.explore-lede {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: var(--leading-body);
+    max-width: 60ch;
+}
+
+/* Compact variant — less vertical space, smaller heading */
+.explore-header--compact {
+    margin-bottom: var(--space-md);
+}
+.explore-header--compact h1 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-xs);
+}
+.explore-header--compact .explore-lede {
+    font-size: var(--text-sm);
+    margin: 0;
+}
+
+/* ── Unified header: title + stats + time slider + controls ── */
+/* Card surface base: components.css */
+.explore-header-unified {
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-md);
+}
+.explore-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-lg);
+}
+.explore-header-title {
+    min-width: 0;
+    flex: 1;
+}
+.explore-header-title h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.2;
+}
+.explore-header-stats {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    margin-top: 4px;
+    line-height: 1.5;
+}
+.explore-header-time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+}
+.explore-header-controls {
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--color-border-light);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+.explore-header-controls .explore-filter-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+}
+
+/* Tabs */
+.explore-tabs {
+    display: flex;
+    gap: var(--space-xs);
+    border-bottom: 2px solid var(--color-border);
+    margin-bottom: var(--space-lg);
+}
+.explore-tab {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    background: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+.explore-tab:hover:not([disabled]) { color: var(--color-text); }
+.explore-tab.active {
+    color: var(--anno-person);
+    border-bottom-color: var(--anno-person);
+    font-weight: 600;
+}
+.explore-tab[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Epic sections */
+.explore-epic.hidden { display: none; }
+
+/* Filter header */
+/* Card surface base: components.css */
+.explore-filter-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-md);
+}
+.explore-filter-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+}
+.explore-filter-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-light);
+    min-width: 5em;
+}
+
+/* Dual-handle range slider */
+.explore-range-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    position: relative;
+}
+.explore-range-track {
+    position: relative;
+    width: 200px;
+    height: 6px;
+    background: var(--color-border);
+    border-radius: 3px;
+}
+.explore-range-fill {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: var(--anno-person);
+    border-radius: 3px;
+    pointer-events: none;
+}
+.explore-range-track input[type="range"] {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    margin: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    pointer-events: none;
+    height: 6px;
+}
+/* Thumb styling — Webkit */
+.explore-range-track input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--anno-person);
+    border: 2px solid var(--color-bg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    z-index: 2;
+}
+.explore-range-track input[type="range"]::-webkit-slider-thumb:hover {
+    background: var(--color-text);
+}
+/* Thumb styling — Firefox */
+.explore-range-track input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--anno-person);
+    border: 2px solid var(--color-bg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    z-index: 2;
+}
+.explore-range-track input[type="range"]::-moz-range-thumb:hover {
+    background: var(--color-text);
+}
+.explore-range-track input[type="range"]::-moz-range-track {
+    background: transparent;
+    border: none;
+}
+.explore-range-display {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text);
+    min-width: 7em;
+    text-align: center;
+}
+.explore-gap-note {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--anno-fn-issuer);
+    font-style: italic;
+}
+.explore-gap-note.hidden { display: none; }
+
+/* Sex filter chips */
+.explore-sex-filter {
+    display: flex;
+    gap: 4px;
+}
+.explore-chip {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    padding: 4px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    background: var(--color-bg-card);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+.explore-chip:hover { border-color: var(--color-border-dark); color: var(--color-text); }
+.explore-chip.active {
+    background: var(--anno-person);
+    color: var(--color-text-inverse);
+    border-color: var(--anno-person);
+}
+
+/* Transparency bar */
+.explore-transparency {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    border-bottom: 1px solid var(--color-border-light);
+    margin-bottom: var(--space-lg);
+}
+.explore-trans-item strong { color: var(--color-text); }
+.explore-trans-sep { color: var(--color-border-dark); }
+.explore-trans-caveat { font-style: italic; color: var(--color-text-light); }
+
+/* Panels */
+.explore-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-lg);
+}
+/* Epic A: Roles — two panels top, detail full-width below */
+.explore-panels--roles-top {
+    grid-template-columns: 1fr 1fr;
+}
+/* Card surface base: components.css */
+.explore-panel {
+    overflow: hidden;
+}
+.explore-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--color-border-light);
+}
+.explore-panel-header h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    margin: 0;
+    color: var(--color-text);
+}
+.explore-panel-controls { display: flex; gap: var(--space-xs); }
+.explore-view-toggle {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 4px 8px;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    transition: all var(--transition-fast);
+}
+.explore-view-toggle:hover {
+    border-color: var(--anno-person);
+    color: var(--anno-person);
+}
+
+/* Chart area */
+.explore-chart-wrap {
+    padding: var(--space-lg);
+    min-height: 300px;
+}
+
+/* Table alternative */
+.explore-table-wrap { padding: var(--space-md) var(--space-lg); }
+.explore-table-wrap.hidden { display: none; }
+.explore-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+.explore-data-table th {
+    text-align: left;
+    font-weight: 600;
+    padding: var(--space-xs) var(--space-sm);
+    border-bottom: 2px solid var(--color-border);
+    color: var(--color-text-light);
+    font-size: var(--text-2xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.explore-data-table td {
+    padding: var(--space-xs) var(--space-sm);
+    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-text);
+}
+.explore-data-table td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Panel footer */
+.explore-panel-footer {
+    padding: var(--space-sm) var(--space-lg);
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-light);
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* Placeholder panel content */
+.explore-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    padding: var(--space-xl);
+}
+.explore-placeholder-text {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+    text-align: center;
+    max-width: 30ch;
+    line-height: var(--leading-body);
+}
+
+/* Bar chart elements (SVG drawn by JS) */
+.explore-bar { transition: opacity var(--transition-fast); cursor: pointer; }
+.explore-bar:hover { opacity: 0.8; }
+.explore-bar-label {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    fill: var(--color-text);
+}
+.explore-bar-value {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    fill: var(--color-text-muted);
+}
+.explore-legend {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+.explore-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.explore-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+/* Tooltip — base in components.css; extras here */
+.explore-tooltip {
+    padding: 6px 10px;
+    font-size: var(--text-2xs);
+    white-space: nowrap;
+}
+
+/* Drill-down overlay */
+.explore-drilldown-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-drilldown);
+    background: rgba(44, 40, 37, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.explore-drilldown-overlay.hidden { display: none; }
+.explore-drilldown-inner {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 900px;
+    width: 90vw;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+.explore-drilldown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--color-border-light);
+}
+.explore-drilldown-header h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    margin: 0;
+}
+.explore-drilldown-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+    line-height: 1;
+}
+.explore-drilldown-close:hover { color: var(--color-text); }
+.explore-drilldown-body {
+    overflow-y: auto;
+    padding: var(--space-md) var(--space-lg);
+    flex: 1;
+}
+.explore-drilldown-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) var(--space-lg);
+    border-top: 1px solid var(--color-border-light);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+/* ── Hub card grid ────────────────────────────── */
+.explore-hub-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+/* Card surface base: components.css */
+.explore-hub-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-lg);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+.explore-hub-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-border-dark);
+}
+.explore-hub-card--active:hover {
+    border-color: var(--anno-person);
+}
+.explore-hub-card--placeholder {
+    opacity: 0.7;
+}
+.explore-hub-card--placeholder:hover {
+    opacity: 0.85;
+}
+.explore-hub-card-icon {
+    color: var(--anno-person);
+    margin-bottom: var(--space-sm);
+}
+.explore-hub-card--placeholder .explore-hub-card-icon {
+    color: var(--color-text-light);
+}
+.explore-hub-card-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin: 0 0 var(--space-xs);
+    color: var(--color-text);
+}
+.explore-hub-card-desc {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: var(--leading-body);
+    margin: 0 0 var(--space-md);
+    flex: 1;
+}
+.explore-hub-card-status {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    align-self: flex-start;
+}
+.explore-hub-card-status--ready {
+    background: rgba(46, 90, 136, 0.1);
+    color: var(--anno-person);
+}
+.explore-hub-card-status--wip {
+    background: rgba(140, 134, 128, 0.12);
+    color: var(--color-text-light);
+}
+
+/* ── Exploration sub-navigation ──────────────── */
+.explore-subnav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding-bottom: var(--space-md);
+    margin-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-border);
+}
+.explore-subnav-back {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+}
+.explore-subnav-back:hover { color: var(--color-text); }
+.explore-subnav-links {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+}
+.explore-subnav-link {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+}
+.explore-subnav-link:hover {
+    color: var(--color-text);
+    background: var(--color-bg-hover);
+}
+.explore-subnav-link.active {
+    color: var(--anno-person);
+    background: rgba(46, 90, 136, 0.08);
+    border-color: rgba(46, 90, 136, 0.2);
+    font-weight: 600;
+}
+
+/* ── Placeholder pages (Epics B–D) ──────────── */
+.explore-placeholder-page {
+    text-align: center;
+    padding: var(--space-2xl) var(--space-lg);
+    max-width: 50ch;
+    margin: 0 auto;
+}
+.explore-placeholder-page-icon {
+    color: var(--color-text-light);
+    margin-bottom: var(--space-md);
+}
+.explore-placeholder-page-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-md);
+}
+.explore-placeholder-page-text {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: var(--leading-body);
+    margin: 0 0 var(--space-md);
+}
+.explore-placeholder-page-features {
+    text-align: left;
+    list-style: disc;
+    padding-left: var(--space-lg);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin: 0 0 var(--space-lg);
+}
+.explore-placeholder-page-blocker {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-light);
+    font-style: italic;
+    line-height: var(--leading-body);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border-light);
+}
+.explore-placeholder-page-blocker code {
+    font-family: var(--font-mono);
+    font-size: inherit;
+    background: var(--color-bg-hover);
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+/* ── Epic C: Transaction Explorer ──────────────── */
+
+/* Two-one panel layout: timeline wide, verb + recipients side by side */
+.explore-panels--two-one {
+    grid-template-columns: 1fr 1fr;
+}
+.explore-panel--wide {
+    grid-column: 1 / -1;
+}
+
+/* Axis labels and grid lines for stacked bar chart */
+.explore-axis-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    fill: var(--color-text-light);
+}
+.explore-grid-line {
+    stroke: var(--color-border-light);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+}
+
+/* Transmission gap hatching */
+.explore-gap-bar {
+    fill: url(#gap-hatch);
+    stroke: none;
+    opacity: 0.4;
+}
+
+/* Legend wrapping variant */
+.explore-legend--wrap {
+    flex-wrap: wrap;
+}
+.explore-legend-more {
+    font-style: italic;
+    color: var(--color-text-light);
+}
+
+/* Verb browser search + filter controls */
+.explore-search-input {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    padding: 4px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg-card);
+    color: var(--color-text);
+    min-width: 10em;
+    transition: border-color var(--transition-fast);
+}
+.explore-search-input:focus {
+    outline: none;
+    border-color: var(--anno-person);
+}
+.explore-filter-select {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    padding: 4px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg-card);
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+/* Sortable table headers */
+.explore-data-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: color var(--transition-fast);
+}
+.explore-data-table th.sortable:hover {
+    color: var(--anno-person);
+}
+.sort-arrow {
+    font-size: var(--text-2xs);
+    color: var(--anno-person);
+}
+
+/* Verb row clickable */
+.explore-verb-row {
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+.explore-verb-row:hover {
+    background: var(--color-bg-warm);
+}
+.explore-verb-form {
+    font-family: var(--font-serif);
+    font-style: italic;
+}
+.explore-verb-docs {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Text muted helper */
+.text-muted {
+    color: var(--color-text-light);
+}
+
+/* Loading indicator */
+.explore-loading-more {
+    text-align: center;
+    color: var(--color-text-light);
+    font-style: italic;
+    padding: var(--space-md);
+}
+
+/* Wider drill-down variant for institution detail */
+.explore-drilldown-inner--wide {
+    max-width: 1000px;
+}
+
+/* ── Epic D: Place Explorer ──────────────── */
+
+/* Map-table panel layout: side by side on desktop */
+.explore-panels--map {
+    grid-template-columns: 1fr 1fr;
+}
+
+/* Map container */
+.explore-map-wrap {
+    height: 500px;
+    min-height: 400px;
+}
+
+/* Map coverage badge */
+.explore-map-coverage {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-light);
+    font-style: italic;
+}
+
+/* Map popup styling */
+.explore-map-popup {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+}
+.explore-map-popup strong {
+    color: var(--color-text);
+}
+.explore-map-popup a {
+    color: var(--anno-place);
+    text-decoration: none;
+}
+.explore-map-popup a:hover {
+    text-decoration: underline;
+}
+
+/* Place type badges in table */
+.explore-place-type {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: var(--text-2xs);
+    font-family: var(--font-sans);
+    font-weight: 500;
+}
+.explore-place-type--settlement {
+    background: rgba(58, 122, 92, 0.12);
+    color: var(--anno-place);
+}
+.explore-place-type--immo {
+    background: rgba(140, 134, 128, 0.12);
+    color: var(--color-text-light);
+}
+.explore-place-type--street {
+    background: rgba(46, 90, 136, 0.08);
+    color: var(--anno-person);
+}
+.explore-place-type--river {
+    background: rgba(46, 90, 136, 0.08);
+    color: var(--anno-person);
+}
+
+/* Georef status */
+.explore-georef {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+}
+.explore-georef--coords { color: var(--anno-place); }
+.explore-georef--geonames { color: var(--anno-org); }
+.explore-georef--both { color: var(--anno-place); font-weight: 600; }
+.explore-georef--none { color: var(--color-text-light); }
+
+/* Table row interactions */
+.explore-place-row {
+    cursor: default;
+    transition: background var(--transition-fast);
+}
+.explore-place-row--mappable {
+    cursor: pointer;
+}
+.explore-place-row:hover {
+    background: var(--color-bg-warm);
+}
+.explore-place-row.active {
+    background: rgba(58, 122, 92, 0.08);
+    outline: 2px solid var(--anno-place);
+    outline-offset: -2px;
+}
+
+/* Table wrap scrollable in panel */
+#explore-place-table-wrap {
+    max-height: 430px;
+    overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .explore-panels { grid-template-columns: 1fr; }
+    .explore-panels--roles-top { grid-template-columns: 1fr; }
+    .explore-panels--two-one { grid-template-columns: 1fr; }
+    .explore-panels--map { grid-template-columns: 1fr; }
+    .explore-map-wrap { height: 350px; }
+}
+@media (max-width: 768px) {
+    .explore-page { padding: var(--space-md) var(--space-sm); }
+    .explore-filter-header { flex-direction: column; gap: var(--space-sm); }
+    .explore-header-unified { padding: var(--space-sm) var(--space-md); }
+    .explore-header-row { flex-direction: column; gap: var(--space-sm); }
+    .explore-header-time { align-items: flex-start; }
+    .explore-hub-grid { grid-template-columns: 1fr; }
+    .explore-subnav { flex-direction: column; align-items: flex-start; }
+    .explore-transparency { flex-direction: column; }
+    .explore-trans-sep { display: none; }
+    .explore-map-wrap { height: 280px; min-height: 250px; }
+    .explore-panel-controls { flex-wrap: wrap; }
+}
+
+/* ==========================================================================
+   Epic B — Relationship Explorer
+   ========================================================================== */
+
+/* 2-column layout: overview chart | label browser */
+.explore-panels--relationship {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    align-items: start;  /* prevent stretching Panel 1 to match Panel 2 height */
+}
+/* Panel 1 (overview): sticky so it stays visible while scrolling heatmap */
+.explore-panels--relationship > #explore-panel-overview {
+    position: sticky;
+    top: var(--space-md);
+}
+
+/* Full-width detail panel below */
+.explore-panel--full {
+    grid-column: 1 / -1;
+}
+
+/* Detail panel highlight animation on activation */
+.explore-panel--highlight {
+    animation: detail-highlight 1.2s ease-out;
+}
+@keyframes detail-highlight {
+    0%   { box-shadow: 0 0 0 3px var(--color-accent, #2e5a88); }
+    100% { box-shadow: var(--shadow-sm); }
+}
+
+/* Detail body */
+.explore-detail-body {
+    padding: var(--space-sm) var(--space-md);
+    max-height: 400px;
+    overflow-y: auto;
+}
+.explore-detail-body .explore-data-table {
+    width: 100%;
+}
+
+/* Heatmap */
+.explore-heatmap-cell {
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+}
+.explore-heatmap-cell:hover {
+    stroke: var(--color-text);
+    stroke-width: 1.5;
+}
+.explore-heatmap-header {
+    font-size: var(--text-2xs);
+    fill: var(--color-text-muted);
+    font-weight: 500;
+}
+.explore-heatmap-label {
+    font-size: var(--text-2xs);
+    fill: var(--color-text);
+}
+.explore-heatmap-count {
+    font-size: 10px;
+    fill: var(--color-text);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Label table rows (clickable) */
+.explore-label-row {
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+.explore-label-row:hover {
+    background: var(--color-bg-hover, #f5f3f0);
+}
+
+/* Buttons (shared across Epics) */
+.explore-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--text-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg-card);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+.explore-btn:hover {
+    background: var(--color-bg-hover, #f5f3f0);
+    border-color: var(--color-text-muted);
+}
+.explore-btn--secondary {
+    width: 100%;
+    justify-content: center;
+    margin-top: var(--space-sm);
+}
+.explore-btn--small {
+    padding: 2px 8px;
+    font-size: var(--text-2xs);
+}
+.explore-btn--small.active {
+    background: var(--anno-person, #2e5a88);
+    color: var(--color-text-inverse, #fff);
+    border-color: var(--anno-person, #2e5a88);
+}
+
+/* Relationship badges */
+.explore-rel-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: var(--text-2xs);
+    color: #fff;
+    white-space: nowrap;
+}
+.explore-rel-badge--none {
+    background: var(--color-text-light, #b0a99f);
+}
+
+/* Responsive: relationship layout */
+@media (max-width: 1200px) {
+    .explore-panels--relationship {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px) {
+    .explore-detail-body {
+        max-height: 300px;
+    }
+}

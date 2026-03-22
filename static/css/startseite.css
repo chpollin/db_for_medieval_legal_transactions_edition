@@ -1,0 +1,175 @@
+/* === Wiener Urkundenbuch -- Startseite === */
+
+/* Hero — compact with integrated stats */
+.start-hero {
+    text-align: center;
+    max-width: var(--max-width);
+    margin: 0 auto var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.start-hero h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    margin: 0;
+}
+
+.start-hero-sub {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin: var(--space-xs) 0 var(--space-md);
+}
+
+.start-hero-desc {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    margin: 0 auto var(--space-md);
+    line-height: var(--leading-body);
+}
+
+/* Inline stats bar — replaces bulky KPI cards */
+.start-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xs);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+.start-hero-stat strong {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.start-hero-sep {
+    color: var(--color-text-light);
+}
+
+.start-hero-stat-sub {
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+}
+
+/* Entry cards */
+.start-entry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+}
+
+/* Card surface base: components.css */
+.start-entry-card {
+    display: block;
+    padding: var(--space-md) var(--space-lg);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.start-entry-card:hover {
+    border-color: var(--anno-person);
+    box-shadow: var(--shadow-md);
+}
+
+.start-entry-card-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin: 0 0 var(--space-xs);
+}
+
+.start-entry-card-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Sections */
+.start-section {
+    margin-bottom: var(--space-xl);
+}
+
+.start-section h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin: 0 0 var(--space-xs);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+/* Collections grid */
+.start-collections {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--space-sm);
+}
+
+.start-collection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.start-collection-label {
+    color: var(--color-text);
+}
+
+.start-collection-count {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    white-space: nowrap;
+    margin-left: var(--space-sm);
+}
+
+.start-transmission-note {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+    font-style: italic;
+    margin-top: var(--space-sm);
+}
+
+/* Project section */
+.start-section-project p {
+    color: var(--color-text-muted);
+    max-width: var(--max-width);
+}
+
+.start-build-info {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+    margin-top: var(--space-md);
+}
+
+.start-build-info a {
+    color: var(--anno-person);
+    text-decoration: none;
+}
+
+.start-build-info a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .start-entry-grid { grid-template-columns: 1fr; }
+    .start-hero-stats { flex-direction: column; gap: var(--space-xs); }
+}

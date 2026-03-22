@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentenverzeichnis — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/tokens.css">
+    <link rel="stylesheet" href="./static/css/base.css">
+    <link rel="stylesheet" href="./static/css/components.css">
+    <link rel="stylesheet" href="./static/css/responsive.css">
+    <link rel="stylesheet" href="./static/css/print.css">
+    
+<link rel="stylesheet" href="./static/css/index.css">
+
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="./index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Forschungsvorschau</span>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
+                <a href="./documents.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="./persons.html">Personen</a>
+                        <a href="./organisations.html">Organisationen</a>
+                        <a href="./places.html">Orte</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Exploration <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="./exploration_roles.html">Rollen</a>
+                        <a href="./exploration_networks.html">Beziehungen</a>
+                        <a href="./exploration_transactions.html">Transaktionen</a>
+                        <a href="./exploration_places.html">Orte</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Projekt <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="./about.html">&Uuml;ber das Projekt</a>
+                        <a href="./statistics.html">Statistik</a>
+                        <a href="./edition_guidelines.html">Editionsrichtlinien</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<div class="index-page">
+
+    <!-- Overview: corpus summary + timeline -->
+    <header class="index-header">
+        <h1>Wiener Urkundenbuch</h1>
+        <p class="index-subtitle">
+            <span class="stat">5.715</span> Quellen,
+            <span class="stat">16.084</span> Personen,
+            <span class="stat">1.078</span> Organisationen
+            <span class="index-date-range">&mdash; Wien, ca. 1177&ndash;1524</span>
+        </p>
+    </header>
+
+    <!-- Range slider with histogram -->
+    
+    <section class="range-slider-section">
+        <div class="range-slider" id="range-slider"
+             data-min="1177" data-max="1494">
+            <div class="range-histogram" id="range-histogram">
+                
+                <div class="range-bar"
+                     data-decade="1170"
+                     data-count="1"
+                     style="height: 4%"
+                     title="1170er: 1 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1180"
+                     data-count="0"
+                     style="height: 0%"
+                     title="1180er: 0 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1190"
+                     data-count="1"
+                     style="height: 4%"
+                     title="1190er: 1 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1200"
+                     data-count="1"
+                     style="height: 4%"
+                     title="1200er: 1 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1210"
+                     data-count="0"
+                     style="height: 0%"
+                     title="1210er: 0 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1220"
+                     data-count="1"
+                     style="height: 4%"
+                     title="1220er: 1 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1230"
+                     data-count="1"
+                     style="height: 4%"
+                     title="1230er: 1 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1240"
+                     data-count="0"
+                     style="height: 0%"
+                     title="1240er: 0 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1250"
+                     data-count="1"
+                     style="height: 4%"
+                     title="1250er: 1 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1260"
+                     data-count="3"
+                     style="height: 4%"
+                     title="1260er: 3 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1270"
+                     data-count="8"
+                     style="height: 4%"
+                     title="1270er: 8 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1280"
+                     data-count="6"
+                     style="height: 4%"
+                     title="1280er: 6 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1290"
+                     data-count="7"
+                     style="height: 4%"
+                     title="1290er: 7 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1300"
+                     data-count="26"
+                     style="height: 4%"
+                     title="1300er: 26 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1310"
+                     data-count="29"
+                     style="height: 4%"
+                     title="1310er: 29 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1320"
+                     data-count="45"
+                     style="height: 4%"
+                     title="1320er: 45 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1330"
+                     data-count="93"
+                     style="height: 4%"
+                     title="1330er: 93 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1340"
+                     data-count="135"
+                     style="height: 5%"
+                     title="1340er: 135 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1350"
+                     data-count="191"
+                     style="height: 8%"
+                     title="1350er: 191 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1360"
+                     data-count="241"
+                     style="height: 10%"
+                     title="1360er: 241 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1370"
+                     data-count="210"
+                     style="height: 9%"
+                     title="1370er: 210 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1380"
+                     data-count="216"
+                     style="height: 9%"
+                     title="1380er: 216 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1390"
+                     data-count="730"
+                     style="height: 31%"
+                     title="1390er: 730 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1400"
+                     data-count="446"
+                     style="height: 19%"
+                     title="1400er: 446 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1410"
+                     data-count="243"
+                     style="height: 10%"
+                     title="1410er: 243 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1420"
+                     data-count="0"
+                     style="height: 0%"
+                     title="1420er: 0 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1430"
+                     data-count="1"
+                     style="height: 4%"
+                     title="1430er: 1 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1440"
+                     data-count="455"
+                     style="height: 19%"
+                     title="1440er: 455 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1450"
+                     data-count="2308"
+                     style="height: 100%"
+                     title="1450er: 2308 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1460"
+                     data-count="262"
+                     style="height: 11%"
+                     title="1460er: 262 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1470"
+                     data-count="0"
+                     style="height: 0%"
+                     title="1470er: 0 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1480"
+                     data-count="0"
+                     style="height: 0%"
+                     title="1480er: 0 Dok.">
+                </div>
+                
+                <div class="range-bar"
+                     data-decade="1490"
+                     data-count="54"
+                     style="height: 4%"
+                     title="1490er: 54 Dok.">
+                </div>
+                
+            </div>
+            <div class="range-inputs">
+                <input type="range" id="range-min"
+                       min="1177" max="1494"
+                       value="1177" step="1"
+                       aria-label="Startjahr">
+                <input type="range" id="range-max"
+                       min="1177" max="1494"
+                       value="1494" step="1"
+                       aria-label="Endjahr">
+            </div>
+            <div class="range-labels">
+                <span class="range-label-min" id="range-label-min">1177</span>
+                <span class="range-label-max" id="range-label-max">1494</span>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Collection chips -->
+    <section class="collection-chips">
+        
+        <button class="chip" data-collection="QGW/Vienna_1177-1414_ready">
+            QGW II/1 (1177–1414) <span class="chip-count">2023</span>
+        </button>
+        
+        <button class="chip" data-collection="Stadtbuecher/Band_1_1395-1400_ready">
+            Stadtbücher Bd. 1 (1395–1400) <span class="chip-count">578</span>
+        </button>
+        
+        <button class="chip" data-collection="QGW/Vienna_1415-1417">
+            QGW II/2 (1415–1417) <span class="chip-count">34</span>
+        </button>
+        
+        <button class="chip" data-collection="QGW/Vienna_1448-57_ready">
+            QGW II/2 (1448–1457) <span class="chip-count">500</span>
+        </button>
+        
+        <button class="chip" data-collection="GenanntenListe_Weinzettel/Gen_Weinz_1459-61_ready">
+            Genannten-Liste Weinzettel (1459–1461) <span class="chip-count">1</span>
+        </button>
+        
+        <button class="chip" data-collection="Widmerliste/widmer_1448_ready">
+            Widmerliste (1448) <span class="chip-count">1</span>
+        </button>
+        
+        <button class="chip" data-collection="Gewerbuch_D/GB_D_1448-60_ready">
+            Gewerbuch D (1448–1460) <span class="chip-count">1364</span>
+        </button>
+        
+        <button class="chip" data-collection="Satzbuch_CD/SB_CD_1448-60_ready">
+            Satzbuch CD (1448–1460) <span class="chip-count">804</span>
+        </button>
+        
+        <button class="chip" data-collection="Copeybuch_Zeibig/Versammlung_1454-03-30_ready">
+            Copeybuch (Zeibig): Versammlung (1454) <span class="chip-count">1</span>
+        </button>
+        
+        <button class="chip" data-collection="Copeybuch_Zeibig/Geldeintreiber_Feuerordnung_1454-05-22_ready">
+            Copeybuch (Zeibig): Feuerordnung (1454) <span class="chip-count">1</span>
+        </button>
+        
+        <button class="chip" data-collection="Copeybuch_Zeibig/Buergeraufgebot_1454_05_29_ready">
+            Copeybuch (Zeibig): Bürgeraufgebot (1454) <span class="chip-count">1</span>
+        </button>
+        
+        <button class="chip" data-collection="QGW/Vienna_1458-66">
+            QGW II/3 (1458–1466) <span class="chip-count">352</span>
+        </button>
+        
+        <button class="chip" data-collection="Genanntenliste_Stubenviertel/GenStub_1461-66">
+            Genanntentafel Stubenviertel (1461–1466) <span class="chip-count">1</span>
+        </button>
+        
+        <button class="chip" data-collection="QGW/Vienna_1493-1500">
+            QGW II/4 (1493–1500) <span class="chip-count">54</span>
+        </button>
+        
+    </section>
+
+    <!-- Search and filter bar -->
+    <section class="index-controls">
+        
+<div class="search-box">
+    <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M12 12L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <input type="text" id="search-input" placeholder="Suche nach Nr., Datum, Ort, Schlagwort ..." autocomplete="off" spellcheck="false">
+    <button class="search-clear hidden" id="search-clear" aria-label="Suche löschen">&times;</button>
+</div>
+
+        <div class="filter-group">
+            <select id="filter-place" aria-label="Ort filtern">
+                <option value="">Alle Orte</option>
+                
+                <option value="Wien">Wien (2041)</option>
+                
+                <option value="Wiener-Neustadt">Wiener-Neustadt (138)</option>
+                
+                <option value="Graz">Graz (24)</option>
+                
+                <option value="Prag">Prag (18)</option>
+                
+                <option value="Schrattenthal">Schrattenthal (17)</option>
+                
+                <option value="Pressburg">Pressburg (16)</option>
+                
+                <option value="Ofen">Ofen (15)</option>
+                
+                <option value="Linz">Linz (11)</option>
+                
+                <option value="Mödling">Mödling (9)</option>
+                
+                <option value="Wiener Neustadt">Wiener Neustadt (9)</option>
+                
+                <option value="Rom">Rom (7)</option>
+                
+                <option value="Baden">Baden (7)</option>
+                
+                <option value="Krems">Krems (6)</option>
+                
+                <option value="Bösing">Bösing (6)</option>
+                
+                <option value="Korneuburg">Korneuburg (5)</option>
+                
+            </select>
+        </div>
+        <div class="filter-group">
+            <select id="filter-facs" aria-label="Faksimile">
+                <option value="">Faksimile</option>
+                <option value="1">Mit Faksimile (4565)</option>
+                <option value="0">Ohne Faksimile (1150)</option>
+            </select>
+        </div>
+        
+<div class="result-count" id="result-count">
+    5715 Dokumente
+</div>
+
+    </section>
+
+    
+<div class="active-filters" id="active-filters"></div>
+
+
+    <!-- Document table -->
+    <section class="index-table-wrap">
+        <table class="index-table" id="doc-table">
+            <thead>
+                <tr>
+                    <th class="col-idno" data-sort="id">Nr.</th>
+                    <th class="col-date" data-sort="di">Datum</th>
+                    <th class="col-place" data-sort="p">Ort</th>
+                    <th class="col-title" data-sort="t">Regest</th>
+                </tr>
+            </thead>
+            <tbody id="doc-tbody">
+            </tbody>
+        </table>
+        
+<div class="no-results hidden" id="no-results">
+    <p>Keine Dokumente gefunden.</p>
+</div>
+
+    </section>
+
+</div>
+
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p>Forschungsprojekte &raquo;Im Netz der Stadt&laquo; · &raquo;Stadt und Gemeinschaft&laquo; (Universit&auml;t Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p>Digitale Aufbereitung: <a href="https://dhcraft.org" class="footer-link">Digital Humanities Craft OG</a></p>
+                <p>Lizenz: <a href="https://creativecommons.org/licenses/by/4.0/" class="footer-link">CC BY 4.0</a> · 5715 Dokumente</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./static/js/core.js"></script>
+    
+<script src="./static/js/table-infra.js"></script>
+<script src="./static/js/index.js"></script>
+
+</body>
+</html>

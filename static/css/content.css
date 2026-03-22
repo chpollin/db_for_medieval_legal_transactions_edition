@@ -1,0 +1,300 @@
+/* === Wiener Urkundenbuch — Content Pages (Guidelines) === */
+/* ==========================================================================
+   Guidelines page
+   ========================================================================== */
+
+.guidelines-page {
+    max-width: 75rem;
+    margin: 0 auto;
+}
+
+.guidelines-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.guidelines-header h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    margin: 0 0 var(--space-sm);
+}
+
+.guidelines-subtitle {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+/* Two-column layout */
+.guidelines-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+/* Sidebar */
+.guidelines-sidebar {
+    position: sticky;
+    top: 4.5rem;
+    max-height: calc(100vh - 5rem);
+    overflow-y: auto;
+}
+
+.guidelines-sidebar .guidelines-toc {
+    background: var(--color-bg-warm);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg) var(--space-xl);
+    margin-bottom: 0;
+}
+
+.guidelines-toc h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-light);
+    margin: 0 0 var(--space-md);
+}
+
+.guidelines-toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.guidelines-toc > ul > li {
+    margin-bottom: var(--space-xs);
+}
+
+.guidelines-toc ul ul {
+    padding-left: var(--space-lg);
+    margin-top: var(--space-xs);
+}
+
+.guidelines-toc a {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--anno-person);
+    text-decoration: none;
+    line-height: 1.6;
+    transition: color var(--transition-fast), font-weight var(--transition-fast);
+}
+
+.guidelines-toc a:hover {
+    text-decoration: underline;
+}
+
+.guidelines-toc a.active {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+/* Body */
+.guidelines-body h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin: var(--space-2xl) 0 var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.guidelines-body h3 {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin: var(--space-xl) 0 var(--space-md);
+}
+
+.guidelines-body h4 {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.guidelines-body p {
+    text-align: justify;
+    line-height: var(--leading-body);
+    margin: 0 0 var(--space-md);
+    hyphens: auto;
+}
+
+.guidelines-body ul,
+.guidelines-body ol {
+    margin: 0 0 var(--space-md);
+    padding-left: var(--space-xl);
+}
+
+.guidelines-body li {
+    margin-bottom: var(--space-xs);
+    line-height: var(--leading-body);
+}
+
+/* Code blocks (XML examples) */
+.guidelines-body pre {
+    background: var(--color-bg-nav);
+    color: var(--color-text-inverse);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    margin: 0 0 var(--space-lg);
+}
+
+.guidelines-body .highlight {
+    margin: 0 0 var(--space-lg);
+}
+
+.guidelines-body .highlight pre {
+    margin: 0;
+}
+
+.guidelines-body code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-bg-warm);
+    padding: 1px 4px;
+    border-radius: 2px;
+}
+
+.guidelines-body pre code {
+    background: none;
+    padding: 0;
+    font-size: var(--text-sm);
+}
+
+/* Collapsible code blocks (wrapped by JS) */
+.guidelines-body details {
+    margin: 0 0 var(--space-lg);
+}
+
+.guidelines-body details summary {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--anno-person);
+    cursor: pointer;
+    padding: var(--space-sm) 0;
+    user-select: none;
+}
+
+.guidelines-body details summary:hover {
+    text-decoration: underline;
+}
+
+.guidelines-body details pre {
+    margin-top: var(--space-sm);
+}
+
+.guidelines-body details .highlight {
+    margin-top: var(--space-sm);
+}
+
+/* Syntax highlighting — warm parchment palette on dark ground */
+.guidelines-body .highlight .nt { color: #d4a56a; }  /* tags: parchment gold */
+.guidelines-body .highlight .na { color: #7cb8a8; }  /* attributes: muted teal */
+.guidelines-body .highlight .s  { color: #c9a8d4; }  /* strings: soft lavender */
+.guidelines-body .highlight .cm { color: #8c8680; }  /* comments: muted stone */
+.guidelines-body .highlight .c  { color: #8c8680; }
+.guidelines-body .highlight .c1 { color: #8c8680; }
+.guidelines-body .highlight .cp { color: #8c8680; }  /* processing instructions */
+.guidelines-body .highlight .err { color: inherit; border: none; } /* no error styling */
+
+/* Tables */
+.guidelines-body table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    margin: 0 0 var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.guidelines-body thead {
+    background: var(--color-bg-warm);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.guidelines-body th {
+    text-align: left;
+    padding: var(--space-sm) var(--space-md);
+    font-weight: 600;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+}
+
+.guidelines-body td {
+    padding: var(--space-sm) var(--space-md);
+    border-top: 1px solid var(--color-border-light);
+    vertical-align: top;
+}
+
+.guidelines-body tbody tr:nth-child(even) {
+    background: rgba(245, 241, 234, 0.3);
+}
+
+/* Permalink anchors */
+.guidelines-body .headerlink {
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+    text-decoration: none;
+    margin-left: var(--space-sm);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.guidelines-body h2:hover .headerlink,
+.guidelines-body h3:hover .headerlink,
+.guidelines-body h4:hover .headerlink {
+    opacity: 1;
+}
+
+.guidelines-body .headerlink:hover {
+    color: var(--anno-person);
+}
+
+/* Footer */
+.guidelines-footer {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border-light);
+    text-align: center;
+}
+
+.guidelines-footer p {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+    margin: 0;
+}
+
+/* Responsive: guidelines */
+@media (max-width: 1024px) {
+    .guidelines-page { max-width: var(--max-width); }
+    .guidelines-layout {
+        display: block;
+    }
+    .guidelines-sidebar {
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+        margin-bottom: var(--space-xl);
+    }
+}
+
+/* Print: guidelines — merged into main @media print block at end of file */
+
+

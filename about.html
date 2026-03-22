@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Über das Projekt — Digital Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/tokens.css">
+    <link rel="stylesheet" href="./static/css/base.css">
+    <link rel="stylesheet" href="./static/css/components.css">
+    <link rel="stylesheet" href="./static/css/responsive.css">
+    <link rel="stylesheet" href="./static/css/print.css">
+    
+<link rel="stylesheet" href="./static/css/content.css">
+
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="./index.html" class="nav-brand">
+                <span class="nav-brand-sigil">&#x2756;</span>
+                <span class="nav-brand-text">Wiener Urkundenbuch</span>
+                <span class="nav-brand-sub">Digital Edition</span>
+            </a>
+            <span class="nav-badge">Forschungsvorschau</span>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
+                <a href="./documents.html">Dokumente</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Register <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="./persons.html">Personen</a>
+                        <a href="./organisations.html">Organisationen</a>
+                        <a href="./places.html">Orte</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Exploration <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="./exploration_roles.html">Rollen</a>
+                        <a href="./exploration_networks.html">Beziehungen</a>
+                        <a href="./exploration_transactions.html">Transaktionen</a>
+                        <a href="./exploration_places.html">Orte</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">Projekt <span class="nav-dropdown-arrow">&#x25BE;</span></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="./about.html">&Uuml;ber das Projekt</a>
+                        <a href="./statistics.html">Statistik</a>
+                        <a href="./edition_guidelines.html">Editionsrichtlinien</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+<article class="guidelines-page">
+    <div class="guidelines-header">
+        <h1>&Uuml;ber das Projekt</h1>
+        <p class="guidelines-subtitle">Prosopographische Datenbank mittelalterlicher Wiener Rechtsgesch&auml;fte</p>
+    </div>
+
+    <div class="guidelines-layout" id="guidelines-layout">
+        <nav class="guidelines-sidebar" id="guidelines-sidebar" aria-label="Inhaltsverzeichnis">
+            <div class="guidelines-toc">
+                <h2>Inhalt</h2>
+                <div class="toc">
+<ul>
+<li><a href="#projektbeschreibung">Projektbeschreibung</a></li>
+<li><a href="#forschungskontext">Forschungskontext</a></li>
+<li><a href="#forschungsfragen">Forschungsfragen</a></li>
+<li><a href="#quellenbestand">Quellenbestand</a></li>
+<li><a href="#annotationsmodell">Annotationsmodell</a><ul>
+<li><a href="#ebene-1-ereignisse">Ebene 1: Ereignisse</a></li>
+<li><a href="#ebene-2-funktionen">Ebene 2: Funktionen</a></li>
+<li><a href="#ebene-3-entitaten">Ebene 3: Entit&auml;ten</a></li>
+<li><a href="#ebene-4-attribute-und-relationen">Ebene 4: Attribute und Relationen</a></li>
+</ul>
+</li>
+<li><a href="#technische-umsetzung">Technische Umsetzung</a></li>
+<li><a href="#qualitatssicherung">Qualit&auml;tssicherung</a></li>
+<li><a href="#zitierweise">Zitierweise</a></li>
+<li><a href="#kontakt">Kontakt</a></li>
+</ul>
+</div>
+
+            </div>
+        </nav>
+        <div class="guidelines-body">
+            <h2 id="projektbeschreibung">Projektbeschreibung<a class="headerlink" href="#projektbeschreibung" title="Permanent link">&para;</a></h2>
+<p>Das <strong>Wiener Urkundenbuch</strong> ist eine digitale Edition der prosopographischen Datenbank
+mittelalterlicher Wiener Rechtsgesch&auml;fte (ca. 1177&ndash;1524). Die Datenbank
+dokumentiert soziale Strukturen, Netzwerke und Strategien von Individuen und Gruppen
+im sp&auml;tmittelalterlichen Wien.</p>
+<p>Die Edition erschlie&szlig;t TEI-XML-Quelltexte mit Personen,
+Organisationen und Orten in einem vierstufigen Annotationsmodell
+und macht sie durch interaktive Visualisierungen zug&auml;nglich.</p>
+<h2 id="forschungskontext">Forschungskontext<a class="headerlink" href="#forschungskontext" title="Permanent link">&para;</a></h2>
+<p>Die Datenbank entstand im Kontext zweier Forschungsprojekte:</p>
+<ul>
+<li>
+<p><strong>&raquo;Im Netz der Stadt&laquo;</strong> &mdash; Dissertation
+  zur prosopographischen Rekonstruktion sozialer Verflechtungen in Wien auf Basis
+  mittelalterlicher Rechtsgesch&auml;fte. Die Datenbank wurde f&uuml;r diese Arbeit
+  konzipiert und der XML-Standard entwickelt.</p>
+</li>
+<li>
+<p><strong>&raquo;Stadt und Gemeinschaft&laquo;</strong> (Universit&auml;t Wien) &mdash;
+  Parallelprojekt, das die Datenbank im Kontext st&auml;dtischer Gemeinschaftsbildung
+  und Zugeh&ouml;rigkeit nutzt.</p>
+</li>
+</ul>
+<p>Methodisch folgt das Projekt dem <strong>Factoid-Ansatz</strong> der digitalen Prosopographie
+(King&rsquo;s College London). Jede Quelle wird auf vier Ebenen annotiert: Ereignisse,
+Funktionen, Entit&auml;ten und Attribute/Relationen.</p>
+<h2 id="forschungsfragen">Forschungsfragen<a class="headerlink" href="#forschungsfragen" title="Permanent link">&para;</a></h2>
+<p>Drei &uuml;bergreifende Forschungsfragen strukturieren die digitale Erschlie&szlig;ung:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Forschungsfrage</th>
+<th>Exploration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Welche sozialen, &ouml;konomischen und institutionellen Beziehungsgeflechte lassen sich aus den Wiener Rechtsgesch&auml;ften prosopographisch rekonstruieren? Wie strukturieren Verwandtschaft, Amt, Besitz und Repr&auml;sentation die st&auml;dtische Gesellschaft?</td>
+<td><a href="exploration_roles.html">Rollen</a>, <a href="exploration_networks.html">Beziehungen</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Wie ver&auml;ndern sich Transaktionspraktiken im sp&auml;tmittelalterlichen Wien &uuml;ber die Zeit, und welche institutionellen Empf&auml;ngerstrukturen lassen sich identifizieren?</td>
+<td><a href="exploration_transactions.html">Transaktionen</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Wie lassen sich die erfassten Personen-, Institutions- und Ortsdaten zu einer topographisch-prosopographischen Rekonstruktion verbinden?</td>
+<td><a href="exploration_places.html">Orte</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="quellenbestand">Quellenbestand<a class="headerlink" href="#quellenbestand" title="Permanent link">&para;</a></h2>
+<p>Die Edition verarbeitet Quellen aus neun Sammlungen mit einem Zeitraum von 1177 bis 1524.
+Zwischen 1418 und 1447 besteht eine &Uuml;berlieferungsl&uuml;cke (keine Quellen).</p>
+<table>
+<thead>
+<tr>
+<th>Sammlung</th>
+<th>Zeitraum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QGW II/1</td>
+<td>1177&ndash;1414</td>
+</tr>
+<tr>
+<td>Stadtb&uuml;cher Bd. 1</td>
+<td>1395&ndash;1400</td>
+</tr>
+<tr>
+<td>QGW II/2 (1448&ndash;1457)</td>
+<td>1448&ndash;1457</td>
+</tr>
+<tr>
+<td>QGW II/3</td>
+<td>1458&ndash;1466</td>
+</tr>
+<tr>
+<td>Gewerbuch D</td>
+<td>1448&ndash;1460</td>
+</tr>
+<tr>
+<td>Satzbuch CD</td>
+<td>1448&ndash;1460</td>
+</tr>
+<tr>
+<td>QGW II/4</td>
+<td>1493&ndash;1500</td>
+</tr>
+<tr>
+<td>QGW II/2 (1415&ndash;1417)</td>
+<td>1415&ndash;1417</td>
+</tr>
+<tr>
+<td>QGW II/5</td>
+<td>1524</td>
+</tr>
+<tr>
+<td>Weitere</td>
+<td>diverse</td>
+</tr>
+</tbody>
+</table>
+<h2 id="annotationsmodell">Annotationsmodell<a class="headerlink" href="#annotationsmodell" title="Permanent link">&para;</a></h2>
+<p>Jedes Quelldokument wird in vier hierarchischen Ebenen annotiert:</p>
+<h3 id="ebene-1-ereignisse">Ebene 1: Ereignisse<a class="headerlink" href="#ebene-1-ereignisse" title="Permanent link">&para;</a></h3>
+<p>Rechtsgesch&auml;fte (<code>&lt;rs type="event"&gt;</code>) werden identifiziert und &uuml;ber dispositive
+Verben (<code>&lt;catchwords&gt;</code>) kategorisiert. Die Kategorienbildung erfolgt post-hoc aus
+den Verbformen, nicht a priori.</p>
+<h3 id="ebene-2-funktionen">Ebene 2: Funktionen<a class="headerlink" href="#ebene-2-funktionen" title="Permanent link">&para;</a></h3>
+<p>Innerhalb jedes Ereignisses werden Funktionsrollen zugewiesen:
+Aussteller*in (<em>issuer</em>), Empf&auml;nger*in (<em>recipient</em>),
+Zeug*in (<em>witness</em>) und Sonstige (<em>other</em>).</p>
+<h3 id="ebene-3-entitaten">Ebene 3: Entit&auml;ten<a class="headerlink" href="#ebene-3-entitaten" title="Permanent link">&para;</a></h3>
+<p>Personen, Organisationen und Orte werden identifiziert und &uuml;ber
+eindeutige Identifikatoren (<code>@ref</code>) mit den Registern verkn&uuml;pft.</p>
+<h3 id="ebene-4-attribute-und-relationen">Ebene 4: Attribute und Relationen<a class="headerlink" href="#ebene-4-attribute-und-relationen" title="Permanent link">&para;</a></h3>
+<p>Eigenschaften (Beruf, Titel, Tod) und Beziehungen (Verwandtschaft, Amt,
+Repr&auml;sentation, Freundschaft, Topographie) werden &uuml;ber
+<code>&lt;roleName&gt;</code> annotiert und mit Referenzen (<code>@corresp</code>) aufgel&ouml;st.</p>
+<h2 id="technische-umsetzung">Technische Umsetzung<a class="headerlink" href="#technische-umsetzung" title="Permanent link">&para;</a></h2>
+<p>Die digitale Edition wird als <strong>statische Website</strong> auf GitHub Pages publiziert.
+Die gesamte Verarbeitungskette ist transparent und reproduzierbar:</p>
+<table>
+<thead>
+<tr>
+<th>Komponente</th>
+<th>Technologie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quelldaten</td>
+<td>TEI-XML</td>
+</tr>
+<tr>
+<td>Schema</td>
+<td>RelaxNG (<code>toolbox.rng</code>)</td>
+</tr>
+<tr>
+<td>Pipeline</td>
+<td>Python/lxml</td>
+</tr>
+<tr>
+<td>Edition</td>
+<td>Python/Jinja2 &rarr; HTML/CSS/JS</td>
+</tr>
+<tr>
+<td>Visualisierung</td>
+<td>SVG-Diagramme (client-seitig), Leaflet.js (Karten)</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td>pytest (Pipeline + Edition)</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>GitHub Pages (statisch)</td>
+</tr>
+</tbody>
+</table>
+<p>Der Quellcode ist verf&uuml;gbar unter:
+<a href="https://github.com/chpollin/db_for_medieval_legal_transactions">github.com/chpollin/db_for_medieval_legal_transactions</a></p>
+<h2 id="qualitatssicherung">Qualit&auml;tssicherung<a class="headerlink" href="#qualitatssicherung" title="Permanent link">&para;</a></h2>
+<p>Die Edition erf&uuml;llt alle kurzfristigen Anforderungen einer externen Begutachtung
+(Lehrstuhl f&uuml;r Digital Humanities, Universit&auml;t Graz, Dezember 2025):</p>
+<ul>
+<li><strong>Lizenz</strong>: CC BY 4.0</li>
+<li><strong>Schema</strong>: RelaxNG ersetzt DTD (ODD-Anforderung)</li>
+<li><strong>Validierung</strong>: Fehlerfrei &uuml;ber alle Quelldateien</li>
+<li><strong>XPointer-Konformit&auml;t</strong>: Alle Referenzen standardisiert</li>
+<li><strong>Annotationsrichtlinien</strong>: Dokumentiert in den <a href="edition_guidelines.html">Editionsrichtlinien</a></li>
+<li><strong>Kontrolliertes Vokabular</strong>: Typisierung und Normalisierung aller Annotationsattribute</li>
+</ul>
+<h2 id="zitierweise">Zitierweise<a class="headerlink" href="#zitierweise" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><em>Wiener Urkundenbuch &mdash; Digital Edition.</em>
+Universit&auml;t Wien, 2026.
+Digitale Aufbereitung: Digital Humanities Craft OG.
+Online: <a href="https://github.com/chpollin/db_for_medieval_legal_transactions">github.com/chpollin/db_for_medieval_legal_transactions</a>.
+Lizenz: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+</blockquote>
+<h2 id="kontakt">Kontakt<a class="headerlink" href="#kontakt" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Forschungsprojekt</strong>: Universit&auml;t Wien</li>
+<li><strong>Digitale Aufbereitung</strong>: <a href="https://dhcraft.org">Digital Humanities Craft OG</a></li>
+</ul>
+        </div>
+    </div>
+
+    <footer class="guidelines-footer">
+        <p>Zuletzt aktualisiert: 2026-03-19</p>
+    </footer>
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <p class="footer-project">Wiener Urkundenbuch — Digital Edition</p>
+                <p>Forschungsprojekte &raquo;Im Netz der Stadt&laquo; · &raquo;Stadt und Gemeinschaft&laquo; (Universit&auml;t Wien)</p>
+            </div>
+            <div class="footer-col footer-col-right">
+                <p>Digitale Aufbereitung: <a href="https://dhcraft.org" class="footer-link">Digital Humanities Craft OG</a></p>
+                <p>Lizenz: <a href="https://creativecommons.org/licenses/by/4.0/" class="footer-link">CC BY 4.0</a> · &Uuml;ber das Projekt</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./static/js/core.js"></script>
+    
+<script src="./static/js/content.js"></script>
+
+</body>
+</html>

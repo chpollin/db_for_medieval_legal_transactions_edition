@@ -1,0 +1,83 @@
+/* === Wiener Urkundenbuch — Print Styles === */
+/* ==========================================================================
+   Print
+   ========================================================================== */
+
+@media print {
+    .site-nav,
+    .site-footer,
+    .doc-toolbar,
+    .doc-facs-panel,
+    .doc-paging,
+    .active-filters {
+        display: none !important;
+    }
+
+    .doc-print-meta {
+        display: block;
+        margin-bottom: var(--space-lg);
+    }
+
+    .doc-print-meta h1 {
+        font-family: var(--font-serif);
+        font-size: 18pt;
+        margin: 0 0 0.5em;
+    }
+
+    .doc-print-meta p {
+        font-family: var(--font-sans);
+        font-size: 10pt;
+        margin: 0.2em 0;
+    }
+
+    body {
+        background: white;
+        font-size: 11pt;
+    }
+
+    .doc-body {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .has-facsimile .doc-content {
+        grid-template-columns: 1fr;
+    }
+
+    .anno-person,
+    .anno-org,
+    .anno-place {
+        background: none;
+        border-bottom: 1px solid #999;
+        padding: 0;
+    }
+
+    .anno-fn {
+        border-left: none;
+        padding-left: 0;
+        background: none;
+    }
+
+    /* Guidelines print */
+    .guidelines-layout { display: block; }
+    .guidelines-sidebar { position: static; max-height: none; }
+
+    .guidelines-toc {
+        page-break-after: always;
+        background: none;
+        border: 1px solid #ccc;
+    }
+
+    .guidelines-body pre {
+        background: #f0f0f0;
+        color: #333;
+        border: 1px solid #ccc;
+    }
+
+    .guidelines-body .headerlink {
+        display: none;
+    }
+}
+
+

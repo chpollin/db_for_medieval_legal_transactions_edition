@@ -1,0 +1,550 @@
+/* === Wiener Urkundenbuch — Statistics Dashboard === */
+/* ==========================================================================
+   Statistics Dashboard (v2 — interactive SVG charts)
+   ========================================================================== */
+
+.stats-page {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+}
+
+/* Header + lede */
+.stats-header {
+    margin-bottom: var(--space-lg);
+}
+
+.stats-header h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--space-sm);
+}
+
+.stats-lede {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    margin: 0;
+    max-width: 56rem;
+}
+
+.stats-lede-num {
+    font-weight: 600;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+}
+
+/* KPI cards */
+.stats-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+}
+
+/* Card surface base: components.css */
+.stats-kpi {
+    border-top: 3px solid var(--color-border-dark);
+    padding: var(--space-md) var(--space-md);
+    text-align: center;
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.stats-kpi:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.stats-kpi--docs    { border-top-color: var(--anno-trigger); }
+.stats-kpi--persons { border-top-color: var(--anno-person); }
+.stats-kpi--orgs    { border-top-color: var(--anno-org); }
+.stats-kpi--places  { border-top-color: var(--anno-place); }
+
+.stats-kpi-number {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.2;
+    margin-bottom: var(--space-xs);
+}
+
+.stats-kpi-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-light);
+}
+
+.stats-kpi-sub {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    margin-top: 0.15rem;
+}
+
+/* Active collection filter bar */
+.stats-active-filter {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    background: var(--anno-person-bg);
+    border: 1px solid var(--anno-person-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-lg);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+}
+
+.stats-active-filter.hidden { display: none; }
+
+.stats-active-filter-text { font-weight: 500; }
+
+.stats-active-filter-clear {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 0.15rem 0.6rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.stats-active-filter-clear:hover {
+    background: var(--color-bg-card);
+    color: var(--color-text);
+}
+
+/* Sections */
+.stats-section {
+    margin-bottom: var(--space-2xl);
+}
+
+.stats-section h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.stats-section h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--space-sm);
+}
+
+.stats-section-intro {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-md);
+}
+
+.stats-gap-note {
+    display: block;
+    margin-top: var(--space-xs);
+    font-size: var(--text-2xs);
+    color: var(--color-text-light);
+    font-style: italic;
+}
+
+/* Chart card — card surface base: components.css */
+.stats-chart-card {
+    padding: var(--space-md) var(--space-md) var(--space-sm);
+}
+
+.stats-svg-wrap {
+    width: 100%;
+    min-height: 60px;
+}
+
+/* Century chips */
+.stats-century-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+.stats-century-chip {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    background: var(--color-bg-warm);
+    border: 1px solid var(--color-border-light);
+    border-radius: 1rem;
+    padding: 0.2rem 0.6rem;
+}
+
+/* Two-column layout */
+.stats-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+}
+
+.stats-three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+}
+
+/* Gender sub-heading spacing (after role metrics) */
+#section-roles .stats-role-metrics + h3 {
+    margin-top: var(--space-xl);
+}
+
+/* Gender-disaggregated role chart */
+.stats-gender-row {
+    display: grid;
+    grid-template-columns: 9rem 1fr 7rem;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.stats-gender-bar-track {
+    height: 1.25rem;
+    background: var(--color-bg-warm);
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+}
+
+.stats-gender-bar-seg {
+    height: 100%;
+    min-width: 2px;
+    transition: width var(--transition-normal);
+}
+
+.stats-gender-legend {
+    display: flex;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+.stats-gender-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+/* Shared dot indicator (roles + gender legends) */
+.stats-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Gender color classes: bar segments use background, text uses color */
+.stats-gender-bar-seg.stats-gender-f { background: var(--color-sex-f-muted); }
+.stats-gender-bar-seg.stats-gender-m { background: var(--color-sex-m-muted); }
+span.stats-gender-f { color: var(--color-sex-f-muted); }
+span.stats-gender-m { color: var(--color-sex-m-muted); }
+.stats-gender-f-bg  { background: var(--color-sex-f-muted); }
+.stats-gender-m-bg  { background: var(--color-sex-m-muted); }
+
+/* Collection cards grid */
+.stats-collection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+}
+
+/* Card surface base: components.css */
+.stats-collection-card {
+    border-left: 4px solid var(--color-border-dark);
+    padding: var(--space-md);
+    transition: box-shadow var(--transition-fast), opacity var(--transition-normal), transform var(--transition-fast);
+}
+
+.stats-collection-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.stats-collection-card.active {
+    border-color: var(--anno-person-border);
+    background: var(--anno-person-bg);
+    box-shadow: var(--shadow-md);
+}
+
+.stats-collection-card.dimmed {
+    opacity: 0.45;
+}
+
+.stats-coll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--space-xs);
+}
+
+.stats-coll-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.stats-coll-count {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-light);
+}
+
+.stats-coll-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+}
+
+.stats-coll-meta span {
+    white-space: nowrap;
+}
+
+.stats-coll-bar-track {
+    height: 4px;
+    background: var(--color-bg-warm);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: var(--space-xs);
+}
+
+.stats-coll-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width var(--transition-normal);
+}
+
+.stats-coll-pct {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-light);
+}
+
+/* Function roles */
+.stats-role-metrics {
+    display: flex;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.stats-role-block {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+}
+
+/* .stats-role-dot: reuses shared .stats-dot (see gender section) */
+
+.stats-role-name {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.stats-role-value {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+}
+
+.stats-role-pct {
+    font-size: var(--text-2xs);
+    color: var(--color-text-light);
+}
+
+/* Horizontal bar charts (annotation types) */
+.stats-hbar-row {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr 4rem;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+}
+
+.stats-hbar-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: right;
+}
+
+.stats-hbar-track {
+    height: 1.25rem;
+    background: var(--color-bg-warm);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.stats-hbar-fill {
+    height: 100%;
+    border-radius: 3px;
+    min-width: 2px;
+    transition: width var(--transition-normal);
+    opacity: 0.7;
+}
+
+.stats-hbar-value {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    text-align: right;
+}
+
+/* Coverage rings */
+.stats-coverage-rings {
+    display: flex;
+    gap: var(--space-2xl);
+    justify-content: center;
+    margin: var(--space-lg) 0;
+}
+
+.stats-ring-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.stats-ring-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.stats-ring-detail {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.stats-coverage-note {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    color: var(--color-text-light);
+    background: var(--color-bg-warm);
+    border-left: 3px solid var(--anno-place);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: var(--space-sm) var(--space-md);
+    margin-top: var(--space-sm);
+    line-height: 1.6;
+}
+
+.stats-coverage-note code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--color-bg-card);
+    padding: 0.1em 0.3em;
+    border-radius: 2px;
+}
+
+/* Rankings */
+.stats-ranking {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    padding-left: 1.5rem;
+    margin: 0;
+}
+
+.stats-ranking li {
+    margin-bottom: var(--space-sm);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.stats-rank-bar-track {
+    width: 100%;
+    height: 4px;
+    background: var(--color-bg-warm);
+    border-radius: 2px;
+    overflow: hidden;
+    order: -1;
+}
+
+.stats-rank-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    opacity: 0.5;
+    transition: width var(--transition-normal);
+}
+
+.stats-ranking a {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.stats-ranking a:hover {
+    color: var(--anno-person);
+    text-decoration: underline;
+}
+
+.stats-rank-count {
+    margin-left: auto;
+    font-size: var(--text-2xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-light);
+    white-space: nowrap;
+}
+
+.stats-no-data {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+    font-style: italic;
+}
+
+/* Tooltip — base in components.css; extras here */
+.stats-tooltip {
+    font-size: var(--text-2xs);
+    line-height: 1.5;
+    padding: var(--space-xs) var(--space-sm);
+    max-width: 220px;
+}
+
+.stats-tooltip strong {
+    color: #fff;
+}
+
+.stats-tooltip small {
+    opacity: 0.7;
+}
+
+

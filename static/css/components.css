@@ -1,0 +1,46 @@
+/* === Wiener Urkundenbuch — Shared Component Patterns === */
+/* ==========================================================================
+   Consolidated patterns used across multiple page-specific CSS files.
+   Loaded after base.css, before page-specific styles.
+   ========================================================================== */
+
+
+/* --- Card surface ---
+   Shared base for card-like containers (white bg, subtle border, rounded).
+   Page-specific overrides (border-top, border-left colours, padding)
+   are applied in their respective CSS files.
+   ------------------------------------------------------------------ */
+
+.doc-body, .facs-viewer, .index-table-wrap,
+.stats-kpi, .stats-chart-card, .stats-collection-card,
+.explore-panel, .explore-hub-card, .explore-header-unified, .explore-filter-header,
+.start-entry-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+
+/* --- Tooltip base ---
+   Shared structure for all tooltip variants (edition, statistics, exploration).
+   Per-variant font-size, padding, max-width, and transform stay in their
+   respective CSS files.
+   ------------------------------------------------------------------ */
+
+.edition-tooltip, .stats-tooltip, .explore-tooltip {
+    position: fixed;
+    z-index: var(--z-tooltip);
+    background: var(--color-bg-nav);
+    color: var(--color-text-inverse);
+    font-family: var(--font-sans);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.edition-tooltip.visible, .stats-tooltip.visible, .explore-tooltip.visible {
+    opacity: 1;
+}
