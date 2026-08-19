@@ -36,4 +36,5 @@ docs-full-intern/
 docs-max-intern/
 specs/material/*.docx
 !specs/material/glossar-final.docx
+!specs/material/Protokoll_SuG_23_04_Final.docx
 docs/project/glossar-demo-preview/
